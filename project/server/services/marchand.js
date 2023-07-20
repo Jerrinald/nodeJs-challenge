@@ -2,7 +2,7 @@ const { Marchand } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
 
-module.exports = function UserMarchand() {
+module.exports = function MarchandService() {
     return {
         findAll: async function (filters, options) {
             let dbOptions = {
