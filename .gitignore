@@ -1,0 +1,5 @@
+SampleCollections
+node_modules
+.env
+project/serveur/node_modules
+project/client/node_modules
