@@ -3,5 +3,5 @@ version: '3.6'
 services:
   server:
     volumes:
-      - ./4IW2/server:/usr/src/app
+      - ./${CLASS}/server:/usr/src/app
     command: npm run watch

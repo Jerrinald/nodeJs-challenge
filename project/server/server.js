@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const UserRouter = require("./routes/user");
 const MarchandRouter = require("./routes/marchand");
+const TransactionRouter = require("./routes/transaction");
 const SecurityRouter = require("./routes/security");
 const ValidationError = require("./errors/ValidationError");
 const cors = require("cors");
@@ -19,6 +20,8 @@ app.use("/", SecurityRouter);
 app.use("/users", checkAuth, UserRouter); // protect only this route
 
 app.use("/marchands", checkAuth, MarchandRouter);
+
+app.use("/transactions", checkAuth, TransactionRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
