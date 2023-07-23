@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const UserRouter = require("./routes/user");
 const MarchandRouter = require("./routes/marchand");
+const TransactionRouter = require("./routes/transaction");
 const ProductRouter = require("./routes/product");
 const OrderRouter = require("./routes/order");
 const SecurityRouter = require("./routes/security");
@@ -23,6 +24,7 @@ app.use("/users", checkAuth, UserRouter); // protect only this route
 
 app.use("/marchands", checkAuth, MarchandRouter);
 
+app.use("/transactions", checkAuth, TransactionRouter);
 app.use("/products", checkAuth, checkCurrentUser, ProductRouter);
 
 app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
@@ -40,3 +42,5 @@ app.use(errorHandler);
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
+
+//comment test
