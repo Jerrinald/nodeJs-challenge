@@ -30,6 +30,12 @@ module.exports = (connection) => {
             type: DataTypes.FLOAT,
             allowNull: false,
         },
+        // Add the status field with a default value of "new"
+        status: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          defaultValue: "new",
+        },
         // Other order-related properties go here
   
         // Foreign key referencing the User table

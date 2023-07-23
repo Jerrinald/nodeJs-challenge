@@ -4,6 +4,7 @@ const UserRouter = require("./routes/user");
 const MarchandRouter = require("./routes/marchand");
 const ProductRouter = require("./routes/product");
 const OrderRouter = require("./routes/order");
+const TransactionRouter = require("./routes/transaction");
 const SecurityRouter = require("./routes/security");
 const ValidationError = require("./errors/ValidationError");
 const cors = require("cors");
@@ -22,6 +23,8 @@ app.use("/", SecurityRouter);
 app.use("/users", checkAuth, UserRouter); // protect only this route
 
 app.use("/marchands", checkAuth, MarchandRouter);
+
+app.use("/transactions", checkAuth, TransactionRouter);
 
 app.use("/products", checkAuth, checkCurrentUser, ProductRouter);
 
