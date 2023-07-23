@@ -1,8 +1,8 @@
-const { Marchand } = require("../db");
+const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
 
-module.exports = function MarchandService() {
+module.exports = function OrderService() {
     return {
         findAll: async function (filters, options) {
             let dbOptions = {
@@ -15,15 +15,25 @@ module.exports = function MarchandService() {
                 dbOptions.limit = options.limit;
                 dbOptions.offset = options.offset;
             }
-            return Marchand.findAll(dbOptions);
+            return Order.findAll(dbOptions);
         },
         findOne: async function (filters) {
 
-            return Marchand.findOne({ where: filters });
+            return Order.findOne({ where: filters });
         },
         create: async function (data) {
             try {
-                return await Marchand.create(data);
+                // Get the price of the product from the Product table
+                const product = await Product.findOne({ where: { id: data.productId } });
+
+                // Calculate the total amount based on the product price and quantity
+                const amount = product.price * data.quantity;
+                data.amount = amount;
+
+                data.userId = data.currentUserId;
+                delete data['currentUserId'];
+                
+                return await Order.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -37,8 +47,8 @@ module.exports = function MarchandService() {
                     throw new Error("Invalid filters.");
                 }
                 const nbDeleted = await this.delete(filters);
-                const marchand = await this.create(newData);
-                return [[marchand, nbDeleted === 0]];
+                const Order = await this.create(newData);
+                return [[Order, nbDeleted === 0]];
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -51,13 +61,13 @@ module.exports = function MarchandService() {
                 if (!filters || Object.keys(filters).length === 0) {
                     throw new Error("Invalid filters.");
                 }
-                const [nbUpdated, marchands] = await Marchand.update(newData, {
+                const [nbUpdated, orders] = await Order.update(newData, {
                     where: filters,
                     returning: true,
                     individualHooks: true,
                 });
 
-                return marchands;
+                return orders;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -69,7 +79,7 @@ module.exports = function MarchandService() {
             if (!filters || Object.keys(filters).length === 0) {
                 throw new Error("Invalid filters.");
             }
-            return Marchand.destroy({ where: filters });
+            return Order.destroy({ where: filters });
         },
     };
 };

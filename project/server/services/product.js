@@ -1,8 +1,8 @@
-const { Marchand } = require("../db");
+const { Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
 
-module.exports = function MarchandService() {
+module.exports = function ProductService() {
     return {
         findAll: async function (filters, options) {
             let dbOptions = {
@@ -15,15 +15,17 @@ module.exports = function MarchandService() {
                 dbOptions.limit = options.limit;
                 dbOptions.offset = options.offset;
             }
-            return Marchand.findAll(dbOptions);
+            return Product.findAll(dbOptions);
         },
         findOne: async function (filters) {
 
-            return Marchand.findOne({ where: filters });
+            return Product.findOne({ where: filters });
         },
         create: async function (data) {
             try {
-                return await Marchand.create(data);
+                data.marchandId = data.currentUserId;
+                delete data['currentUserId'];
+                return await Product.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -37,8 +39,8 @@ module.exports = function MarchandService() {
                     throw new Error("Invalid filters.");
                 }
                 const nbDeleted = await this.delete(filters);
-                const marchand = await this.create(newData);
-                return [[marchand, nbDeleted === 0]];
+                const Product = await this.create(newData);
+                return [[Product, nbDeleted === 0]];
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -51,13 +53,13 @@ module.exports = function MarchandService() {
                 if (!filters || Object.keys(filters).length === 0) {
                     throw new Error("Invalid filters.");
                 }
-                const [nbUpdated, marchands] = await Marchand.update(newData, {
+                const [nbUpdated, products] = await Product.update(newData, {
                     where: filters,
                     returning: true,
                     individualHooks: true,
                 });
 
-                return marchands;
+                return products;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -69,7 +71,7 @@ module.exports = function MarchandService() {
             if (!filters || Object.keys(filters).length === 0) {
                 throw new Error("Invalid filters.");
             }
-            return Marchand.destroy({ where: filters });
+            return Product.destroy({ where: filters });
         },
     };
 };

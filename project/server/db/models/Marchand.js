@@ -1,14 +1,14 @@
-const { DataTypes, Model } = require("sequelize");
-const bcrypt = require("bcryptjs");
-
 module.exports = (connection) => {
-    class Merchant extends Model {
+
+    const { DataTypes, Model } = require("sequelize");
+    const bcrypt = require("bcryptjs");
+    class Marchand extends Model {
         istokenValid(token) {
             return bcrypt.compare(token, this.token);
         }
     }
 
-    Merchant.init(
+    Marchand.init(
         {
             companyName: {
                 type: DataTypes.STRING,
@@ -55,23 +55,23 @@ module.exports = (connection) => {
         { sequelize: connection, tableName: "marchands" },
     );
 
-    function updateToken(merchant) {
+    function updateToken(Marchand) {
         return bcrypt.genSalt(10).then((salt) =>
-            bcrypt.hash(merchant.token, salt).then((hash) => {
-                merchant.token = hash;
+            bcrypt.hash(Marchand.token, salt).then((hash) => {
+                Marchand.token = hash;
             }),
         );
     }
 
-    Merchant.addHook("beforeCreate", (merchant) => {
-        return updateToken(merchant);
+    Marchand.addHook("beforeCreate", (Marchand) => {
+        return updateToken(Marchand);
     });
 
-    Merchant.addHook("beforeUpdate", async (merchant, options) => {
+    Marchand.addHook("beforeUpdate", async (Marchand, options) => {
         if (options.fields.includes("password")) {
-            return updateToken(merchant);
+            return updateToken(Marchand);
         }
     });
 
-    return Merchant;
+    return Marchand;
 };
