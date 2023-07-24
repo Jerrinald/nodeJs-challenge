@@ -37,6 +37,30 @@ services:
       - ./${CLASS}/server:/usr/src/app
     command: npm run dev
 
+  db-ecom:
+    image: postgres
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  ecom-api:
+    container_name: ecom-api
+    image: node
+    ports:
+      - 3100:3000
+    environment:
+      DATABASE_URL: postgres://root:password@db:5434/app
+      JWT_SECRET: ImAstrongSecret
+    working_dir: /usr/src/app
+    volumes:
+      - ./${CLASS}/ecom-api:/usr/src/app
+    command: npm run dev
+
 volumes:
   db-data: {}
   pg-data: {}
