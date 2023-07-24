@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
+import Dashboard from '../views/Dashboard/Home.vue';
 
 const routes = [
     {
@@ -23,6 +24,13 @@ const routes = [
         name: 'Home',
         component: Home,
         meta: { requiresAuth: true },
+    },
+    ,
+    {
+        path: '/dashborad',
+        name: 'Dashboard',
+        component: Dashboard,
+        meta: { requiresAuth: false },
     }
 ];
 
