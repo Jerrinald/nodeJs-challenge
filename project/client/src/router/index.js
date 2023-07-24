@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { ref } from 'vue';
 import jwtDecode from 'jwt-decode';
-import Home from '../views/Home.vue';
+import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 
