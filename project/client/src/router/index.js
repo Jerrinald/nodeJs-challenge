@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
-import Dashboard from '../views/Dashboard/Home.vue';
+import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 
 const routes = [
     {
@@ -27,9 +27,9 @@ const routes = [
     },
     ,
     {
-        path: '/dashborad',
-        name: 'Dashboard',
-        component: Dashboard,
+        path: '/stripetify',
+        name: 'Stripetify',
+        component: Stripetify,
         meta: { requiresAuth: false },
     }
 ];
