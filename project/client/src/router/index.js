@@ -60,7 +60,6 @@ const routes = [
         name: 'PaymentConfirm',
         component: PaymentConfirm,
         meta: { requiresAuth: false },
-        meta: { requiresAuth: false },
     }
 ];
 
