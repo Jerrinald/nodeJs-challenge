@@ -12,14 +12,12 @@ module.exports = (connection) => {
             },
             country: {
                 type: DataTypes.STRING,
-                allowNull: false,
                 validate: {
                     len: [1, 32],
                 },
             },
             ipClient: {
                 type: DataTypes.STRING,
-                allowNull: false,
                 validate: {
                     len: [1, 32],
                 },
@@ -27,13 +25,8 @@ module.exports = (connection) => {
             orderId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references: {
-                  model: "orders",
-                  key: "id",
-                },
-                onUpdate: "CASCADE",
-                onDelete: "CASCADE",
-              },
+                defaultValue: "1",
+            },
 
         },
         { sequelize: connection, tableName: "transactions" },

@@ -6,6 +6,8 @@ import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import Dashboard from '../views/front/Dashboard.vue';
+import Payment from '../views/payment/Payment.vue';
+import PaymentConfirm from '../views/payment/ConfirmPayment.vue';
 
 const routes = [
     {
@@ -36,6 +38,18 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/payment',
+        name: 'Payment',
+        component: Payment,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/payment-confirm',
+        name: 'PaymentConfirm',
+        component: PaymentConfirm,
         meta: { requiresAuth: false },
     }
 ];

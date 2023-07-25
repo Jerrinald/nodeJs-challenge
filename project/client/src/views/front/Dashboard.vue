@@ -7,20 +7,18 @@
   
       <!-- Content -->
       <div class="content">
-        <h1>Products list</h1>
+        <h1>Liste des transactions</h1>
         <div>
           <table>
             <tr>
-              <th>Transaction</th>
-              <th>Amount</th>
-              <th>Payment status</th>
-              <th>Payment date</th>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Country</th>
             </tr>
             <tr v-for="transaction in transactions" :key="transaction.id">
               <td>{{ transaction.id }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.paymentStatus }}</td>
-              <td>{{ transaction.paymentDate }}</td>
+              <td>{{ transaction.status }}</td>
+              <td>{{ transaction.country }}</td>
             </tr>
           </table>
         </div>
@@ -29,13 +27,14 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, reactive } from 'vue';
   
   const transactions = ref([]);
+
   
   async function fetchTransactions() {
     try {
-      const response = await fetch('http://127.0.0.1:3000/transactions', {
+      const response = await fetch('http://localhost:3000/transactions', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -46,13 +45,14 @@
       if (response.ok) {
         const data = await response.json();
         transactions.value = data;
-      } else {
-        console.error('Failed to fetch transactions');
+        } else {
+          console.error('Failed to fetch transactions');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
   }
+
   
   onMounted(() => {
     fetchTransactions();

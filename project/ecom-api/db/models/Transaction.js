@@ -12,14 +12,12 @@ module.exports = (connection) => {
             },
             country: {
                 type: DataTypes.STRING,
-                allowNull: false,
                 validate: {
                     len: [1, 32],
                 },
             },
             ipClient: {
                 type: DataTypes.STRING,
-                allowNull: false,
                 validate: {
                     len: [1, 32],
                 },
