@@ -1,16 +1,21 @@
 <template>
   <div class="login-form">
-    <h2>Login</h2>
+    <h2>Paiement</h2>
     <form @submit.prevent="loginUser">
       <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email" required>
+        <label for="numCarte">Numéro de carte:</label>
+        <input type="numCarte" id="numCarte"  required>
       </div>
       <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" required>
+        <label for="expireDate">Date d'expiration:</label>
+        <input type="date" id="expireDate"  required>
       </div>
-      <button type="submit">Login</button>
+      <div>
+        <label for="cvc">CVC:</label>
+        <input type="cvc" id="cvc"  required>
+      </div>
+      <button type="submit">Confirmer</button>
+      
     </form>
   </div>
 </template>
@@ -23,9 +28,10 @@ let user = reactive({
   password: ''
 });
 
+
 async function loginUser() {
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('http://localhost:3000/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

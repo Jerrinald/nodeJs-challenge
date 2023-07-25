@@ -17,16 +17,6 @@ module.exports = (connection) => {
             type: DataTypes.FLOAT,
             allowNull: false,
         },
-        marchandId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-              model: "marchands",
-              key: "id",
-            },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-          },
 
         // Other Product-related properties go here
   

@@ -23,8 +23,6 @@ module.exports = function ProductService() {
         },
         create: async function (data) {
             try {
-                data.marchandId = data.currentUserId;
-                delete data['currentUserId'];
                 return await Product.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
