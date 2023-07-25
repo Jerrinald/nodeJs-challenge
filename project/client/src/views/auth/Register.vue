@@ -34,9 +34,12 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import router from '../../router';
+
 
 let user = reactive({
-  username: '',
+  firstname: '',
+  lastname: '',
   email: '',
   password: ''
 });
@@ -55,11 +58,22 @@ async function registerUser() {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.log(errorData);
       registerErrors.value = errorData.errors;
+
+      // Afficher les erreurs dans des alertes
+      if (registerErrors.value) {
+        alert('Erreur lors de l\'enregistrement de l\'utilisateur:\n' + JSON.stringify(registerErrors.value));
+      } else {
+        registerErrors.value = ['Une erreur inconnue s\'est produite lors de l\'enregistrement de l\'utilisateur']
+        alert('Une erreur inconnue s\'est produite lors de l\'enregistrement de l\'utilisateur.');
+      }
     } else {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
       console.log('Utilisateur enregistré avec succès!');
+      router.push('/login'); // Remplacez '/login' par le chemin vers la page de connexion
+
     }
   } catch (error) {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);

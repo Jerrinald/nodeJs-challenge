@@ -27,6 +27,14 @@ module.exports = (connection) => {
           //is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
         },
       },
+      isActivated: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false, // Par défaut, le compte n'est pas activé
+      },
+      activationToken: {
+        type: DataTypes.STRING,
+        defaultValue: null, // Par défaut, le champ d'activation est vide
+      },
     },
     { sequelize: connection, tableName: "users" }
   );

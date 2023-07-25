@@ -32,6 +32,7 @@ services:
     environment:
       DATABASE_URL: postgres://root:password@db:5432/app
       JWT_SECRET: ImAstrongSecret
+      SENDGRID_API: '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'
     working_dir: /usr/src/app
     volumes:
       - ./project/server:/usr/src/app

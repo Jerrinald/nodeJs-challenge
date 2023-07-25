@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
+import AccountActivated from '../views/auth/AccountActivated.vue';
 
 const routes = [
     {
@@ -19,10 +20,16 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
+        path: '/account-activated',
+        name: 'AccountActivated',
+        component: AccountActivated,
+        meta: { requiresAuth: false },
+    },
+    {
         path: '/',
         name: 'Home',
         component: Home,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: false },
     }
 ];
 

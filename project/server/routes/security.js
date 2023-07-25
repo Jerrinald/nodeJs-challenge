@@ -10,5 +10,6 @@ const UserController = require("../controllers/generic")(new UserService());
 
 router.post("/login", SecurityController.login);
 router.post("/register", UserController.create);
+router.get("/activate-account/:activationToken", SecurityController.activateaccount);
 
 module.exports = router;

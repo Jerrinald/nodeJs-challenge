@@ -3,13 +3,23 @@
     <header>
       <nav class="navbar">
         <ul class="nav-items">
-          <li class="nav-item">Accueil</li>
-          <li class="nav-item">Produit</li>
-          <li class="nav-item">À Propos</li>
+          <li class="nav-item">
+            <router-link to="/">Accueil</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/">Produit</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/">À Propos</router-link>
+          </li>
         </ul>
         <ul class="nav-items">
-          <li class="nav-item">Inscription</li>
-          <li class="nav-item">Connexion</li>
+          <li class="nav-item">
+            <router-link to="/register">Inscription</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/login">Connexion</router-link>
+          </li>
         </ul>
       </nav>
     </header>
