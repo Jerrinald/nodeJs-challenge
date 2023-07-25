@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode",
+      "published": true
+    },
+    {
+      "id": 2,
+      "title": "react",
+      "author": "meta",
+      "published": true
+    },
+    {
+      "id": 3,
+      "title": "vue",
+      "author": "vue",
+      "published": false
+    },
+    {
+      "id": 4,
+      "title": "redux",
+      "author": "meta",
+      "published": true
+    },
+    {
+      "id": 5,
+      "title": "recoil",
+      "author": "meta",
+      "published": false
+    }
+  ]
+}

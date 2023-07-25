@@ -24,6 +24,7 @@ module.exports = function TransactionService() {
 
         create: async function (data) {
             try {
+                data.url_payment = '/link-payment'
                 return await Transaction.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {

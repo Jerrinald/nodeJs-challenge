@@ -30,7 +30,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      DATABASE_URL: postgres://root:password@db:5432/app
+      DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ImAstrongSecret
       SENDGRID_API: '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'
     working_dir: /usr/src/app
@@ -47,7 +47,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: app
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg-data-ecom:/var/lib/postgresql/data
 
   ecom-api:
     container_name: ecom-api
@@ -55,7 +55,7 @@ services:
     ports:
       - 3100:3000
     environment:
-      DATABASE_URL: postgres://root:password@db:5434/app
+      DATABASE_URL: ${DATABASE_URL_ECOM}
       JWT_SECRET: ImAstrongSecret
     working_dir: /usr/src/app
     volumes:
@@ -65,3 +65,4 @@ services:
 volumes:
   db-data: {}
   pg-data: {}
+  pg-data-ecom: {}

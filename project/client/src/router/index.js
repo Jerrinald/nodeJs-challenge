@@ -2,9 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { ref } from 'vue';
 import jwtDecode from 'jwt-decode';
 import Home from '../views/front/Home.vue';
+import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import AccountActivated from '../views/auth/AccountActivated.vue';
+import Dashboard from '../views/front/Dashboard.vue';
+import Payment from '../views/payment/Payment.vue';
+import PaymentConfirm from '../views/payment/ConfirmPayment.vue';
+import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 
 const routes = [
     {
@@ -20,6 +25,12 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
+        path: '/contact',
+        name: 'Contact',
+        component: Contact,
+        meta: { requiresAuth: false },
+    },
+    {
         path: '/account-activated',
         name: 'AccountActivated',
         component: AccountActivated,
@@ -29,6 +40,26 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        meta: { requiresAuth: true },
+    },
+    ,
+    {
+        path: '/stripetify',
+        name: 'Stripetify',
+        component: Stripetify,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/payment',
+        name: 'Payment',
+        component: Payment,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/payment-confirm',
+        name: 'PaymentConfirm',
+        component: PaymentConfirm,
+        meta: { requiresAuth: false },
         meta: { requiresAuth: false },
     }
 ];
