@@ -105,7 +105,7 @@ function loadCartFromLocalStorage() {
 
 async function fetchProducts() {
   try {
-    const response = await fetch('http://127.0.0.1:3000/products', {
+    const response = await fetch('http://127.0.0.1:3100/products', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
