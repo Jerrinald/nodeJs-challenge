@@ -5,7 +5,7 @@ import Home from '../views/front/Home.vue';
 import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
-import Dashboard from '../views/front/Dashboard.vue';
+import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 
 const routes = [
     {
@@ -27,15 +27,16 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: Dashboard,
-        meta: { requiresAuth: false },
-    },
-    {
         path: '/',
         name: 'Home',
         component: Home,
+        meta: { requiresAuth: true },
+    },
+    ,
+    {
+        path: '/stripetify',
+        name: 'Stripetify',
+        component: Stripetify,
         meta: { requiresAuth: false },
     }
 ];

@@ -42,32 +42,6 @@ function handleClick() {
   alert('You clicked me!');
 }
 
-// Vue2
-// export default {
-//   props: {
-//     title: {
-//       type: String,
-//       required: true
-//     },
-//     variant: {
-//       type: String,
-//       default: 'default',
-//       validator: (value) => {
-//         return ['default', 'round', 'square'].includes(value);
-//       }
-//     }
-//   },
-//   computed() {
-//      realTitle() {
-//        return this.variant === "round" ? this.title[0] : this.title;
-//      },
-//   },
-//   methods: {
-//     handleClick() {
-//       alert('You clicked me!');
-//     }
-//   },
-//};
 </script>
 
 <template>
@@ -77,7 +51,7 @@ function handleClick() {
 <style scoped>
 .btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 5px 10px;
   border-radius: 20px;
   background-color: #000;
   color: #fff;
