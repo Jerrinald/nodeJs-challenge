@@ -45,7 +45,7 @@ let registerErrors = ref(null);
 
 async function registerUser() {
   try {
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch('https:/127.0.0.1:3000/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -60,6 +60,7 @@ async function registerUser() {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
       console.log('Utilisateur enregistré avec succès!');
+
     }
   } catch (error) {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);
