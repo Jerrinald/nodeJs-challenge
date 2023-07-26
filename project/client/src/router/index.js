@@ -5,13 +5,7 @@ import Home from '../views/front/Home.vue';
 import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
-<<<<<<< HEAD
-import Dashboard from '../views/front/Dashboard.vue';
-import Payment from '../views/payment/Payment.vue';
-import PaymentConfirm from '../views/payment/ConfirmPayment.vue';
-=======
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
->>>>>>> c42d011d5f612cfa46e08869ec5ca9d9e8630b66
 
 const routes = [
     {
