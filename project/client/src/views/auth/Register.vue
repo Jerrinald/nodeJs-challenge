@@ -1,39 +1,80 @@
 <template>
-  <div class="register">
-    <h2>Register</h2>
-    <form @submit.prevent="registerUser">
-      <div>
-        <label for="firstname">Firstname:</label>
-        <input type="text" id="firstname" v-model="user.firstname" required>
+  <slot name="activator" :openModal="toggleModal">
+    <div @click="toggleModal">
+      <BtnSuscribe />
+    </div>
+  </slot>
+  <div v-show="openModal" class="modal">
+    <div class="backdrop" @click.self="toggleModal"></div>
+    <div class="modal-box">
+      <div class="modal-content">
+        <div class="modal-title">
+          Inscription<slot name="close-icon" :closeModal="toggleModal"></slot>
+        </div>
+        <div class="register">
+          <form @submit.prevent="registerUser">
+            <div>
+              <div>
+                
+                <label for="firstname">Firstname:</label>
+              </div>
+              <input type="text" id="firstname" v-model="user.firstname" required>
+            </div>
+            <div>
+              <div>
+
+                <label for="lastname">Lastname:</label>
+              </div>
+              <input type="text" id="lastname" v-model="user.lastname" required>
+            </div>
+            <div>
+              <div>
+
+                <label for="email">Email:</label>
+              </div>
+              <input type="email" id="email" v-model="user.email" required>
+            </div>
+            <div>
+              <div>
+
+                <label for="password">Password:</label>
+              </div>
+              <input type="password" id="password" v-model="user.password" required>
+            </div>
+            <div class="flex jce">
+              <button class="btn-primary" type="submit">Valider</button>
+            </div>
+            <div v-if="registerErrors" class="error">
+              <ul>
+                <li v-for="error in registerErrors" :key="error.field">
+                  {{ error.message }}
+                </li>
+              </ul>
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <label for="lastname">Lastname:</label>
-        <input type="text" id="lastname" v-model="user.lastname" required>
+      <div class="modal-actions">
+        <slot name="actions" :closeModal="toggleModal">
+          <div class="close-modal" @click="toggleModal">
+            <IconClose />
+          </div>
+        </slot>
       </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" required>
-      </div>
-      <div>
-        <button type="submit">Register</button>
-      </div>
-      <div v-if="registerErrors" class="error">
-        <ul>
-          <li v-for="error in registerErrors" :key="error.field">
-            {{ error.message }}
-          </li>
-        </ul>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
+import BtnSuscribe from "../../components/BtnSuscribe.vue"
+import IconClose from "../../components/icons/IconClose.vue"
+
+const openModal = ref(false);
+
+function toggleModal() {
+  openModal.value = !openModal.value;
+}
 
 let user = reactive({
   username: '',
@@ -45,7 +86,7 @@ let registerErrors = ref(null);
 
 async function registerUser() {
   try {
-    const response = await fetch('https:/127.0.0.1:3000/transactions', {
+    const response = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -60,7 +101,6 @@ async function registerUser() {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
       console.log('Utilisateur enregistré avec succès!');
-
     }
   } catch (error) {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);
@@ -70,7 +110,6 @@ async function registerUser() {
 
 <style scoped>
 .register {
-  max-width: 400px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -86,25 +125,57 @@ async function registerUser() {
   margin-bottom: 10px;
 }
 
-.register label {
-  font-weight: bold;
-}
-
-.register input {
-  padding: 5px;
-}
-
-.register button {
-  padding: 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .register .error {
   color: red;
   margin-top: 10px;
+}
+
+.modal {
+  color: #FFFFFF;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1002;
+  width: 100%;
+  max-width: 400px;
+  background-color: #000000;
+  border-radius: 5px;
+  box-shadow: 0 0 25px rgba(50, 206, 201, 0.5);
+  padding: 1rem;
+}
+
+.modal-title {
+  text-align: center;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
