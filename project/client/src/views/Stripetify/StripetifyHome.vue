@@ -4,11 +4,21 @@ import Footer from '../../components/Footer.vue'
 import secure from '../../assets/secure.jpg'
 import freelance from '../../assets/freelance.png'
 import website from '../../assets/website.png'
+import Register from "../auth/Register.vue"
+import man from "../../assets/man.png"
+
 </script>
 
 <template>
     <div class="stripetify">
-        <Header />
+            <Header />
+        <div class="suscribe-block flex fdc jcsb aic gap-50">
+            <div class="container flex aic jcsb gap-50">
+                <img class="man-secure" :src="man" alt="" srcset="">
+                <h1>Gérez votre site marchand en toute simplicité, des paiements en ligne sécurisés et fluides.</h1>
+            </div>
+            <Register />
+        </div>
         <div class="stripetify-container">
             <div class="flex jcsb gap-20">
                 <img :src="freelance" alt="Paiements sécurisés">
@@ -23,8 +33,8 @@ import website from '../../assets/website.png'
             <div class="flex jcsb gap-20">
                 <div class="container">
                     <h2>Paiements sécurisés pour votre tranquillité</h2>
-                    <p>Effectuez vos achats en toute confiance grâce à notre système de paiement certifié et sécurisé,
-                        garantissant la protection de vos données.</p>
+                    <p>Donnez la possibilité à vos clients d'effectuez leurs achats sur votre site en toute confiance grâce à notre système de paiement certifié et sécurisé,
+                        garantissant la protection de leurs données.</p>
                 </div>
                 <img :src="secure" alt="Paiements sécurisés">
             </div>
@@ -43,6 +53,7 @@ import website from '../../assets/website.png'
 </template>
 
 <style scoped>
+
 h2{
     color: #FFFFFF;
     margin-bottom: 15px;
@@ -59,7 +70,23 @@ img{
     width: 40%;
 }
 
-.container{
+.stripetify-container .container{
     max-width: 400px;
+}
+
+h1{
+    color: #FFF;
+    font-size: 40px;
+    line-height: 50px;
+}
+
+.suscribe-block{
+    padding: 50px 0;
+    background-color: #000000;
+}
+
+.man-secure{
+    width: 250px;
+    height: 250px;
 }
 </style>
