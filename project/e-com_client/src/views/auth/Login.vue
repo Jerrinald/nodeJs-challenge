@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router'; // Import de Vue Router
 
 let user = reactive({
   email: '',
@@ -25,7 +26,7 @@ let user = reactive({
 
 async function loginUser() {
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('http://127.0.0.1:3100/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,6 +38,11 @@ async function loginUser() {
       const data = await response.json();
       // Gérer la réponse de l'API en fonction de vos besoins
       console.log(data);
+      // on rajoute le token dans le localStorage
+      localStorage.setItem('token', data.token);
+      // on redirige vers la page d'accueil
+      const router = useRouter();
+      router.push('/'); // Remplacez '/accueil' par le chemin de votre page d'accueil
     } else {
       console.error('Login failed');
     }

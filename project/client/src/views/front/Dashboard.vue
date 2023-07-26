@@ -7,20 +7,29 @@
   
       <!-- Content -->
       <div class="content">
-        <h1>Products list</h1>
+      <button @click="toggleForm">Add New Transaction</button>
+      <!-- Add transaction form -->
+          <form v-if="showForm" @submit.prevent="addTransaction">
+
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" v-model="newTransaction.country" required>
+
+            <button type="submit">Add Transaction</button>
+          </form>
+        <h1>Liste des transactions</h1>
         <div>
+
           <table>
             <tr>
-              <th>Transaction</th>
-              <th>Amount</th>
-              <th>Payment status</th>
-              <th>Payment date</th>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Country</th>
             </tr>
             <tr v-for="transaction in transactions" :key="transaction.id">
               <td>{{ transaction.id }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.paymentStatus }}</td>
-              <td>{{ transaction.paymentDate }}</td>
+              <td>{{ transaction.status }}</td>
+              <td>{{ transaction.country }}</td>
             </tr>
           </table>
         </div>
@@ -29,13 +38,19 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, reactive } from 'vue';
   
   const transactions = ref([]);
+
+  let newTransaction = reactive({
+    country: ''
+  });
+
+  const showForm = ref(false); // Initially hidden
   
   async function fetchTransactions() {
     try {
-      const response = await fetch('http://127.0.0.1:3000/transactions', {
+      const response = await fetch('http://localhost:3000/transactions', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +67,34 @@
     } catch (error) {
       console.error('An error occurred:', error);
     }
+  }
+
+  async function addTransaction() {
+    try {
+      const response = await fetch('http://localhost:3000/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTransaction),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Gérer la réponse de l'API en fonction de vos besoins
+        console.log(data);
+        newTransaction.value = { country: '' };
+        fetchTransactions();
+      } else {
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
+  function toggleForm() {
+    showForm.value = !showForm.value; // Toggle the form visibility
   }
   
   onMounted(() => {

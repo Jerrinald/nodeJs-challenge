@@ -5,13 +5,10 @@ import Home from '../views/front/Home.vue';
 import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
-<<<<<<< HEAD
+import Products from '../views/front/Products.vue';
 import Dashboard from '../views/front/Dashboard.vue';
-import Payment from '../views/payment/Payment.vue';
-import PaymentConfirm from '../views/payment/ConfirmPayment.vue';
-=======
-import Stripetify from '../views/Stripetify/StripetifyHome.vue';
->>>>>>> c42d011d5f612cfa46e08869ec5ca9d9e8630b66
+import ProductsManagement from '../views/front/ProductsManagement.vue';
+import CommandesManagement from '../views/front/CommandesManagement.vue';
 
 const routes = [
     {
@@ -33,28 +30,33 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/products_management',
+        name: 'ProductsManagement',
+        component: ProductsManagement,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/Commandes_management',
+        name: 'CommandesManagement',
+        component: CommandesManagement,
+        meta: { requiresAuth: false },
+    },
+    {
+        path: '/products',
+        name: 'Products',
+        component: Products,
+        meta: { requiresAuth: false },
+    },
+    {
         path: '/',
         name: 'Home',
         component: Home,
-        meta: { requiresAuth: true },
-    },
-    ,
-    {
-        path: '/stripetify',
-        name: 'Stripetify',
-        component: Stripetify,
-        meta: { requiresAuth: false },
-    },
-    {
-        path: '/payment',
-        name: 'Payment',
-        component: Payment,
-        meta: { requiresAuth: false },
-    },
-    {
-        path: '/payment-confirm',
-        name: 'PaymentConfirm',
-        component: PaymentConfirm,
         meta: { requiresAuth: false },
     }
 ];
