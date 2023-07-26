@@ -1,6 +1,4 @@
 <script setup>
-import BtnConnect from "./BtnConnect.vue"
-import Modal from "./Modal.vue"
 import Login from "../views/auth/Login.vue"
 import logo from "../assets/logo1.png"
 </script>
