@@ -8,7 +8,8 @@
       <ul>
         <li><a href="#">Accueil</a></li>
         <li><a href="/products">Produits</a></li>
-        <li><a href="#">Panier</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/">Panier</a></li>
         <li><a href="#">Connexion</a></li>
       </ul>
     </nav>

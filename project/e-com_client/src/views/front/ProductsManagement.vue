@@ -1,14 +1,14 @@
 <template>
   <section>
     <h2>Ajouter un produit</h2>
-    <form @submit.prevent="addNewProduct">
+    <form @submit.prevent="addProduct">
       <div>
         <label for="productName">Nom du produit:</label>
         <input type="text" id="productName" v-model="newProduct.name" required>
       </div>
       <div>
         <label for="productPrice">Prix du produit (€):</label>
-        <input type="number" id="productPrice" v-model="newProduct.price" required>
+        <input type="float" id="productPrice" v-model="newProduct.price" required>
       </div>
       <div>
         <label for="productImage">URL de l'image:</label>
@@ -50,20 +50,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, reactive } from 'vue';
 
 const products = ref([]);
 const cartItems = ref([]);
-
+let newProduct = reactive({
+  name: '',
+  price: ''
+  });
 const fallbackProducts = [
   // Vos produits de test
 ];
 
-const newProduct = ref({
-  name: '',
-  price: '',
-  image: '',
-});
+
 
 const editingProduct = ref(null);
 
@@ -83,12 +82,39 @@ function addNewProduct() {
     price: Number(newProduct.value.price),
     image: newProduct.value.image,
   });
-  newProduct.value = {
-    name: '',
-    price: '',
-    image: '',
-  };
+  
 }
+
+  async function addProduct() {
+    try {
+      const response = await fetch('http://localhost:3100/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // get token from localstorage
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+
+        },
+        body: JSON.stringify(newProduct),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Gérer la réponse de l'API en fonction de vos besoins
+        console.log(data);
+        newProduct.value = { name: '', price: '' };
+      } else {
+    
+        console.error('product failed');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  // j'en fait un post sur l'api /products
+  
+  // si ok, je vide le formulaire
+
 
 function removeProduct(productId) {
   const index = products.value.findIndex((product) => product.id === productId);
