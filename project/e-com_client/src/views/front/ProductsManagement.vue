@@ -28,7 +28,7 @@
         <button @click="editProduct(product)">Modifier</button>
       </div>
     </div>
-    
+
 
     <!-- Formulaire d'édition du produit -->
     <form v-if="editingProduct" @submit.prevent="updateProduct">
@@ -82,126 +82,126 @@ cartChannel.onmessage = (event) => {
 };
 
 
-  async function fetchProducts() {
-    try {
-      const response = await fetch('http://localhost:3100/products', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any necessary headers, like authorization if required
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        products.value = data;
-      } else {
-        console.error('Failed to fetch transactions');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+async function fetchProducts() {
+  try {
+    const response = await fetch('http://localhost:3100/products', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any necessary headers, like authorization if required
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      products.value = data;
+    } else {
+      console.error('Failed to fetch transactions');
     }
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
-    
+}
 
-  async function addProduct() {
 
-    let newProd = {
-      name: newProduct.name,
-      price: newProduct.price,
-    };
+async function addProduct() {
 
-    try {
-      const response = await fetch('http://localhost:3100/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // get token from localstorage
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+  let newProd = {
+    name: newProduct.name,
+    price: newProduct.price,
+  };
 
-        },
-        body: JSON.stringify(newProd)
-      });
+  try {
+    const response = await fetch('http://localhost:3100/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // get token from localstorage
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
 
-      if (response.ok) {
-        const data = await response.json();
-        // Gérer la réponse de l'API en fonction de vos besoins
-        console.log(data);
-        newProduct.value = { name: '', price: '' };
-        //fetchProducts()
-        updateImageProduct(data.id, newProduct.image)
-      } else {
-    
-        console.error('product failed');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+      },
+      body: JSON.stringify(newProd)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Gérer la réponse de l'API en fonction de vos besoins
+      console.log(data);
+      newProduct.value = { name: '', price: '' };
+      //fetchProducts()
+      updateImageProduct(data.id, newProduct.image)
+    } else {
+
+      console.error('product failed');
     }
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
-  // j'en fait un post sur l'api /products
+}
+// j'en fait un post sur l'api /products
 
-  async function updateImageProduct(productId, image) {
-    const formData = new FormData();
-    formData.append('uploaded_file', image);
+async function updateImageProduct(productId, image) {
+  const formData = new FormData();
+  formData.append('uploaded_file', image);
 
-    // Check the FormData content before sending the request
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+  // Check the FormData content before sending the request
+  for (const pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3100/products/${productId}`, {
+      method: 'PATCH',
+      headers: {
+        // get token from localstorage
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      newProduct.image = null
+      console.log(data);
+      fetchProducts()
+    } else {
+      console.error('Failed to update product');
     }
-    
-      try {
-        const response = await fetch(`http://localhost:3100/products/${productId}`, {
-          method: 'PATCH',
-          headers: {
-            // get token from localstorage
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          newProduct.image = null
-          console.log(data);
-          fetchProducts()
-        } else {
-          console.error('Failed to update product');
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
-  
-  // si ok, je vide le formulaire
+}
 
-  async function removeProduct(productId) {
-    try {
-      const response = await fetch(`http://localhost:3100/products/${productId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // get token from localstorage
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+// si ok, je vide le formulaire
 
-      if (response.ok) {
-        // Remove the product from the products array on the client-side
-        products.value = products.value.filter((product) => product.id !== productId);
-      } else {
-        console.error('Failed to delete product');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+async function removeProduct(productId) {
+  try {
+    const response = await fetch(`http://localhost:3100/products/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // get token from localstorage
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (response.ok) {
+      // Remove the product from the products array on the client-side
+      products.value = products.value.filter((product) => product.id !== productId);
+    } else {
+      console.error('Failed to delete product');
     }
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
+}
 
 
 
-  function editProduct(product) {
-    editingProduct.value = { ...product };
-  }
+function editProduct(product) {
+  editingProduct.value = { ...product };
+}
 
 function cancelEditing() {
   editingProduct.value = null;
@@ -209,40 +209,40 @@ function cancelEditing() {
 
 async function updateProduct() {
   const index = products.value.findIndex((product) => product.id === editingProduct.value.id);
-    let updatedProduct = {};
-    if (index !== -1) {
-      updatedProduct = {
-        id: editingProduct.value.id,
-        name: editingProduct.value.name,
-        price: parseFloat(editingProduct.value.price),
-      };
-    }
+  let updatedProduct = {};
+  if (index !== -1) {
+    updatedProduct = {
+      id: editingProduct.value.id,
+      name: editingProduct.value.name,
+      price: parseFloat(editingProduct.value.price),
+    };
+  }
 
-    try {
-      const response = await fetch(`http://localhost:3100/products/${editingProduct.value.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          // get token from localstorage
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(updatedProduct),
-      });
+  try {
+    const response = await fetch(`http://localhost:3100/products/${editingProduct.value.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        // get token from localstorage
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(updatedProduct),
+    });
 
-      if (response.ok) {
+    if (response.ok) {
       if (newProduct.image !== null) {
         updateImageProduct(editingProduct.value.id, newProduct.image)
         products.value[index] = updatedProduct;
-      }else{
+      } else {
         fetchProducts()
       }
       editingProduct.value = null;
-      } else {
-        console.error('Failed to update product');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+    } else {
+      console.error('Failed to update product');
     }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
 }
 
 function onImageChange(event) {
@@ -261,8 +261,8 @@ function onNewImageChange(event) {
 // ... Le reste du code existant ...
 
 onMounted(() => {
-    fetchProducts();
-  });
+  fetchProducts();
+});
 
 </script>
 
