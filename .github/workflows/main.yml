@@ -1,0 +1,48 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install docker-compose
+        docker-compose up -d
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install dependencies and run dev for client
+      run: |
+        cd ./project/client
+        npm install
+        timeout 1m npm run dev || true
+
+    - name: Install dependencies and run dev for e-com_client
+      run: |
+        cd ../e-com_client
+        npm install
+        timeout 1m npm run dev || true
+
+    - name: Check Docker containers and stop
+      run: |
+        if docker ps | grep -q 'container_name_1\|container_name_2'; then
+          echo 'Both containers are running!'
+          docker stop $(docker ps -a -q)
+        else
+          echo 'Error: One or both containers are not running.'
+          exit 1
+        fi
