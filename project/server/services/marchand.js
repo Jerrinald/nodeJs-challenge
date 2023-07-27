@@ -2,6 +2,11 @@ const { Marchand } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
 
+const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API);
+
 module.exports = function MarchandService() {
     return {
         findAll: async function (filters, options) {
@@ -24,7 +29,31 @@ module.exports = function MarchandService() {
 
         create: async function (data) {
             try {
-                return await Marchand.create(data);
+                console.log(process.env.SENDGRID_API)
+                //return await Marchand.create(data);
+                // Créer un nouvel marchand dans la base de données
+                const newUser = await Marchand.create(data);
+
+                // Générer un jeton d'activation unique pour l'utilisateur (vous pouvez utiliser une bibliothèque comme "uuid" pour cela)
+                const activationToken = uuidv4();
+
+                // Sauvegarder le jeton d'activation dans la base de données associée à l'utilisateur
+                newUser.activationToken = activationToken;
+                await newUser.save();
+
+                // Envoi de l'e-mail de validation
+                const msg = {
+                to: newUser.email, // Adresse e-mail de l'utilisateur enregistré
+                from: 'ndiaby6@myges.fr', // Remplacez par votre adresse e-mail
+                subject: 'Confirmation d\'inscription', // Sujet de l'e-mail
+                html: `<p>Merci de vous être inscrit! Veuillez cliquer sur le lien suivant pour activer votre compte :</p>
+                    <a href="http://localhost:3000/activate-account/${activationToken}">Activer le compte</a>` // Lien d'activation (remplacez par votre propre lien)
+                };
+
+                await sgMail.send(msg);
+
+                return newUser;
+
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
