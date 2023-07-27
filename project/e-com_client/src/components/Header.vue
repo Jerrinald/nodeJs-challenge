@@ -40,13 +40,12 @@ console.log(cartItems.value.length)
         <nav class="navbar container flex aic jcsb">
             <a href="/" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"></a>
             <div class="flex gap-20">
-                <a href="/products">Produits</a>
                 <a v-if="user && user.role === 'admin'" href="/dashboard">Mon espace</a>
                 <a href="/panier" class="panel">
                     <div v-if="!cartItems.length">{{ cartItems.length }}</div>
                     <div v-else>{{ cartItemsLength }}</div>
                     <IconPanel />
-                <a href="/products">Produits</a>
+                </a>
                 <a href="/profile" v-if="user">
                     Profil
                 </a>
