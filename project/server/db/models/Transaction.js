@@ -5,27 +5,22 @@ module.exports = (connection) => {
 
     Transaction.init(
         {
-            status: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: "new",
-            },
-            country: {
-                type: DataTypes.STRING,
-                validate: {
-                    len: [1, 32],
-                },
-            },
-            ipClient: {
-                type: DataTypes.STRING,
-                validate: {
-                    len: [1, 32],
-                },
-            },
+
             orderId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: "1",
+            },
+
+            amount: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+
+            status: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "new",
             },
 
         },

@@ -18,6 +18,16 @@ module.exports = (connection) => {
             allowNull: false,
         },
 
+        numeroProduit: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         // Other Product-related properties go here
   
       },

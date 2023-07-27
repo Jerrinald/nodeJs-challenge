@@ -30,6 +30,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const products = ref([]);
 const cartItems = ref([]);
+let token = null; // Declare the token variable
 
 // Fallback test products in case of API failure
 const fallbackProducts = [
@@ -71,9 +72,17 @@ function addToCart(product) {
   if (existingItem) {
     existingItem.quantity++;
   } else {
-    cartItems.value.push({ ...product, quantity: 1 });
+    // Ajouter un ID de produit par défaut si numeroProduit est null
+    const numeroProduit = product.numeroProduit ?? product.id;
+
+    cartItems.value.push({
+      ...product,
+      quantity: 1,
+      numeroProduit: numeroProduit,
+      prixProduit: product.price,
+    });
   }
-  updateCartAndLocalStorage((cart) => (cartItems.value = cart), cartItems.value);
+  updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
   saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque ajout au panier
 }
 
@@ -85,7 +94,7 @@ function removeFromCart(item) {
     } else {
       cartItems.value.splice(index, 1);
     }
-    updateCartAndLocalStorage((cart) => (cartItems.value = cart), cartItems.value);
+    updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
     saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque retrait du panier
   }
 }
@@ -103,13 +112,26 @@ function loadCartFromLocalStorage() {
   }
 }
 
+// Ajouter cette fonction pour générer un numéro de commande aléatoire
+function generateOrderNumber() {
+  const randomNumber = Math.floor(Math.random() * 10000);
+  const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  return `CMD${currentDate}${randomNumber}`;
+}
+
+// Ajouter cette fonction pour générer un ID de commande aléatoire
+function generateOrderId() {
+  return Math.floor(Math.random() * 1000000);
+}
+
 async function fetchProducts() {
   try {
+    token = localStorage.getItem('token'); // Get token from localStorage
     const response = await fetch('http://127.0.0.1:3100/products', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // Add any necessary headers, like authorization if required
+        'Authorization': `Bearer ${token}`, // Use the token in the headers
       },
     });
 
@@ -135,20 +157,56 @@ async function validateCart() {
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:3000/transactions', {
+    // Generate order data
+    const orderNumber = generateOrderNumber();
+    const orderId = generateOrderId();
+
+    // Create an array to store order items
+    const orderItems = cartItems.value.map((item) => ({
+      idClient: 1,
+      numeroCommande: orderNumber,
+      numeroProduit: item.numeroProduit,
+      prixProduit: item.prixProduit,
+      quantiteProduit: item.quantity,
+      statut: 'En cours',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }));
+
+    // post item in orderItems one by one
+    for (let i = 0; i < orderItems.length; i++) {
+      console.log('Order send:', orderItems[i]);
+      const orderResponse = await fetch('http://localhost:3100/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Use the token in the headers
+        },
+        body: JSON.stringify(orderItems[i]),
+      });
+      if (orderResponse.ok) {
+        console.log('Order created successfully.');
+      } else {
+        console.error('Failed to create the order.');
+        return;
+      }
+    }
+
+    // Now validate the cart
+    const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add any necessary headers, like authorization if required
+        'Authorization': `Bearer ${token}`, // Use the token in the headers
       },
       body: JSON.stringify(cartItems.value),
     });
 
-    if (response.ok) {
+    if (transactionResponse.ok) {
       console.log('Cart validated. Transaction successful!');
       // Clear the cart after successful validation
       cartItems.value = [];
-      updateCartAndLocalStorage((cart) => (cartItems.value = cart)); // Mettre à jour le localStorage après avoir vidé le panier
+      updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value); // Mettre à jour le localStorage après avoir vidé le panier
     } else {
       console.error('Failed to validate the cart.');
     }
