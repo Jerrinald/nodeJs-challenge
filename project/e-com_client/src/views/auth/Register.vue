@@ -1,39 +1,49 @@
 <template>
-  <div class="register">
-    <h2>Register</h2>
-    <form @submit.prevent="registerUser">
+  <div>
+    <Header />
+    <main class="container register flex aic jcsa">
       <div>
-        <label for="firstname">Firstname:</label>
-        <input type="text" id="firstname" v-model="user.firstname" required>
+        <img :src="minilogo" alt="" srcset="">
       </div>
-      <div>
-        <label for="lastname">Lastname:</label>
-        <input type="text" id="lastname" v-model="user.lastname" required>
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" required>
-      </div>
-      <div>
-        <button type="submit">Register</button>
-      </div>
-      <div v-if="registerErrors" class="error">
-        <ul>
-          <li v-for="error in registerErrors" :key="error.field">
-            {{ error.message }}
-          </li>
-        </ul>
-      </div>
-    </form>
+      <form @submit.prevent="registerUser" class="flex fdc gap-20">
+        <h2>Register</h2>
+        <div>
+          <label for="firstname">Firstname:</label>
+          <input type="text" id="firstname" v-model="user.firstname" required>
+        </div>
+        <div>
+          <label for="lastname">Lastname:</label>
+          <input type="text" id="lastname" v-model="user.lastname" required>
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="user.email" required>
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="user.password" required>
+        </div>
+        <div class="flex jce">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+        <div v-if="registerErrors" class="error">
+          <ul>
+            <li v-for="error in registerErrors" :key="error.field">
+              {{ error.message }}
+            </li>
+          </ul>
+        </div>
+      </form>
+    </main>
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
+import Header from '../../components/Header.vue';
+import Footer from '../../components/Footer.vue';
+import minilogo from '../../assets/images/minilogo.png'
 
 let user = reactive({
   username: '',
@@ -69,40 +79,9 @@ async function registerUser() {
 </script>
 
 <style scoped>
-.register {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+main{
+  height: calc(100vh - 96px);
 }
-
-.register form {
-  display: flex;
-  flex-direction: column;
-}
-
-.register form div {
-  margin-bottom: 10px;
-}
-
-.register label {
-  font-weight: bold;
-}
-
-.register input {
-  padding: 5px;
-}
-
-.register button {
-  padding: 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .register .error {
   color: red;
   margin-top: 10px;

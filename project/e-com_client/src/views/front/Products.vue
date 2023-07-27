@@ -160,6 +160,8 @@ async function fetchProducts() {
   }
 }
 
+console.log(products)
+
 async function validateCart() {
   try {
     if (cartItems.value.length === 0) {

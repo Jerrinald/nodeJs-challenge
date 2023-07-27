@@ -28,8 +28,8 @@ form label{
 input{
   background-color: #FFFFFF;
   border: 1px solid #ccc;
-  caret-color: #FFFFFF;
-  color: #FFFFFF;
+  caret-color: #CCC;
+  color: #CCC;
   height: 35px;
   padding: 5px;
   border-radius: 5px;
