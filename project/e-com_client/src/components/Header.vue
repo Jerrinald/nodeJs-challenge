@@ -13,7 +13,7 @@ import IconUser from "./icons/IconUser.vue"
                 <a href="/products">Produits</a>
                 <a href="/dashboard">Mon espace</a>
                 <a href="/panier" class="panel"><div>2</div><IconPanel /></a>
-                <a href="#" class="flex aic gap-5"><IconUser /><span>Connexion</span></a>
+                <a href="/login" class="flex aic gap-5"><IconUser /><span>Connexion</span></a>
             </div>
             <!-- <Login /> -->
         </nav>

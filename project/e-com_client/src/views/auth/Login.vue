@@ -1,17 +1,28 @@
 <template>
-  <div class="login-form">
-    <h2>Login</h2>
-    <form @submit.prevent="loginUser">
+  <div>
+    <Header />
+    <main class="login-form container flex aic jcsa">
       <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email" required>
+        <img :src="minilogo" alt="logo rest" srcset="">
       </div>
       <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" required>
+        <form @submit.prevent="loginUser" class="flex fdc gap-25">
+          <h2>Connectez vous</h2>
+          <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" v-model="user.email" required>
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" v-model="user.password" required>
+          </div>
+          <div class="flex jce">
+            <button type="submit" class="btn btn-primary">Connexion</button>
+          </div>
+        </form>
       </div>
-      <button type="submit">Login</button>
-    </form>
+    </main>
+    <Footer />
   </div>
 </template>
 
@@ -19,7 +30,10 @@
 import { ref, reactive } from 'vue';
 import router from "../../router";
 import store from "../../store";
-
+import { useRouter } from 'vue-router'; // Import de Vue Router
+import Header from '../../components/Header.vue';
+import Footer from '../../components/Footer.vue';
+import minilogo from '../../assets/images/minilogo.png'
 
 let user = reactive({
   email: '',
@@ -61,4 +75,11 @@ async function loginUser() {
 
 <style scoped>
 /* Vos styles CSS ici */
+main{
+  height: calc(100vh - 96px);
+
+}
+img{
+  width: 150%;
+}
 </style>
