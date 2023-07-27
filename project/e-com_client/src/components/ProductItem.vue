@@ -5,7 +5,7 @@ import montre from '../assets/images/montre.jpg'
 <template>
     <a href="#" class="product-item">
         <img :src="montre" alt="montre">
-        <p>Maserati Montre pour hommes Competizione</p>
+        <p class="product-name">Maserati Montre pour hommes Competizione</p>
         <p>455.00€</p>
         <button class="btn-primary">Ajouter au panier</button>
     </a>
