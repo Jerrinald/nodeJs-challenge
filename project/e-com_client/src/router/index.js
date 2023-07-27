@@ -52,7 +52,7 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
-        path: '/Commandes_management',
+        path: '/commandes-management',
         name: 'CommandesManagement',
         component: CommandesManagement,
         meta: { requiresAuth: false },

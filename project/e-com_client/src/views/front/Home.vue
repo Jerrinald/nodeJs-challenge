@@ -33,6 +33,7 @@
 
       <Products />
 
+      <Products />
       <Testimony />
     </main>
     <Footer />
@@ -52,7 +53,7 @@ import Header from '../../components/Header.vue'
 import Footer from '../../components/Footer.vue'
 import Banner from '../../components/Banner.vue'
 import montre from '../../assets/images/montre.jpg'
-import Products from '../../components/Products.vue';
+import Products from '../../components/Products.vue';  < !--
 import Testimony from '../../components/Testimony.vue';
 
 </script>
@@ -63,7 +64,7 @@ main {
   padding: 50px 0;
 }
 
-.flex {
+< !-- .flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
