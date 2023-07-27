@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import router from "../../router";
 
 let user = reactive({
   email: '',
