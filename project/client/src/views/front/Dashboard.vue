@@ -1,8 +1,7 @@
 <template>
-  <section>
-    <h2>Marchands</h2>
+    <!-- <h2>Marchands</h2> -->
     <div v-if="!merchants.length">Aucun marchand</div>
-    <div class="merchant-grid">
+    <div v-else class="merchant-grid">
       <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item">
         <div class="merchant-info">
           <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
@@ -21,7 +20,6 @@
         </div>
       </div>
     </div>
-  </section>
 </template>
 
 <script setup>
