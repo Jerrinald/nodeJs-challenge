@@ -8,7 +8,6 @@
         <li><router-link to="/products">Produits</router-link></li>
         <li><router-link to="/dashboard">Dashboard</router-link></li>
         <li><router-link to="/">Panier</router-link></li>
-        <!-- Vérifier si l'utilisateur est connecté -->
         <li v-if="user">
           <router-link to="/profile">Profil</router-link>
         </li>
@@ -16,7 +15,6 @@
           <router-link to="/logout">Déconnexion</router-link>
         </li>
 
-        <!-- Si l'utilisateur n'est pas connecté, afficher uniquement le lien de connexion -->
         <li v-else>
           <router-link to="/login">Connexion</router-link>
         </li>

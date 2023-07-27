@@ -3,6 +3,15 @@ import Login from "../views/auth/Login.vue"
 import logo from "../assets/logo.png"
 import IconPanel from "./icons/IconPanel.vue"
 import IconUser from "./icons/IconUser.vue"
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+
+const store = useStore();
+
+// Utilisez une propriété calculée pour récupérer l'état de l'utilisateur depuis le store Vuex
+const user = computed(() => store.state.user);
+
 </script>
 
 <template>
@@ -12,8 +21,24 @@ import IconUser from "./icons/IconUser.vue"
             <div class="flex gap-20">
                 <a href="/products">Produits</a>
                 <a href="/dashboard">Mon espace</a>
-                <a href="/panier" class="panel"><div>2</div><IconPanel /></a>
-                <a href="/login" class="flex aic gap-5"><IconUser /><span>Connexion</span></a>
+                <a href="/panier" class="panel">
+                    <div>2</div>
+                    <IconPanel />
+                </a>
+                <a href="/profile" v-if="user">
+                    Profil
+                </a>
+                <a href="/logout" v-if="user">
+                    Déconnexion
+                </a>
+                <div v-else class="flex aic gap-20">
+                    <a href="/register">S'inscrire</a>
+                    <a href="/login"  class="flex aic gap-5">
+                        <IconUser /><span>Connexion</span>
+                    </a>
+
+                </div>
+                <!-- Si l'utilisateur n'est pas connecté, afficher uniquement le lien de connexion -->
             </div>
             <!-- <Login /> -->
         </nav>
@@ -42,16 +67,16 @@ import IconUser from "./icons/IconUser.vue"
     color: #db8113;
 }
 
-.logo-content img{
+.logo-content img {
     height: 65px;
     width: 300px;
 }
 
-.panel{
+.panel {
     position: relative;
 }
 
-.panel div{
+.panel div {
     position: absolute;
     top: 0;
     right: -10px;
@@ -61,5 +86,4 @@ import IconUser from "./icons/IconUser.vue"
     height: 20px;
     width: 20px;
     text-align: center;
-}
-</style>
+}</style>

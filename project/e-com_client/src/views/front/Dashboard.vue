@@ -2,10 +2,10 @@
     <div>
         <Header />
         <main class="container">
-
             <h1>Espace personnel</h1>
             <div>
                 <ol class="flex fdc gap-20">
+                    <li><a href="/gestion-compte">Gérer mon compte </a></li>
                     <li><a href="/products_management">Product Management </a></li>
                     <li><a href="/commandes-management">Commandes </a></li>
                     <li><a href="/products_management">historiques </a></li>
