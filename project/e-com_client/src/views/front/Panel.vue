@@ -64,6 +64,10 @@ function saveCartToLocalStorage() {
   localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
 }
 
+function calculateTotalAmount() {
+  return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
+}
+
 </script>
 
 <template>
@@ -103,7 +107,7 @@ function saveCartToLocalStorage() {
               <div class="flex jce">
                 <div class="flex gap-10">
                 <p>Total:</p>
-                <strong>500.22 €</strong>
+                <strong>{{ calculateTotalAmount() }} €</strong>
                 </div>
               </div>
             </td>
