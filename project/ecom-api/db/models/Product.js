@@ -22,6 +22,16 @@ module.exports = (connection) => {
           allowNull: true, // Allow null as the image might not be uploaded initially
         },
 
+        numeroProduit: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         // Other Product-related properties go here
   
       },
