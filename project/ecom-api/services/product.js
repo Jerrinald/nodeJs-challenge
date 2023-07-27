@@ -22,6 +22,7 @@ module.exports = function ProductService() {
             return Product.findOne({ where: filters });
         },
         create: async function (data) {
+            delete data['currentUserId'];
             try {
                 return await Product.create(data);
             } catch (e) {
