@@ -5,7 +5,7 @@ import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
-import Dashboard from '../views/Stripetify/Dashboard.vue';
+import Dashboard from '../views/front/Dashboard.vue';
 
 const routes = [
     {
