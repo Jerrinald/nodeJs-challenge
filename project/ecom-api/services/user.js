@@ -46,6 +46,13 @@ module.exports = function UserService() {
     },
     update: async (filters, newData) => {
       try {
+
+        if (newData.role && !["client", "admin"].includes(newData.role)) {
+          throw new ValidationError({
+            role: "Invalid role. Role must be 'client' or 'admin'.",
+          });
+        }
+        
         const [nbUpdated, users] = await User.update(newData, {
           where: filters,
           returning: true,

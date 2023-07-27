@@ -19,6 +19,9 @@ const user = computed(() => store.state.user);
         <nav class="navbar container flex aic jcsb">
             <a href="/" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"></a>
             <div class="flex gap-20">
+                <a v-if="user && user.role === 'admin'" href="/dashboard">
+                    Dashboard
+                </a>
                 <a href="/products">Produits</a>
                 <a href="/profile" v-if="user">
                     Profil

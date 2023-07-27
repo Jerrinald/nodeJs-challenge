@@ -27,6 +27,10 @@ module.exports = (connection) => {
             //is: /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])/,
           },
         },
+        role: {
+          type: DataTypes.ENUM("client", "admin"), // Define the 'role' field as an ENUM type with allowed values 'client' and 'admin'
+          defaultValue: "client", // Set a default value for the 'role' field (optional)
+        },
       },
       { sequelize: connection, tableName: "users" }
     );
