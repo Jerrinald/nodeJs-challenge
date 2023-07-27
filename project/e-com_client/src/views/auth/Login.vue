@@ -28,6 +28,8 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import router from "../../router";
+import store from "../../store";
 import { useRouter } from 'vue-router'; // Import de Vue Router
 import Header from '../../components/Header.vue';
 import Footer from '../../components/Footer.vue';
@@ -52,10 +54,15 @@ async function loginUser() {
       const data = await response.json();
       // Gérer la réponse de l'API en fonction de vos besoins
       console.log(data);
+      const tokenExpiration = Date.now() + 3600 * 1000; // La durée doit correspondre à celle que vous avez définie côté serveur (ici 1 heure)
+
       // on rajoute le token dans le localStorage
       localStorage.setItem('token', data.token);
+      localStorage.setItem('tokenExpiration', tokenExpiration);
+
       // on redirige vers la page d'accueil
-      const router = useRouter();
+      store.dispatch('login', data.user);
+
       router.push('/'); // Remplacez '/accueil' par le chemin de votre page d'accueil
     } else {
       console.error('Login failed');

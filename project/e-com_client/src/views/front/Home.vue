@@ -4,11 +4,22 @@
     <h1>FitFrenzy</h1>
     <nav>
       <ul>
-        <li><a href="#">Accueil</a></li>
-        <li><a href="/products">Produits</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/">Panier</a></li>
-        <li><a href="#">Connexion</a></li>
+        <li><router-link to="/">Accueil</router-link></li>
+        <li><router-link to="/products">Produits</router-link></li>
+        <li><router-link to="/dashboard">Dashboard</router-link></li>
+        <li><router-link to="/">Panier</router-link></li>
+        <!-- Vérifier si l'utilisateur est connecté -->
+        <li v-if="user">
+          <router-link to="/profile">Profil</router-link>
+        </li>
+        <li v-if="user">
+          <router-link to="/logout">Déconnexion</router-link>
+        </li>
+
+        <!-- Si l'utilisateur n'est pas connecté, afficher uniquement le lien de connexion -->
+        <li v-else>
+          <router-link to="/login">Connexion</router-link>
+        </li>
       </ul>
     </nav>
   </header> -->
@@ -28,6 +39,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+// Utilisez une propriété calculée pour récupérer l'état de l'utilisateur depuis le store Vuex
+const user = computed(() => store.state.user);
 // Vous pouvez ajouter du code logique ici si nécessaire
 import Header from '../../components/Header.vue'
 import Footer from '../../components/Footer.vue'

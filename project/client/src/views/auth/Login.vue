@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import router from "../../router";
 import BtnConnect from "../../components/BtnConnect.vue"
 import IconClose from "../../components/icons/IconClose.vue"
 

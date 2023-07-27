@@ -9,6 +9,7 @@ const SecurityController = require("../controllers/security")(
 const UserController = require("../controllers/generic")(new UserService());
 
 router.post("/login", SecurityController.login);
+router.post("/logout", SecurityController.logout);
 router.post("/register", UserController.create);
 
 module.exports = router;
