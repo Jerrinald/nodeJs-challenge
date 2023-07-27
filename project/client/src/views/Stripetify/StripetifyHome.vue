@@ -11,14 +11,6 @@ import man from "../../assets/man.png"
 
 <template>
     <div class="stripetify">
-            <Header />
-        <div class="suscribe-block flex fdc jcsb aic gap-50">
-            <div class="container flex aic jcsb gap-50">
-                <img class="man-secure" :src="man" alt="" srcset="">
-                <h1>Gérez votre site marchand en toute simplicité, des paiements en ligne sécurisés et fluides.</h1>
-            </div>
-            <Register />
-        </div>
         <div class="stripetify-container">
             <div class="flex jcsb gap-20">
                 <img :src="freelance" alt="Paiements sécurisés">
