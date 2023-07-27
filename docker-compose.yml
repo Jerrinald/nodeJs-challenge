@@ -31,6 +31,7 @@ services:
       - 3000:3000
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      SENDGRID_API: ${SENDGRID_API}
       JWT_SECRET: ImAstrongSecret
     working_dir: /usr/src/app
     volumes:
@@ -55,6 +56,7 @@ services:
       - 3100:3000
     environment:
       DATABASE_URL: ${DATABASE_URL_ECOM}
+      SENDGRID_API: ${SENDGRID_API}
       JWT_SECRET: ImAstrongSecret
     working_dir: /usr/src/app
     volumes:

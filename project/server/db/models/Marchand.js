@@ -24,6 +24,10 @@ module.exports = (connection) => {
                 isEmail: true,
             },
             },
+            active: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false, // Set a default value for the 'active' field (optional)
+            },
             companyName: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -72,6 +76,10 @@ module.exports = (connection) => {
                   len: [1, 32],
                   //is: /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])/,
                 },
+            },
+            role: {
+                type: DataTypes.ENUM("marchand"), // Define the 'role' field as an ENUM type with allowed values 'client' and 'admin'
+                defaultValue: "marchand", // Set a default value for the 'role' field (optional)
             },
         },
         { sequelize: connection, tableName: "marchands" },
