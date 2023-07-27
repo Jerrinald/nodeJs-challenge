@@ -5,10 +5,13 @@ import Home from '../views/front/Home.vue';
 import Contact from '../views/front/Contact.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
+import Logout from '../views/auth/Logout.vue';
 import Products from '../views/front/Products.vue';
+import Profile from '../views/front/Profile.vue';
 import Dashboard from '../views/front/Dashboard.vue';
 import ProductsManagement from '../views/front/ProductsManagement.vue';
 import CommandesManagement from '../views/front/CommandesManagement.vue';
+import store from '../store';
 
 const routes = [
     {
@@ -16,6 +19,12 @@ const routes = [
         name: 'Login',
         component: Login,
         meta: { requiresAuth: false },
+    },
+    {
+        path: '/logout', // Ajoutez le chemin pour la vue de déconnexion
+        name: 'Logout',
+        component: Logout, // Assurez-vous d'avoir créé la vue "Logout.vue" correspondante
+        meta: { requiresAuth: true },
     },
     {
         path: '/register',
@@ -54,6 +63,12 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
+        meta: { requiresAuth: false },
+    },
+    {
         path: '/',
         name: 'Home',
         component: Home,
@@ -67,30 +82,23 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('token');
-    const user = ref(token ? jwtDecode(token) : null);
-
-    const isLogged = !!user.value;
-    const isAdmin = user.value?.id_role === 1;
-
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!isLogged && to.name !== 'Login' && to.name !== 'Register' && to.name !== 'ForgotPassword' && to.name !== 'ResetPassword' && to.name !== 'Verify') {
-            next({ name: 'Login' });
+    // Vérifier si la route nécessite une authentification
+    if (to.meta.requiresAuth) {
+        // Vérifier si l'utilisateur est connecté
+        if (!store.state.user) {
+            // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+            next('/login');
         } else {
-            if (to.matched.some(record => record.meta.requiresAdmin)) {
-                if (!isAdmin) {
-                    next({ name: 'Home' });
-                } else {
-                    next();
-                }
-            } else {
-                next();
-            }
+            // L'utilisateur est connecté, autoriser la navigation
+            next();
         }
     } else {
-        if (isLogged && (to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ResetPassword' || to.name === 'Verify')) {
-            next({ name: 'Home' });
+        // Vérifier si l'utilisateur est déjà connecté et accède aux pages de login ou d'inscription
+        if (store.state.user && (to.name === 'Login' || to.name === 'Register')) {
+            // Rediriger vers la page d'accueil ou toute autre page appropriée pour les utilisateurs connectés
+            next('/');
         } else {
+            // Autoriser la navigation pour les routes publiques
             next();
         }
     }

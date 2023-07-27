@@ -8,7 +8,6 @@ import website from '../../assets/website.png'
 
 <template>
     <div class="stripetify">
-        <Header />
         <div class="stripetify-container">
             <div class="flex jcsb gap-20">
                 <img :src="freelance" alt="Paiements sécurisés">
