@@ -29,11 +29,6 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { MongoClient } = require('mongodb');
-
-const uri = 'mongodb://root:password@mongo:27017/app';
-const client = new MongoClient(uri);
-
 const products = ref([]);
 const cartItems = ref([]);
 let token = null; // Declare the token variable
@@ -156,36 +151,10 @@ async function fetchProducts() {
   }
 }
 
-async function insertOrdersToMongoDB(orderItems) {
-  try {
-    await client.connect();
-    console.log('Connected to MongoDB');
-
-    const db = client.db(); // Utilisez le nom de votre base de données ici.
-
-    for (let i = 0; i < orderItems.length; i++) {
-      const order = orderItems[i];
-      console.log('Order to insert:', order);
-
-      const result = await db.collection('orders').insertOne(order);
-
-      if (result.insertedCount === 1) {
-        console.log('Order inserted successfully.');
-      } else {
-        console.error('Failed to insert the order.');
-      }
-    }
-  } catch (err) {
-    console.error('Error inserting orders to MongoDB:', err);
-  } finally {
-    // Assurez-vous de fermer la connexion après l'insertion des commandes.
-    await client.close();
-    console.log('Connection to MongoDB closed');
-  }
-}
-
 async function validateCart() {
   try {
+    token = localStorage.getItem('token'); // Get token from localStorage
+
     if (cartItems.value.length === 0) {
       console.log('Cart is empty. Add items to the cart before validating.');
       return;
@@ -219,8 +188,6 @@ async function validateCart() {
         body: JSON.stringify(orderItems[i]),
       });
       if (orderResponse.ok) {
-        insertOrdersToMongoDB(orderItems);
-
         console.log('Order created successfully.');
       } else {
         console.error('Failed to create the order.');

@@ -1,6 +1,8 @@
 const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
+const { MongoClient } = require('mongodb'); // Importez le module pour MongoDB
+
 
 module.exports = function OrderService() {
     return {
@@ -23,7 +25,18 @@ module.exports = function OrderService() {
         },
         create: async function (data) {
             try {
-                return await Order.create(data);
+// Insertion dans PostgreSQL
+                const postgresOrder = await Order.create(data);
+
+                // Insertion dans MongoDB
+                await mongoClient.connect();
+                console.log('Connected to MongoDB');
+                const mongoDB = mongoClient.db(); // Utilisez le nom de votre base de données MongoDB ici
+                const ordersCollection = mongoDB.collection('orders');
+                const mongoResult = await ordersCollection.insertOne(data);
+                console.log('Order inserted into MongoDB:', mongoResult.insertedId);
+
+                return await postgresOrder;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
