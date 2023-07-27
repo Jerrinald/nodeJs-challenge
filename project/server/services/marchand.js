@@ -17,10 +17,11 @@ module.exports = function MarchandService() {
             }
             return Marchand.findAll(dbOptions);
         },
-        findOne: async function (filters) {
 
+        findOne: async function (filters) {
             return Marchand.findOne({ where: filters });
         },
+
         create: async function (data) {
             try {
                 return await Marchand.create(data);
@@ -71,5 +72,9 @@ module.exports = function MarchandService() {
             }
             return Marchand.destroy({ where: filters });
         },
+        
+        findByToken: async function (token) {
+            return Marchand.findOne({ where: { token } });
+        }
     };
 };

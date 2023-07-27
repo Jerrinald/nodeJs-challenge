@@ -23,16 +23,6 @@ module.exports = function OrderService() {
         },
         create: async function (data) {
             try {
-                // Get the price of the product from the Product table
-                const product = await Product.findOne({ where: { id: data.productId } });
-
-                // Calculate the total amount based on the product price and quantity
-                const amount = product.price * data.quantity;
-                data.amount = amount;
-
-                data.userId = data.currentUserId;
-                delete data['currentUserId'];
-                
                 return await Order.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
@@ -81,5 +71,18 @@ module.exports = function OrderService() {
             }
             return Order.destroy({ where: filters });
         },
+        
+        findByNumeroCommande: async function (numeroCommande) {
+            try {
+              // Recherchez les commandes en fonction du numéro de commande spécifié
+              return Order.findAll({
+                where: {
+                  numeroCommande: numeroCommande,
+                },
+              });
+            } catch (e) {
+              throw e;
+            }
+          },
     };
 };
