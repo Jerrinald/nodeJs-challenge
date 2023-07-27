@@ -38,7 +38,7 @@
           <form @submit.prevent="saveEditedOrder">
             <fieldset>
               <legend>Modifier la commande</legend>
-              <div class="flex fdc gap-25" v-for="(product, productIndex) in orders[editingOrderIndex].products" :key="productIndex">
+              <div class="form-commande flex gap-25" v-for="(product, productIndex) in orders[editingOrderIndex].products" :key="productIndex">
                 <div>
                   <label>Numéro de produit :</label>
                   <input v-model="product.productId" type="number" required>
@@ -55,7 +55,6 @@
                   <label>Statut :</label>
                   <input v-model="orders[editingOrderIndex].status" required>
                 </div>
-                <hr />
               </div>
               <div class="btn-group flex gap-10 jce">
                 <button class="btn btn-primary" type="submit">Enregistrer</button>
@@ -142,6 +141,10 @@ legend{
 fieldset{
   border: 1px solid #ccc;
   padding: 25px;
+}
+
+fieldset .form-commande{
+  margin-bottom: 50px;
 }
 
 h2{
