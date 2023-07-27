@@ -6,10 +6,24 @@ module.exports = (connection) => {
         istokenValid(token) {
             return bcrypt.compare(token, this.token);
         }
+
+        isPasswordValid(password) {
+            return bcrypt.compare(password, this.password);
+        }
     }
 
     Marchand.init(
         {
+            lastname: DataTypes.STRING,
+            firstname: DataTypes.STRING,
+            email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+            },
+            },
             companyName: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -51,9 +65,25 @@ module.exports = (connection) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                  len: [1, 32],
+                  //is: /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])/,
+                },
+            },
         },
         { sequelize: connection, tableName: "marchands" },
     );
+
+    function updatePassword(marchand) {
+        return bcrypt.genSalt(10).then((salt) =>
+          bcrypt.hash(marchand.password, salt).then((hash) => {
+            marchand.password = hash;
+          })
+        );
+      }
 
     function updateToken(Marchand) {
         return bcrypt.genSalt(10).then((salt) =>
@@ -62,6 +92,16 @@ module.exports = (connection) => {
             }),
         );
     }
+
+    Marchand.addHook("beforeCreate", (marchand) => {
+        return updatePassword(marchand);
+    });
+    
+    Marchand.addHook("beforeUpdate", async (marchand, options) => {
+        if (options.fields.includes("password")) {
+            return updatePassword(marchand);
+        }
+    });
 
     Marchand.addHook("beforeCreate", (Marchand) => {
         return updateToken(Marchand);

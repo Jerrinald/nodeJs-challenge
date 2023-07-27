@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = function SecurityController(UserService) {
+module.exports = function SecurityController(MarchandService) {
   return {
     login: async (req, res, next) => {
       try {
         const { email, password } = req.body;
-        const user = await UserService.login(email, password);
+        const marchand = await MarchandService.login(email, password);
         const token = jwt.sign(
-          { id: user.id, firstname: user.firstname, lastname: user.lastname, fullName: user.lastname + " " + user.firstname },
+          { id: marchand.id, firstname: marchand.firstname, lastname: marchand.lastname, fullName: marchand.lastname + " " + marchand.firstname },
           process.env.JWT_SECRET,
           {
             expiresIn: "1h",

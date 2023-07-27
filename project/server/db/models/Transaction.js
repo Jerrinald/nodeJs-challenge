@@ -8,20 +8,26 @@ module.exports = (connection) => {
 
             orderId: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 defaultValue: "1",
             },
 
             amount: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
             },
 
             status: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
                 defaultValue: "new",
             },
+
+            link_payment: {
+                type: DataTypes.STRING,
+                allowNull: true,
+                defaultValue: "/payment",
+            }
 
         },
         { sequelize: connection, tableName: "transactions" },

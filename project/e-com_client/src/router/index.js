@@ -43,19 +43,19 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresAdmin: true  },
     },
     {
         path: '/products_management',
         name: 'ProductsManagement',
         component: ProductsManagement,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: false, requiresAdmin: true },
     },
     {
         path: '/commandes-management',
         name: 'CommandesManagement',
         component: CommandesManagement,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: false, requiresAdmin: true },
     },
     {
         path: '/products',
@@ -90,15 +90,27 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+
     // Vérifier si la route nécessite une authentification
     if (to.meta.requiresAuth) {
         // Vérifier si l'utilisateur est connecté
-        if (!store.state.user) {
-            // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
-            next('/login');
-        } else {
-            // L'utilisateur est connecté, autoriser la navigation
-            next();
+
+        if (to.meta.requiresAdmin) {
+            const isAdmin = store.state.user?.role === 'admin';
+            if (!isAdmin) {
+                next({ name: 'Home' });
+            }else {
+                next();
+            }
+        }else{
+            if (!store.state.user) {
+                // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+                next('/login');
+            } else {
+                
+                // L'utilisateur est connecté, autoriser la navigation
+                next();
+            }
         }
     } else {
         // Vérifier si l'utilisateur est déjà connecté et accède aux pages de login ou d'inscription
