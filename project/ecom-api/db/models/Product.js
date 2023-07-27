@@ -17,7 +17,21 @@ module.exports = (connection) => {
             type: DataTypes.FLOAT,
             allowNull: false,
         },
+        image: {
+          type: DataTypes.STRING, // Assuming you will store the image URL as a string
+          allowNull: true, // Allow null as the image might not be uploaded initially
+        },
 
+        numeroProduit: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         // Other Product-related properties go here
   
       },
