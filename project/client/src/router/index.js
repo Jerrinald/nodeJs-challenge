@@ -23,7 +23,7 @@ const routes = [
     ,
     {
         path: '/',
-        name: 'Stripetify',
+        name: 'Stripetify'  ,
         component: Stripetify,
         meta: { requiresAuth: false },
     },

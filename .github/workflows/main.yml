@@ -33,7 +33,7 @@ jobs:
 
     - name: Install dependencies and run dev for e-com_client
       run: |
-        cd ../e-com_client
+        cd ./project/e-com_client
         npm install
         timeout 1m npm run dev || true
 
