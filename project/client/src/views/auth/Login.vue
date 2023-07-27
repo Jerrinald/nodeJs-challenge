@@ -73,6 +73,11 @@ async function loginUser() {
       const data = await response.json();
       // Gérer la réponse de l'API en fonction de vos besoins
       console.log(data);
+      const tokenExpiration = Date.now() + 3600 * 1000; // La durée doit correspondre à celle que vous avez définie côté serveur (ici 1 heure)
+
+      // on rajoute le token dans le localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('tokenExpiration', tokenExpiration);
     } else {
       console.error('Login failed');
     }
