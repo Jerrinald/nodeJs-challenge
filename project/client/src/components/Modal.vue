@@ -1,18 +1,32 @@
 <script setup>
 import { ref } from 'vue';
-import Button from './Button.vue';
+
+defineProps({
+  title: { type: String, default: 'Modal Title' }
+});
 
 const openModal = ref(false);
+
+function toggleModal() {
+  openModal.value = !openModal.value;
+}
 </script>
+
 <template>
-  <slot name="activator" :openModal="() => openModal = true"><button @click="openModal = true">Open Modal</button></slot>
+  <slot name="activator" :openModal="toggleModal"
+    ><button @click="toggleModal">Open Modal</button></slot
+  >
   <div v-show="openModal" class="modal">
-    <div class="backdrop" @click.self="openModal = false"></div>
+    <div class="backdrop" @click.self="toggleModal"></div>
     <div class="modal-box">
-      <div class="modal-title"><slot name="title">Modal title</slot></div>
-      <div class="modal-content"><slot>Modal content</slot></div>
+      <div class="modal-title">
+        {{ title }}<slot name="close-icon" :closeModal="toggleModal"></slot>
+      </div>
+      <div class="modal-content"><slot>Content</slot></div>
       <div class="modal-actions">
-        <slot name="actions" :closeModal="() => openModal = false"><button @click="openModal = false">Close</button></slot>
+        <slot name="actions" :closeModal="toggleModal"
+          ><button @click="toggleModal">Close</button></slot
+        >
       </div>
     </div>
   </div>
@@ -20,7 +34,7 @@ const openModal = ref(false);
 
 <style scoped>
 .modal {
-  color: yellow;
+  color: black;
   position: fixed;
   top: 0;
   left: 0;
@@ -36,35 +50,36 @@ const openModal = ref(false);
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 1001;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
 .modal-box {
   position: absolute;
-  z-index: 1;
-  width: 100%;
-  max-width: 500px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: pink;
-
+  z-index: 1002;
+  width: 100%;
+  max-width: 500px;
+  background-color: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
 }
+
 .modal-title {
   padding: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.modal-content {
-  padding: 1rem;
-}
+
 .modal-actions {
-  padding: 1rem;
   display: flex;
   justify-content: flex-end;
 }

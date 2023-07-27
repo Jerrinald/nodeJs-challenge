@@ -1,31 +1,41 @@
 <template>
-  <section>
-    <h2>Produits</h2>
-    <p v-if="!products.length">Aucun produit</p>
-    <div class="product-grid">
-      <div v-for="product in products" :key="product.id" class="product-item">
-        <img :src="product.image" :alt="product.name">
-        <h3>{{ product.name }}</h3>
-        <p>Prix : {{ product.price }} €</p>
-        <button @click="addToCart(product)">Ajouter au panier</button>
-      </div>
-    </div>
-  </section>
+  <div>
+    <Header />
 
-  <section>
-    <h2>Panier</h2>
-    <div v-if="!cartItems.length">Votre panier est vide</div>
-    <ul v-else>
-      <li v-for="item in cartItems" :key="item.id">
-        {{ item.name }} - {{ item.price }} € - Quantité: {{ item.quantity }}
-        <button @click="removeFromCart(item)">Retirer du panier</button>
-      </li>
-    </ul>
-    <button @click="validateCart" v-if="cartItems.length">Valider le panier</button>
-  </section>
+    <main class="container">
+  
+      <section>
+        <h2>Produits</h2>
+        <p v-if="!products.length">Aucun produit</p>
+        <div class="product-grid">
+          <div v-for="product in products" :key="product.id" class="product-item">
+            <img :src="product.image" :alt="product.name">
+            <h3>{{ product.name }}</h3>
+            <p>Prix : {{ product.price }} €</p>
+            <button @click="addToCart(product)">Ajouter au panier</button>
+          </div>
+        </div>
+      </section>
+    
+      <section>
+        <h2>Panier</h2>
+        <div v-if="!cartItems.length">Votre panier est vide</div>
+        <ul v-else>
+          <li v-for="item in cartItems" :key="item.id">
+            {{ item.name }} - {{ item.price }} € - Quantité: {{ item.quantity }}
+            <button @click="removeFromCart(item)">Retirer du panier</button>
+          </li>
+        </ul>
+        <button @click="validateCart" v-if="cartItems.length">Valider le panier</button>
+      </section>
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <script setup>
+import Header from '../../components/Header.vue'
+import Footer from '../../components/Footer.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const products = ref([]);
@@ -233,4 +243,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* Vos styles CSS ici */
+main{
+  height: calc(100vh - 96px);
+}
 </style>
