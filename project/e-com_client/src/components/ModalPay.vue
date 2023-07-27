@@ -1,9 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Button from './Button.vue';
 import IconClose from './icons/IconClose.vue'
 
 const openModal = ref(false);
+const cartItems = ref([]);
+
+
+const {data} = defineProps()
+const dataCart = ref(data)
+
+onMounted(
+
+  console.log(dataCart)
+)
+console.log(dataCart)
+
+
 </script>
 <template>
   <slot name="activator" :openModal="() => openModal = true"><button @click="openModal = true"

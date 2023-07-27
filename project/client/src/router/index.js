@@ -5,7 +5,7 @@ import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
-import Dashboard from '../views/front/Dashboard.vue';
+import Dashboard from '../views/Stripetify/Dashboard.vue';
 import store from '../store';
 
 const routes = [
@@ -32,7 +32,7 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: true, requiresAdmin: true },
+        meta: { requiresAuth: false, requiresAdmin: false },
     }
 ];
 

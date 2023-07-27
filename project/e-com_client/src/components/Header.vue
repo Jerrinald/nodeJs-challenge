@@ -53,7 +53,6 @@ console.log(cartItems.value.length)
                 <div>2</div>
                 <IconPanel />
               </a>
-
               <a href="/logout" v-if="user">
                     Déconnexion
                 </a>
@@ -62,7 +61,6 @@ console.log(cartItems.value.length)
                     <a href="/login"  class="flex aic gap-5">
                         <IconUser /><span>Connexion</span>
                     </a>
-
                 </div>
                 <!-- Si l'utilisateur n'est pas connecté, afficher uniquement le lien de connexion -->
             </div>

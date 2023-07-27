@@ -10,7 +10,7 @@ import logo from "../assets/logo1.png"
             <a href="#">Accueil</a>
             <a href="#">Paiements</a>
             <a href="#">Balance</a>
-            <a href="#">Customers</a>
+            <a href="#">Marchants</a>
         </div>
     </div>
 </template>
