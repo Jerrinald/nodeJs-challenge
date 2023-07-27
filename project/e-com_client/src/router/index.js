@@ -8,6 +8,7 @@ import Register from '../views/auth/Register.vue';
 import Logout from '../views/auth/Logout.vue';
 import Products from '../views/front/Products.vue';
 import Profile from '../views/front/Profile.vue';
+import Panel from '../views/front/Panel.vue';
 import Dashboard from '../views/front/Dashboard.vue';
 import ProductsManagement from '../views/front/ProductsManagement.vue';
 import CommandesManagement from '../views/front/CommandesManagement.vue';
@@ -51,7 +52,7 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
-        path: '/Commandes_management',
+        path: '/commandes-management',
         name: 'CommandesManagement',
         component: CommandesManagement,
         meta: { requiresAuth: false },
@@ -66,6 +67,13 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile,
+        meta: { requiresAuth: true },
+    },
+    {
+
+        path: '/panier',
+        name: 'Panel',
+        component: Panel,
         meta: { requiresAuth: false },
     },
     {

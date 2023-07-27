@@ -1,25 +1,192 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
   font-weight: normal;
+  width: 100%;
+  height: 100vh;
+  line-height: 20px;
+
 }
 
+h2{
+  line-height: 30px;
+}
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: #F6931C;
   transition: 0.4s;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+form label{
+  font-weight: bold;
 }
+
+input{
+  background-color: #FFFFFF;
+  border: 1px solid #ccc;
+  caret-color: #FFFFFF;
+  color: #FFFFFF;
+  height: 35px;
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
+}
+
+img{
+  width: 100%;
+}
+
+table{
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+table thead{
+  background-color: #F6931C;
+}
+
+table thead th{
+  font-weight: bold;
+  color: #FFFFFF;
+  padding: 5px;
+}
+
+table tr{
+  padding: 5px;
+}
+
+table tbody td{
+  border-bottom: 1px solid #F6931C;
+  padding: 5px 0;
+}
+
+.btn{
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
+.btn-danger{
+  color: #FFFFFF;
+  background-color: red;
+}
+
+.btn-primary{
+  padding: 8px 15px;
+  border: none;
+  background-color: #F6931C;
+  color: #FFFFFF;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+.btn-primary:hover{
+  background-color: #F6931C;
+}
+
+.close-modal{
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.container{
+  max-width: 1100px;
+  margin: auto;
+}
+
+.flex{
+  display: flex;
+}
+
+.aic{
+  align-items: center;
+}
+
+.aie{
+  align-items: end;
+}
+
+.fdc{
+  flex-direction: column;
+}
+
+.fww{
+  flex-wrap: wrap;
+}
+
+.jcsb{
+  justify-content: space-between;
+}
+
+.jcsa{
+  justify-content: space-around;
+}
+
+.jcc{
+  justify-content: center;
+}
+
+.jce{
+  justify-content: end;
+}
+
+.gap-5{
+  gap: 5px;
+}
+
+.gap-10{
+  gap: 10px;
+}
+
+.gap-15{
+  gap: 15px;
+}
+
+.gap-20{
+  gap: 20px;
+}
+
+.gap-25{
+  gap: 25px;
+}
+
+.gap-30{
+  gap: 30px;
+}
+
+.gap-35{
+  gap: 35px;
+}
+
+.gap-40{
+  gap: 40px;
+}
+
+.gap-45{
+  gap: 45px;
+}
+
+.gap-50{
+  gap: 50px;
+}
+
+/* @media (hover: hover) {
+  a:hover {
+    background-color: rgba(50, 206, 201, 0.2);
+    color: var(--vt-c-white);
+  }
+} */
 
 @media (min-width: 1024px) {
   body {
@@ -27,9 +194,9 @@ a,
     place-items: center;
   }
 
-  #app {
+  /* #app {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
-  }
+  } */
 }

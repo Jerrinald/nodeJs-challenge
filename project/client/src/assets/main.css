@@ -20,6 +20,42 @@ a,
   transition: 0.4s;
 }
 
+form label{
+  font-weight: bold;
+}
+
+input{
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  caret-color: #FFFFFF;
+  color: #FFFFFF;
+  height: 35px;
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
+}
+
+.btn-primary{
+  padding: 8px 15px;
+  border: none;
+  background-color: #1d817e;
+  color: #FFFFFF;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+.btn-primary:hover{
+  background-color: #32CEC9;
+}
+
+.close-modal{
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
 .container{
   max-width: 1100px;
   margin: auto;
