@@ -6,6 +6,7 @@ import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 import Dashboard from '../views/Stripetify/Dashboard.vue';
+import Profile from '../views/front/Profile.vue';
 import store from '../store';
 
 const routes = [
@@ -32,6 +33,12 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
         meta: { requiresAuth: false, requiresAdmin: false },
     }
 ];
