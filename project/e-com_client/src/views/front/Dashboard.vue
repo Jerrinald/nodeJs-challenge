@@ -5,11 +5,11 @@
 
             <h1>Espace personnel</h1>
             <div>
-                <ul>
+                <ol class="flex fdc gap-20">
                     <li><a href="/products_management">Product Management </a></li>
-                    <li><a href="/Commandes_management">Commandes </a></li>
+                    <li><a href="/commandes-management">Commandes </a></li>
                     <li><a href="/products_management">historiques </a></li>
-                </ul>
+                </ol>
             </div>
         </main>
         <Footer />
@@ -25,4 +25,9 @@ import Footer from '../../components/Footer.vue'
 main {
     height: calc(100vh - 96px);
 }
+
+h1{
+    margin: 20px 0;
+}
+
 </style>

@@ -21,7 +21,6 @@
       <Banner />
 
      <Products />
-
       <Testimony />
     </main>
     <Footer />
@@ -56,4 +55,5 @@ main {
   justify-content: center;
   align-items: center;
 }
+
 </style>
