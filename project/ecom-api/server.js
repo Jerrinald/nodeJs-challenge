@@ -10,6 +10,8 @@ const checkFormat = require("./middlewares/check-format");
 const errorHandler = require("./middlewares/error-handler");
 const checkAuth = require("./middlewares/check-auth");
 const checkCurrentUser = require("./middlewares/check-current-user");
+const retrieveImage = require("./middlewares/retrieveImage.js");
+
 
 app.use(cors());
 
@@ -20,7 +22,7 @@ app.use("/", SecurityRouter);
 // app.use(checkAuth); -> protect every routes below
 app.use("/users", checkAuth, UserRouter); // protect only this route
 
-app.use("/products", checkAuth, checkCurrentUser, ProductRouter);
+app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
 app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
 
@@ -31,6 +33,8 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   res.json(req.body);
 });
+
+app.use('/Images', express.static('./Images'))
 
 app.use(errorHandler);
 
