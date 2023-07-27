@@ -27,6 +27,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
 
 const products = ref([]);
 const cartItems = ref([]);
@@ -173,7 +174,7 @@ async function validateCart() {
       updatedAt: new Date().toISOString(),
     }));
 
-    // post item in orderItems one by one
+    // Post item in orderItems one by one
     for (let i = 0; i < orderItems.length; i++) {
       console.log('Order send:', orderItems[i]);
       const orderResponse = await fetch('http://localhost:3100/orders', {
@@ -193,26 +194,47 @@ async function validateCart() {
     }
 
     // Now validate the cart
+    const transactionData = {
+      orderId: orderId,
+      amount: calculateTotalAmount(),
+      status: 'new',
+    };
+
     const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Use the token in the headers
       },
-      body: JSON.stringify(cartItems.value),
+      body: JSON.stringify(transactionData),
     });
 
     if (transactionResponse.ok) {
+      const responseData = await transactionResponse.json();
+      const linkPayment = responseData.link_payment;
       console.log('Cart validated. Transaction successful!');
       // Clear the cart after successful validation
       cartItems.value = [];
       updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value); // Mettre à jour le localStorage après avoir vidé le panier
+      redirectToPaymentLink(linkPayment); // Redirect to the payment link
     } else {
       console.error('Failed to validate the cart.');
     }
   } catch (error) {
     console.error('An error occurred:', error);
   }
+}
+
+// Helper function to calculate the total amount of items in the cart
+function calculateTotalAmount() {
+  return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
+}
+
+// Function to redirect to the payment link using the router
+function redirectToPaymentLink(link) {
+  const router = useRouter();
+  console.log('Redirecting to:', link); // Debugging log
+  router.push(link);
 }
 
 onMounted(() => {
@@ -232,5 +254,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Vos styles CSS ici */
+/* Your styles CSS here */
 </style>
