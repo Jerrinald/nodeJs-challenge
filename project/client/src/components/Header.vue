@@ -1,6 +1,14 @@
 <script setup>
 import Login from "../views/auth/Login.vue"
 import logo from "../assets/logo1.png"
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+const store = useStore();
+
+// Utilisez une propriété calculée pour récupérer l'état de l'utilisateur depuis le store Vuex
+const user = computed(() => store.state.user);
 </script>
 
 <template>
@@ -12,6 +20,7 @@ import logo from "../assets/logo1.png"
                 <a href="#">Produits</a>
                 <a href="#">Solutions</a>
                 <a href="#">Tarifs</a>
+                <a v-if="user && user.role === 'admin'" href="/dashboard">Dashboard</a>
             </div>
             <Login />
         </nav>

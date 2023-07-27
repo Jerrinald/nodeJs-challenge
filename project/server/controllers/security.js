@@ -13,7 +13,7 @@ module.exports = function SecurityController(MarchandService) {
             expiresIn: "1h",
           }
         );
-        res.json({ token });
+        res.json({ token, marchand });
       } catch (err) {
         next(err);
       }

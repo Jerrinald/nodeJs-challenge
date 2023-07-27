@@ -116,6 +116,11 @@ async function loginUser() {
       // on rajoute le token dans le localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('tokenExpiration', tokenExpiration);
+
+      // on redirige vers la page d'accueil
+      store.dispatch('login', data.marchand);
+
+      router.push('/'); 
     } else {
       console.error('Login failed');
     }
