@@ -24,6 +24,10 @@ module.exports = (connection) => {
                 isEmail: true,
             },
             },
+            active: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false, // Set a default value for the 'active' field (optional)
+            },
             companyName: {
                 type: DataTypes.STRING,
                 allowNull: false,

@@ -6,6 +6,7 @@ import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 import Dashboard from '../views/front/Dashboard.vue';
+import store from '../store';
 
 const routes = [
     {
@@ -31,7 +32,7 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: true, requiresAdmin: true },
     }
 ];
 
@@ -41,30 +42,35 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('token');
-    const user = ref(token ? jwtDecode(token) : null);
+    console.log(store.state.user);
+    // Vérifier si la route nécessite une authentification
+    if (to.meta.requiresAuth) {
+        // Vérifier si l'utilisateur est connecté
 
-    const isLogged = !!user.value;
-    const isAdmin = user.value?.id_role === 1;
-
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!isLogged && to.name !== 'Login' && to.name !== 'Register' && to.name !== 'ForgotPassword' && to.name !== 'ResetPassword' && to.name !== 'Verify') {
-            next({ name: 'Login' });
-        } else {
-            if (to.matched.some(record => record.meta.requiresAdmin)) {
-                if (!isAdmin) {
-                    next({ name: 'Home' });
-                } else {
-                    next();
-                }
+        if (to.meta.requiresAdmin) {
+            const isAdmin = store.state.user?.role === 'admin';
+            if (!isAdmin) {
+                next({ name: 'Stripetify' });
+            }else {
+                next();
+            }
+        }else{
+            if (!store.state.user) {
+                // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+                next('/login');
             } else {
+                
+                // L'utilisateur est connecté, autoriser la navigation
                 next();
             }
         }
     } else {
-        if (isLogged && (to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ResetPassword' || to.name === 'Verify')) {
-            next({ name: 'Home' });
+        // Vérifier si l'utilisateur est déjà connecté et accède aux pages de login ou d'inscription
+        if (store.state.user && (to.name === 'Login' || to.name === 'Register')) {
+            // Rediriger vers la page d'accueil ou toute autre page appropriée pour les utilisateurs connectés
+            next('/');
         } else {
+            // Autoriser la navigation pour les routes publiques
             next();
         }
     }

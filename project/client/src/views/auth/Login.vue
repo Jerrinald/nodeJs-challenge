@@ -66,6 +66,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import store from "../../store";
 import router from "../../router";
 import BtnConnect from "../../components/BtnConnect.vue"
 import IconClose from "../../components/icons/IconClose.vue"
@@ -142,6 +143,11 @@ async function loginUserSimple() {
       // on rajoute le token dans le localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('tokenExpiration', tokenExpiration);
+
+      // on redirige vers la page d'accueil
+      store.dispatch('login', data.user);
+
+      router.push('/'); 
     } else {
       console.error('Login failed');
     }
