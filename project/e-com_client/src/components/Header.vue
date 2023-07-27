@@ -5,12 +5,33 @@ import IconPanel from "./icons/IconPanel.vue"
 import IconUser from "./icons/IconUser.vue"
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
 
 
 const store = useStore();
 
 // Utilisez une propriété calculée pour récupérer l'état de l'utilisateur depuis le store Vuex
 const user = computed(() => store.state.user);
+
+const cartItems = ref([]);
+
+// Ajouter cette fonction pour charger le panier depuis le localStorage (appelée au démarrage)
+function loadCartFromLocalStorage() {
+  const savedCart = localStorage.getItem('cartItems');
+  if (savedCart) {
+    cartItems.value = JSON.parse(savedCart);
+  }
+}
+
+const cartItemsLength = ref(0);
+onMounted(() => {
+    loadCartFromLocalStorage();
+    cartItemsLength.value = cartItems.value.length; 
+});
+
+
+console.log(cartItems.value.length)
 
 </script>
 
@@ -22,7 +43,8 @@ const user = computed(() => store.state.user);
                 <a href="/products">Produits</a>
                 <a href="/dashboard">Mon espace</a>
                 <a href="/panier" class="panel">
-                    <div>2</div>
+                    <div v-if="!cartItems.length">{{ cartItems.length }}</div>
+                    <div v-else>{{ cartItemsLength }}</div>
                     <IconPanel />
                 </a>
                 <a href="/profile" v-if="user">

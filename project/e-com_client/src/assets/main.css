@@ -64,6 +64,9 @@ table tr{
 
 table tbody td{
   border-bottom: 1px solid #F6931C;
+}
+
+table td{
   padding: 5px 0;
 }
 
@@ -91,6 +94,10 @@ table tbody td{
 }
 .btn-primary:hover{
   background-color: #F6931C;
+}
+
+.btn-delete{
+  cursor: pointer;
 }
 
 .close-modal{
