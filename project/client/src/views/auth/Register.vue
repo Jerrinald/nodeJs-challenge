@@ -36,7 +36,48 @@
             </div>
             <div>
               <div>
-
+                <label for="companyName">Company Name:</label>
+              </div>
+              <input type="text" id="companyName" v-model="user.companyName" required>
+            </div>
+            <div>
+              <div>
+                <label for="KBIS">KBIS:</label>
+              </div>
+              <input type="text" id="KBIS" v-model="user.KBIS" required>
+            </div>
+            <div>
+              <div>
+                <label for="token">Token:</label>
+              </div>
+              <input type="text" id="token" v-model="user.token" required>
+            </div>
+            <div>
+              <div>
+                <label for="numero">Numero:</label>
+              </div>
+              <input type="text" id="numero" v-model="user.numero" required>
+            </div>
+            <div>
+              <div>
+                <label for="url_confirmation">URL Confirmation:</label>
+              </div>
+              <input type="text" id="url_confirmation" v-model="user.url_confirmation" required>
+            </div>
+            <div>
+              <div>
+                <label for="url_annulation">URL Annulation:</label>
+              </div>
+              <input type="text" id="url_annulation" v-model="user.url_annulation" required>
+            </div>
+            <div>
+              <div>
+                <label for="devise">Devise:</label>
+              </div>
+              <input type="text" id="devise" v-model="user.devise" required>
+            </div>
+            <div>
+              <div>
                 <label for="password">Password:</label>
               </div>
               <input type="password" id="password" v-model="user.password" required>

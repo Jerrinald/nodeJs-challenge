@@ -75,6 +75,22 @@ module.exports = function MarchandService() {
         
         findByToken: async function (token) {
             return Marchand.findOne({ where: { token } });
-        }
+        },
+        login: async (email, password) => {
+            const marchand = await Marchand.findOne({ where: { email } });
+            if (!marchand) {
+              throw new ValidationError({
+                email: "Invalid credentials",
+              });
+            }
+            const isPasswordValid = await marchand.isPasswordValid(password);
+            if (!isPasswordValid) {
+              throw new ValidationError({
+                email: "Invalid credentials",
+              });
+            }
+      
+            return marchand;
+        },
     };
 };
