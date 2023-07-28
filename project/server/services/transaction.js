@@ -22,6 +22,10 @@ module.exports = function TransactionService() {
             return Transaction.findOne({ where: filters });
         },
 
+        findAllByMerchantId: async function (marchandId) {
+            return Transaction.findAll({ where: { marchandId } });
+        },
+
         create: async function (data) {
             try {
                 data.url_payment = '/link-payment'

@@ -1,33 +1,42 @@
 <template>
-  <section>
-    <h2>Produits</h2>
-    <p v-if="!products.length">Aucun produit</p>
-    <div class="product-grid">
-      <div v-for="product in products" :key="product.id" class="product-item">
-        <img :src="product.image" :alt="product.name">
-        <h3>{{ product.name }}</h3>
-        <p>Prix : {{ product.price }} €</p>
-        <button @click="addToCart(product)">Ajouter au panier</button>
-      </div>
-    </div>
-  </section>
+  <div>
+    <Header />
 
-  <section>
-    <h2>Panier</h2>
-    <div v-if="!cartItems.length">Votre panier est vide</div>
-    <ul v-else>
-      <li v-for="item in cartItems" :key="item.id">
-        {{ item.name }} - {{ item.price }} € - Quantité: {{ item.quantity }}
-        <button @click="removeFromCart(item)">Retirer du panier</button>
-      </li>
-    </ul>
-    <button @click="validateCart" v-if="cartItems.length">Valider le panier</button>
-  </section>
+    <main class="container">
+  
+      <section>
+        <h2>Produits</h2>
+        <p v-if="!products.length">Aucun produit</p>
+        <div class="product-grid">
+          <div v-for="product in products" :key="product.id" class="product-item">
+            <img :src="product.image" :alt="product.name">
+            <h3>{{ product.name }}</h3>
+            <p>Prix : {{ product.price }} €</p>
+            <button @click="addToCart(product)">Ajouter au panier</button>
+          </div>
+        </div>
+      </section>
+    
+      <section>
+        <h2>Panier</h2>
+        <div v-if="!cartItems.length">Votre panier est vide</div>
+        <ul v-else>
+          <li v-for="item in cartItems" :key="item.id">
+            {{ item.name }} - {{ item.price }} € - Quantité: {{ item.quantity }}
+            <button @click="removeFromCart(item)">Retirer du panier</button>
+          </li>
+        </ul>
+        <button @click="validateCart" v-if="cartItems.length">Valider le panier</button>
+      </section>
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <script setup>
+import Header from '../../components/Header.vue'
+import Footer from '../../components/Footer.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
 
 const products = ref([]);
 const cartItems = ref([]);
@@ -151,6 +160,8 @@ async function fetchProducts() {
   }
 }
 
+console.log(products)
+
 async function validateCart() {
   try {
     token = localStorage.getItem('token'); // Get token from localStorage
@@ -176,7 +187,7 @@ async function validateCart() {
       updatedAt: new Date().toISOString(),
     }));
 
-    // Post item in orderItems one by one
+    // post item in orderItems one by one
     for (let i = 0; i < orderItems.length; i++) {
       console.log('Order send:', orderItems[i]);
       const orderResponse = await fetch('http://localhost:3100/orders', {
@@ -196,47 +207,26 @@ async function validateCart() {
     }
 
     // Now validate the cart
-    const transactionData = {
-      orderId: orderId,
-      amount: calculateTotalAmount(),
-      status: 'new',
-    };
-
     const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Use the token in the headers
       },
-      body: JSON.stringify(transactionData),
+      body: JSON.stringify(cartItems.value),
     });
 
     if (transactionResponse.ok) {
-      const responseData = await transactionResponse.json();
-      const linkPayment = responseData.link_payment;
       console.log('Cart validated. Transaction successful!');
       // Clear the cart after successful validation
       cartItems.value = [];
       updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value); // Mettre à jour le localStorage après avoir vidé le panier
-      redirectToPaymentLink(linkPayment); // Redirect to the payment link
     } else {
       console.error('Failed to validate the cart.');
     }
   } catch (error) {
     console.error('An error occurred:', error);
   }
-}
-
-// Helper function to calculate the total amount of items in the cart
-function calculateTotalAmount() {
-  return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
-}
-
-// Function to redirect to the payment link using the router
-function redirectToPaymentLink(link) {
-  const router = useRouter();
-  console.log('Redirecting to:', link); // Debugging log
-  router.push(link);
 }
 
 onMounted(() => {
@@ -256,5 +246,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Your styles CSS here */
+/* Vos styles CSS ici */
+main{
+  height: calc(100vh - 96px);
+}
 </style>

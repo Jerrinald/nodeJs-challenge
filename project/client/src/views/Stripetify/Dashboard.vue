@@ -5,42 +5,41 @@
             <div class="flex jcsb">
                 <input type="search" placeholder="Rechercher...">
                 <div class="flex aic gap-10">
-                    <div>user</div>
-                    <div>lorem</div>
-                    <div>lorem</div>
-                    <div>lorem</div>
+                    <a href="#">Déconnexion</a>
                 </div>
             </div>
-            <div class="flex aic gap-20">
-                <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione quasi animi?</div>
-                <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione quasi animi?</div>
+            <div class="marchant-container">
+                <h2>Marchands</h2>
+                    <Dashboard />
             </div>
-            <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione quasi animi?</div>
+            <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum
+                sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione
+                quasi animi?</div>
         </div>
     </div>
 </template>
 <script setup>
 import Aside from '../../components/Aside.vue'
+import Dashboard from '../front/Dashboard.vue';
 </script>
 <style scoped>
-    .dashboard{
-        background-color: #9094A2;
-        height: 100%;
-    }
+.dashboard {
+    background-color: #9094A2;
+}
 
-    .block-container{
-        padding: 20px;
-    }
+.block-container {
+    padding: 20px;
+}
 
-    input{
-        width: 300px;
-    }
+input {
+    width: 300px;
+}
 
-    .block-container .block{
-        background-color: #FFFFFF;
-        border-radius: 5px;
-        height: 350px;
-        color: #9094A2;
-        padding: 20px;
-    }
+.block-container .block {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    height: 350px;
+    color: #9094A2;
+    padding: 20px;
+}
 </style>

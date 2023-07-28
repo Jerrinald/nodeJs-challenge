@@ -11,7 +11,7 @@
         Connexion<slot name="close-icon" :closeModal="toggleModal"></slot>
       </div>
       <div class="modal-content">
-        <div class="form-selection">
+        <div class="form-selection flex jcc">
           <button @click="showMarchandForm" class="form-selection-btn marchand" :class="{ active: selectedForm === 'marchand' }">Marchand</button>
           <button @click="showSimpleUserForm" class="form-selection-btn simple-user" :class="{ active: selectedForm === 'simpleUser' }">Simple User</button>
         </div>
@@ -120,7 +120,7 @@ async function loginUser() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.marchand);
 
-      router.push('/'); 
+      router.push('/profile'); 
     } else {
       console.error('Login failed');
     }

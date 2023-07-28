@@ -9,6 +9,7 @@ import Logout from '../views/auth/Logout.vue';
 import Products from '../views/front/Products.vue';
 import Profile from '../views/front/Profile.vue';
 import Panel from '../views/front/Panel.vue';
+import Payment from '../views/front/Payment.vue';
 import Dashboard from '../views/front/Dashboard.vue';
 import ProductsManagement from '../views/front/ProductsManagement.vue';
 import CommandesManagement from '../views/front/CommandesManagement.vue';
@@ -74,6 +75,13 @@ const routes = [
         path: '/panier',
         name: 'Panel',
         component: Panel,
+        meta: { requiresAuth: false },
+    },
+    {
+
+        path: '/paiement',
+        name: 'Payment',
+        component: Payment,
         meta: { requiresAuth: false },
     },
     {

@@ -8,6 +8,7 @@ import moulinex from '../../assets/images/moulinex.jpg'
 
 
 const cartItems = ref([]);
+let token = null; // Declare the token variable
 
 function loadCartFromLocalStorage() {
   const savedCart = localStorage.getItem('cartItems');
@@ -68,6 +69,83 @@ function calculateTotalAmount() {
   return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
+function generateOrderNumber() {
+  const randomNumber = Math.floor(Math.random() * 10000);
+  const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  return `CMD${currentDate}${randomNumber}`;
+}
+
+// Ajouter cette fonction pour générer un ID de commande aléatoire
+function generateOrderId() {
+  return Math.floor(Math.random() * 1000000);
+}
+
+
+async function validateCart() {
+  try {
+    if (cartItems.value.length === 0) {
+      console.log('Cart is empty. Add items to the cart before validating.');
+      return;
+    }
+
+    // Generate order data
+    const orderNumber = generateOrderNumber();
+    const orderId = generateOrderId();
+
+    // Create an array to store order items
+    const orderItems = cartItems.value.map((item) => ({
+      idClient: 1,
+      numeroCommande: orderNumber,
+      numeroProduit: item.numeroProduit,
+      prixProduit: item.prixProduit,
+      quantiteProduit: item.quantity,
+      statut: 'En cours',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }));
+
+    // post item in orderItems one by one
+    for (let i = 0; i < orderItems.length; i++) {
+      console.log('Order send:', orderItems[i]);
+      const orderResponse = await fetch('http://localhost:3100/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Use the token in the headers
+        },
+        body: JSON.stringify(orderItems[i]),
+      });
+      if (orderResponse.ok) {
+        console.log('Order created successfully.');
+      } else {
+        console.error('Failed to create the order.');
+        return;
+      }
+    }
+
+    // Now validate the cart
+    const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Use the token in the headers
+      },
+      body: JSON.stringify(cartItems.value),
+    });
+
+    if (transactionResponse.ok) {
+      console.log('Cart validated. Transaction successful!');
+      // Clear the cart after successful validation
+      cartItems.value = [];
+      updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value); // Mettre à jour le localStorage après avoir vidé le panier
+    } else {
+      console.error('Failed to validate the cart.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
 </script>
 
 <template>
@@ -115,8 +193,10 @@ function calculateTotalAmount() {
         </tfoot>
       </table>
       <div class="flex jce">
-        <!-- <button class="btn-primary">Valider mon panier</button> -->
-        <ModalPay />
+        <!-- <button @click="() => validateCart()" v-if="cartItems.length" class="btn-primary">Valider mon panier</button> -->
+        <div @click="() => validateCart()" v-if="cartItems.length">
+          <ModalPay :data="cartItemsLength" />
+        </div>
       </div>
     </main>
     <Footer />
