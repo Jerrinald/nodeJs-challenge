@@ -15,7 +15,7 @@ const retrieveImage = require("./middlewares/retrieveImage.js");
 const mongoose = require('mongoose');
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://root:password@mongo:27017/app', {
+/*mongoose.connect('mongodb://root:password@mongo:27017/app', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -24,7 +24,7 @@ mongoose.connect('mongodb://root:password@mongo:27017/app', {
     })
     .catch((err) => {
       console.error('Erreur lors de la connexion à MongoDB :', err);
-    });
+    });*/
 
 app.use(cors());
 
@@ -35,7 +35,7 @@ app.use("/", SecurityRouter);
 // app.use(checkAuth); -> protect every routes below
 app.use("/users", checkAuth, UserRouter); // protect only this route
 
-app.use("/products", checkAuthProduct, checkCurrentUser, retrieveImage, ProductRouter);
+app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
 app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
 
