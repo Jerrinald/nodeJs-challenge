@@ -120,7 +120,7 @@ async function loginUser() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.marchand);
 
-      router.push('/'); 
+      router.push('/profile'); 
     } else {
       console.error('Login failed');
     }
