@@ -1,8 +1,34 @@
 const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
-const { MongoClient } = require('mongodb'); // Importez le module pour MongoDB
+const mongoose = require('mongoose');
 
+const mongoURI = 'mongodb://root:password@mongo:27017/app'; // Remplacez par votre URI de connexion MongoDB
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+
+// Gérer les événements de connexion et d'erreur
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+
+// Définir le schéma pour la collection 'orders'
+const orderSchema = new mongoose.Schema({
+    idClient: { type: Number, allowNull: true },
+    numeroCommande: { type: String, allowNull: true },
+    numeroProduit: { type: String, allowNull: true },
+    prixProduit: { type: Number, allowNull: true },
+    quantiteProduit: { type: Number, required: true },
+    statut: { type: String, required: true },
+});
+
+// Créer le modèle Mongoose basé sur le schéma
+const OrderModel = mongoose.model('Order', orderSchema);
 
 module.exports = function OrderService() {
     return {
@@ -29,14 +55,11 @@ module.exports = function OrderService() {
                 const postgresOrder = await Order.create(data);
 
                 // Insertion dans MongoDB
-                await mongoClient.connect();
-                console.log('Connected to MongoDB');
-                const mongoDB = mongoClient.db(); // Utilisez le nom de votre base de données MongoDB ici
-                const ordersCollection = mongoDB.collection('orders');
-                const mongoResult = await ordersCollection.insertOne(data);
-                console.log('Order inserted into MongoDB:', mongoResult.insertedId);
+                const order = new OrderModel(data);
+                const mongoResult = await order.save();
+                console.log('Order inserted into MongoDB:', mongoResult._id);
 
-                return await postgresOrder;
+                return postgresOrder;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
