@@ -85,17 +85,17 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./project/client:/usr/src/app
-  
 
   e-com_client:
     container_name: e-com_client
-    image: node:lts
+    build:
+      context: ./project/e-com_client
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the "./project/client" directory
     ports:
-      - 9991:5173
+      - 81:80
     working_dir: /usr/src/app
     volumes:
-      - ./${CLASS}/e-com_client:/usr/src/app
-    command: npm run dev
+      - ./project/e-com_client:/usr/src/app
 
 
 
