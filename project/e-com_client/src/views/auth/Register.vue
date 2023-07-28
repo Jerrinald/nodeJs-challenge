@@ -55,7 +55,7 @@ let registerErrors = ref(null);
 
 async function registerUser() {
   try {
-    const response = await fetch('http://127.0.0.1:3100/register', {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

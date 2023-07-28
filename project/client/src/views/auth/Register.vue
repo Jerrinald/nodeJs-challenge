@@ -13,20 +13,22 @@
         </div>
         <div class="register">
           <form @submit.prevent="registerUser">
+           <div class="flex gap-10 jcc">
             <div>
               <div>
-                
                 <label for="firstname">Firstname:</label>
+                </div>
+                <input type="text" id="firstname" v-model="user.firstname" required>
               </div>
-              <input type="text" id="firstname" v-model="user.firstname" required>
-            </div>
-            <div>
               <div>
+                <div>
 
-                <label for="lastname">Lastname:</label>
+                  <label for="lastname">Lastname:</label>
+                </div>
+                <input type="text" id="lastname" v-model="user.lastname" required>
               </div>
-              <input type="text" id="lastname" v-model="user.lastname" required>
-            </div>
+           </div>
+           <div class="flex gap-10 jcc">
             <div>
               <div>
 
@@ -40,6 +42,8 @@
               </div>
               <input type="text" id="companyName" v-model="user.companyName" required>
             </div>
+           </div>
+           <div class="flex gap-10 jcc">
             <div>
               <div>
                 <label for="KBIS">KBIS:</label>
@@ -52,6 +56,9 @@
               </div>
               <input type="text" id="token" v-model="user.token" required>
             </div>
+           </div>
+            
+           <div class="flex gap-10 jcc">
             <div>
               <div>
                 <label for="numero">Numero:</label>
@@ -64,6 +71,9 @@
               </div>
               <input type="text" id="url_confirmation" v-model="user.url_confirmation" required>
             </div>
+           </div>
+            
+           <div class="flex gap-10 jcc">
             <div>
               <div>
                 <label for="url_annulation">URL Annulation:</label>
@@ -76,13 +86,18 @@
               </div>
               <input type="text" id="devise" v-model="user.devise" required>
             </div>
+           </div>
+            
+           <div class="flex gap-10 jcc">
             <div>
               <div>
                 <label for="password">Password:</label>
               </div>
               <input type="password" id="password" v-model="user.password" required>
             </div>
-            <div class="flex jce">
+           </div>
+            
+            <div class="flex jcc">
               <button class="btn-primary" type="submit">Valider</button>
             </div>
             <div v-if="registerErrors" class="error">
@@ -127,7 +142,7 @@ let registerErrors = ref(null);
 
 async function registerUser() {
   try {
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -201,7 +216,7 @@ async function registerUser() {
   transform: translate(-50%, -50%);
   z-index: 1002;
   width: 100%;
-  max-width: 400px;
+  max-width: 550px;
   background-color: #000000;
   border-radius: 5px;
   box-shadow: 0 0 25px rgba(50, 206, 201, 0.5);

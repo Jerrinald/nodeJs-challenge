@@ -81,7 +81,7 @@ const getAllOrders = async () => {
       return;
     }
 
-    const response = await fetch(`http://127.0.0.1:3100/orders`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -117,6 +117,7 @@ const searchOrders = async () => {
         'Authorization': `Bearer ${token}`, // Ajouter le token JWT à l'en-tête de la requête
       },
     });
+
     if (response.ok) {
       const data = await response.json();
       searchedOrders.value = data;

@@ -137,7 +137,7 @@ function generateOrderId() {
 async function fetchProducts() {
   try {
     token = localStorage.getItem('token'); // Get token from localStorage
-    const response = await fetch('http://127.0.0.1:3100/products', {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -190,7 +190,7 @@ async function validateCart() {
     // post item in orderItems one by one
     for (let i = 0; i < orderItems.length; i++) {
       console.log('Order send:', orderItems[i]);
-      const orderResponse = await fetch('http://localhost:3100/orders', {
+      const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ async function validateCart() {
     }
 
     // Now validate the cart
-    const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
+    const transactionResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

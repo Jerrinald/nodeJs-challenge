@@ -34,7 +34,7 @@
 
 
     try {
-      const response = await fetch(`http://localhost:3000/transactions/marchand/${marchand.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/marchand/${marchand.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@
   async function fetchOrderInfo(transacArray) {
 
     try {
-      const response = await fetch(`http://localhost:3100/orders/${transacArray.orderId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders/${transacArray.orderId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
