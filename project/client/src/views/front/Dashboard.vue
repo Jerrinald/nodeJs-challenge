@@ -34,7 +34,7 @@ const token = localStorage.getItem('token');
 async function fetchMerchants() {
   try {
     console.log('Fetching merchants...', token);
-    const response = await fetch('http://localhost:3000/marchands', {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ async function activateMerchant(merchant) {
     };
 
     // Call the API endpoint to activate the merchant's account
-    const response = await fetch(`http://localhost:3000/marchands/${merchant.id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands/${merchant.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

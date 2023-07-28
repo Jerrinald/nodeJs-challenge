@@ -18,7 +18,7 @@ async function logoutUser() {
     // Par exemple, si vous utilisez des tokens JWT, vous pouvez envoyer une demande pour invalider le token côté serveur
     // Remplacez 'http://localhost:3100/logout' par l'URL de votre API de déconnexion
     console.log(localStorage.getItem('token'));
-    const response = await fetch('http://127.0.0.1:3100/logout', {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

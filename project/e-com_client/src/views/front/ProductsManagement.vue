@@ -84,7 +84,7 @@ cartChannel.onmessage = (event) => {
 
   async function fetchProducts() {
     try {
-      const response = await fetch('http://localhost:3100/products', {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ cartChannel.onmessage = (event) => {
     };
 
     try {
-      const response = await fetch('http://localhost:3100/products', {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ cartChannel.onmessage = (event) => {
     }
     
       try {
-        const response = await fetch(`http://localhost:3100/products/${productId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products/${productId}`, {
           method: 'PATCH',
           headers: {
             // get token from localstorage
@@ -177,7 +177,7 @@ cartChannel.onmessage = (event) => {
 
   async function removeProduct(productId) {
     try {
-      const response = await fetch(`http://localhost:3100/products/${productId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ async function updateProduct() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3100/products/${editingProduct.value.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products/${editingProduct.value.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

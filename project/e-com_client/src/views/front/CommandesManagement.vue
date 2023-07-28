@@ -80,7 +80,7 @@ const getAllOrders = async () => {
       return;
     }
 
-    const response = await fetch(`http://127.0.0.1:3100/orders`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const numeroCommande = ref('');
 // Fonction pour rechercher les commandes par numéro de commande
 const searchByNumeroCommande = async () => {
   try {
-    const response = await fetch(`http://localhost:3100/orders?numeroCommande=${numeroCommande.value}`);
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders?numeroCommande=${numeroCommande.value}`);
     if (response.ok) {
       const data = await response.json();
       searchedOrders.value = data;
