@@ -58,7 +58,7 @@ function saveCartToLocalStorage() {
 async function fetchProducts() {
     try {
         token = localStorage.getItem('token'); // Get token from localStorage
-        const response = await fetch('http://127.0.0.1:3100/products', {
+        const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,12 +99,8 @@ window.addEventListener('beforeunload', () => {
         <!-- Produits vedettes ou en promotion -->
         <h2>Tous nos articles</h2>
         <div class="product-grid flex fww gap-20 jcsb">
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
             <div v-for="product in products" :key="product.id" class="product-item">
-                <img :src="product.image" :alt="product.name">
+                <img :src="`http://localhost:3100/${product.image}`" :alt="product.name">
                 <p :title="product.name" class="product-name">{{ product.name }}</p>
                 <p>{{ product.price }} €</p>
                 <button class="btn-primary" @click="() => addToCart(product)">Ajouter au panier</button>
