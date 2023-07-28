@@ -28,7 +28,7 @@ describe("genericController", () => {
         jest.clearAllMocks();
     });
 
-    it("should return all products", async () => {
+    it("All products", async () => {
         const mockProducts = [{ id: 1, name: "Product 1" }, { id: 2, name: "Product 2" }];
         Product.findAll.mockResolvedValue(mockProducts);
 
@@ -38,7 +38,7 @@ describe("genericController", () => {
         expect(Product.findAll).toHaveBeenCalledTimes(1);
     });
 
-    it("should return a single product", async () => {
+    it("Find One product", async () => {
         const mockProduct = { id: 1, name: "Product 1" };
         Product.findOne.mockResolvedValue(mockProduct);
 
@@ -50,7 +50,7 @@ describe("genericController", () => {
         expect(Product.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
     });
 
-    it("should create a product", async () => {
+    it("Create product", async () => {
         const mockProduct = { id: 1, name: "Product 1" };
         Product.create.mockResolvedValue(mockProduct);
 
@@ -62,7 +62,7 @@ describe("genericController", () => {
         expect(Product.create).toHaveBeenCalledWith({ name: "Product 1" });
     });
 
-    it("should update a product", async () => {
+    it("Update product", async () => {
         const mockProduct = { id: 1, name: "Product 1" };
         Product.update.mockResolvedValue([1, [mockProduct]]);
 
@@ -78,7 +78,7 @@ describe("genericController", () => {
         );
     });
 
-    it("should delete a product", async () => {
+    it("Delete product", async () => {
         Product.destroy.mockResolvedValue(1);
 
         mockRequest.params = { id: 1 };
@@ -88,6 +88,4 @@ describe("genericController", () => {
         expect(mockResponse._getStatusCode()).toBe(200);
         expect(Product.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
     });
-
-    // Continue writing tests for other controller methods here.
 });
