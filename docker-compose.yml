@@ -74,15 +74,18 @@ services:
     command: node run server.js
 
 
+ 
   client:
     container_name: client
-    image: node:lts
+    build:
+      context: ./project/client
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the "./project/client" directory
     ports:
-      - 9992:5173
+      - 80:80
     working_dir: /usr/src/app
     volumes:
-      - ./${CLASS}/client:/usr/src/app
-    command: npm run dev
+      - ./project/client:/usr/src/app
+  
 
   e-com_client:
     container_name: e-com_client
