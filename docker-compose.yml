@@ -63,6 +63,39 @@ services:
       - ./${CLASS}/ecom-api:/usr/src/app
     command: npm run dev
 
+  psp:
+    container_name: psp
+    image: node
+    ports:
+      - 3200:3000
+    working_dir: /usr/src/app
+    volumes:
+      - ./${CLASS}/psp:/usr/src/app
+    command: node run server.js
+
+
+  client:
+    container_name: client
+    image: node:lts
+    ports:
+      - 9992:5173
+    working_dir: /usr/src/app
+    volumes:
+      - ./${CLASS}/client:/usr/src/app
+    command: npm run dev
+
+  e-com_client:
+    container_name: e-com_client
+    image: node:lts
+    ports:
+      - 9991:5173
+    working_dir: /usr/src/app
+    volumes:
+      - ./${CLASS}/e-com_client:/usr/src/app
+    command: npm run dev
+
+
+
 volumes:
   db-data: {}
   pg-data: {}
