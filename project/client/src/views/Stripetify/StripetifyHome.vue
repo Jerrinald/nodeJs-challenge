@@ -7,6 +7,9 @@ import website from '../../assets/website.png'
 import Register from "../auth/Register.vue"
 import man from "../../assets/man.png"
 
+// document.body.style.overflow = "scroll"
+
+
 </script>
 
 <template>

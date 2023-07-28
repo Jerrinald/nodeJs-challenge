@@ -195,7 +195,7 @@ async function validateCart() {
       <div class="flex jce">
         <!-- <button @click="() => validateCart()" v-if="cartItems.length" class="btn-primary">Valider mon panier</button> -->
         <div @click="() => validateCart()" v-if="cartItems.length">
-          <ModalPay :data="cartItemsLength" />
+          <ModalPay :totalPrice="calculateTotalAmount()" />
         </div>
       </div>
     </main>

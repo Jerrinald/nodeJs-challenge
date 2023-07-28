@@ -147,6 +147,8 @@ async function registerUser() {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);
   }
 }
+
+// document.body.style.overflow = "hidden"
 </script>
 
 <style scoped>

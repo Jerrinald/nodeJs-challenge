@@ -5,19 +5,14 @@ import IconClose from './icons/IconClose.vue'
 import cart from '../assets/images/carte.jpg'
 
 const openModal = ref(false);
-// const cartItems = ref([]);
 
+const props = defineProps({
+  totalPrice: {
+    type: Number
+  }
+})
 
-// const {data} = defineProps()
-// const dataCart = ref(data)
-
-// onMounted(
-
-//   console.log(dataCart)
-// )
-// console.log(dataCart)
-
-
+console.log(props.totalPrice)
 </script>
 <template>
   <slot name="activator" :openModal="() => openModal = true"><button @click="openModal = true"
@@ -30,7 +25,7 @@ const openModal = ref(false);
           <slot name="title">Paiement par carte bancaire</slot>
         </div>
         <div class="modal-content text-center"><img :src="cart" alt="" srcset=""></div>
-        <div class="text-center">Total à payer: <strong>175.33 €</strong></div>
+        <h3 class="text-center">Total à payer: <strong>{{ props.totalPrice }} €</strong></h3>
       </div>
       <div class="modal-actions">
         <slot name="actions" :closeModal="() => openModal = false">
@@ -44,24 +39,27 @@ const openModal = ref(false);
           <label for="">Nom et prénom du propriétaire de la carte</label>
           <input type="text">
         </div>
-        <div>
-          <label for="">Date d'expiration</label>
-          <input type="date">
-        </div>
+        
         <div>
           <label for="">Numéro de la carte</label>
           <input type="text">
         </div>
-        <div>
-          <div class="cryptogramme">
-            <label for="">Cryptograme</label>
-            <input type="number">
+        <div class="flex jcsb gap-20">
+          <div>
+            <label for="">Date d'expiration</label>
+            <input type="text" placeholder="MM / AA">
+          </div>
+          <div>
+            <div class="cryptogramme">
+              <label for="">Cryptograme</label>
+              <input type="text" placeholder="XXX">
+            </div>
           </div>
         </div>
+        <div class="flex jce btn-container">
+          <button class="btn btn-primary">Valider</button>
+        </div>
       </form>
-      <div class="flex jce btn-container">
-        <button class="btn btn-primary">Valider</button>
-      </div>
     </div>
   </div>
 </template>
@@ -128,7 +126,7 @@ form input {
 }
 
 form .cryptogramme{
-  width: 100px;
+  /* width: 100px; */
 }
 
 strong{
