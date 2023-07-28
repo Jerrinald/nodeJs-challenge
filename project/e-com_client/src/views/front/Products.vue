@@ -164,6 +164,8 @@ console.log(products)
 
 async function validateCart() {
   try {
+    token = localStorage.getItem('token'); // Get token from localStorage
+
     if (cartItems.value.length === 0) {
       console.log('Cart is empty. Add items to the cart before validating.');
       return;

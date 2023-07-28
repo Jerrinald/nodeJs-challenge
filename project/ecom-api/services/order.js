@@ -1,6 +1,34 @@
 const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
+const mongoose = require('mongoose');
+
+const mongoURI = 'mongodb://root:password@mongo:27017/app'; // Remplacez par votre URI de connexion MongoDB
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+
+// Gérer les événements de connexion et d'erreur
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+
+// Définir le schéma pour la collection 'orders'
+const orderSchema = new mongoose.Schema({
+    idClient: { type: Number, allowNull: true },
+    numeroCommande: { type: String, allowNull: true },
+    numeroProduit: { type: String, allowNull: true },
+    prixProduit: { type: Number, allowNull: true },
+    quantiteProduit: { type: Number, required: true },
+    statut: { type: String, required: true },
+});
+
+// Créer le modèle Mongoose basé sur le schéma
+const OrderModel = mongoose.model('Order', orderSchema);
 
 module.exports = function OrderService() {
     return {
@@ -23,7 +51,15 @@ module.exports = function OrderService() {
         },
         create: async function (data) {
             try {
-                return await Order.create(data);
+// Insertion dans PostgreSQL
+                const postgresOrder = await Order.create(data);
+
+                // Insertion dans MongoDB
+                const order = new OrderModel(data);
+                const mongoResult = await order.save();
+                console.log('Order inserted into MongoDB:', mongoResult._id);
+
+                return postgresOrder;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -71,18 +107,32 @@ module.exports = function OrderService() {
             }
             return Order.destroy({ where: filters });
         },
-        
-        findByNumeroCommande: async function (numeroCommande) {
+        searchOrders: async (req, res) => {
             try {
-              // Recherchez les commandes en fonction du numéro de commande spécifié
-              return Order.findAll({
-                where: {
-                  numeroCommande: numeroCommande,
-                },
-              });
-            } catch (e) {
-              throw e;
+                const { searchQuery } = req.query;
+
+                // Vérifier si la requête `searchQuery` est présente
+                if (!searchQuery) {
+                    return res.status(400).json({ message: 'Requête de recherche manquante.' });
+                }
+
+                // Effectuer la recherche dans la collection MongoDB en utilisant le modèle OrderModel
+                const searchResult = await OrderModel.find({
+                    $or: [
+                        { idClient: { $regex: searchQuery, $options: 'i' } },
+                        { numeroCommande: { $regex: searchQuery, $options: 'i' } },
+                        { numeroProduit: { $regex: searchQuery, $options: 'i' } },
+                        { statut: { $regex: searchQuery, $options: 'i' } },
+                        // Ajoutez ici d'autres champs pour effectuer la recherche
+                    ],
+                });
+
+                // Répondre avec les résultats de la recherche
+                res.json(searchResult);
+            } catch (error) {
+                console.error('Erreur lors de la recherche des commandes:', error);
+                res.status(500).json({ message: 'Erreur lors de la recherche des commandes.' });
             }
-          },
+        },
     };
 };
