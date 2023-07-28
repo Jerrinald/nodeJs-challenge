@@ -107,18 +107,32 @@ module.exports = function OrderService() {
             }
             return Order.destroy({ where: filters });
         },
-        
-        findByNumeroCommande: async function (numeroCommande) {
+        searchOrders: async (req, res) => {
             try {
-              // Recherchez les commandes en fonction du numéro de commande spécifié
-              return Order.findAll({
-                where: {
-                  numeroCommande: numeroCommande,
-                },
-              });
-            } catch (e) {
-              throw e;
+                const { searchQuery } = req.query;
+
+                // Vérifier si la requête `searchQuery` est présente
+                if (!searchQuery) {
+                    return res.status(400).json({ message: 'Requête de recherche manquante.' });
+                }
+
+                // Effectuer la recherche dans la collection MongoDB en utilisant le modèle OrderModel
+                const searchResult = await OrderModel.find({
+                    $or: [
+                        { idClient: { $regex: searchQuery, $options: 'i' } },
+                        { numeroCommande: { $regex: searchQuery, $options: 'i' } },
+                        { numeroProduit: { $regex: searchQuery, $options: 'i' } },
+                        { statut: { $regex: searchQuery, $options: 'i' } },
+                        // Ajoutez ici d'autres champs pour effectuer la recherche
+                    ],
+                });
+
+                // Répondre avec les résultats de la recherche
+                res.json(searchResult);
+            } catch (error) {
+                console.error('Erreur lors de la recherche des commandes:', error);
+                res.status(500).json({ message: 'Erreur lors de la recherche des commandes.' });
             }
-          },
+        },
     };
 };
