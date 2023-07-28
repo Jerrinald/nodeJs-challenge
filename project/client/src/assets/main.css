@@ -36,6 +36,14 @@ input{
   width: 100%;
 }
 
+.btn{
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
 .btn-primary{
   padding: 8px 15px;
   border: none;
