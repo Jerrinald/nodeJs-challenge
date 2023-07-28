@@ -21,6 +21,7 @@ const user = computed(() => store.state.user);
                 <a href="#">Solutions</a>
                 <a href="#">Tarifs</a>
                 <a v-if="user && user.role === 'admin'" href="/dashboard">Dashboard</a>
+                <a v-if="user" href="/profile">Profil</a>
             </div>
             <Login />
         </nav>

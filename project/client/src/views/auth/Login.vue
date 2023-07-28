@@ -99,7 +99,7 @@ function showSimpleUserForm() {
 
 async function loginUser() {
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ async function loginUser() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.marchand);
 
-      router.push('/'); 
+      router.push('/profile'); 
     } else {
       console.error('Login failed');
     }

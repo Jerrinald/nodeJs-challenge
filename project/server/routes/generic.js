@@ -11,5 +11,10 @@ module.exports = function (Controller, options = {}) {
   router.patch("/:id", Controller.update);
   router.delete("/:id", Controller.delete);
 
+  // Add a new route to fetch transactions by merchantId if the method exists
+  if (typeof Controller.getAllByMerchantId === 'function') {
+    router.get("/marchand/:marchandId", Controller.getAllByMerchantId);
+  }
+
   return router;
 };

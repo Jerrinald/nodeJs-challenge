@@ -15,8 +15,8 @@
           <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
         </div>
         <div class="merchant-actions">
-          <button @click="editMerchant(merchant)">Modifier</button>
-          <button v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
+          <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
+          <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@ const token = localStorage.getItem('token');
 async function fetchMerchants() {
   try {
     console.log('Fetching merchants...', token);
-    const response = await fetch('http://localhost:3000/marchands', {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ async function activateMerchant(merchant) {
     };
 
     // Call the API endpoint to activate the merchant's account
-    const response = await fetch(`http://localhost:3000/marchands/${merchant.id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands/${merchant.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -135,22 +135,9 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-}
-
-button:nth-child(1) {
-  background-color: #007bff;
-}
-
 button:nth-child(2) {
-  background-color: #28a745;
+  background-color: #FFFFFF;
+  color: #000000;
 }
 
 button:hover {

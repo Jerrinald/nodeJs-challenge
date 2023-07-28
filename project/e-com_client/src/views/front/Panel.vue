@@ -107,7 +107,7 @@ async function validateCart() {
     // post item in orderItems one by one
     for (let i = 0; i < orderItems.length; i++) {
       console.log('Order send:', orderItems[i]);
-      const orderResponse = await fetch('http://localhost:3100/orders', {
+      const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ async function validateCart() {
     }
 
     // Now validate the cart
-    const transactionResponse = await fetch('http://127.0.0.1:3000/transactions', {
+    const transactionResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -193,9 +193,9 @@ async function validateCart() {
         </tfoot>
       </table>
       <div class="flex jce">
-        <!-- <button class="btn-primary">Valider mon panier</button> -->
+        <!-- <button @click="() => validateCart()" v-if="cartItems.length" class="btn-primary">Valider mon panier</button> -->
         <div @click="() => validateCart()" v-if="cartItems.length">
-          <ModalPay :data="cartItemsLength"  />
+          <ModalPay :data="cartItemsLength" />
         </div>
       </div>
     </main>

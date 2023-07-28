@@ -5,10 +5,7 @@
             <div class="flex jcsb">
                 <input type="search" placeholder="Rechercher...">
                 <div class="flex aic gap-10">
-                    <div>user</div>
-                    <div>lorem</div>
-                    <div>lorem</div>
-                    <div>lorem</div>
+                    <a href="#">Déconnexion</a>
                 </div>
             </div>
             <div class="marchant-container">
