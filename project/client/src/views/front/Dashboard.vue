@@ -15,8 +15,8 @@
           <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
         </div>
         <div class="merchant-actions">
-          <button @click="editMerchant(merchant)">Modifier</button>
-          <button v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
+          <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
+          <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
         </div>
       </div>
     </div>
@@ -135,22 +135,9 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-}
-
-button:nth-child(1) {
-  background-color: #007bff;
-}
-
 button:nth-child(2) {
-  background-color: #28a745;
+  background-color: #FFFFFF;
+  color: #000000;
 }
 
 button:hover {
