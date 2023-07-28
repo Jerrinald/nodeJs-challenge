@@ -98,6 +98,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    store.dispatch('checkTokenExpiration');
 
     // Vérifier si la route nécessite une authentification
     if (to.meta.requiresAuth) {
