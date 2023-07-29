@@ -7,7 +7,18 @@ const store = createStore({
     state() {
         return {
             user: JSON.parse(localStorage.getItem('user')) || null,
+            cartItems: JSON.parse(localStorage.getItem('cartItems')),
         };
+    },
+    getters: {
+        cartItemsLength(state) {
+            if (state.cartItems) {
+                return state.cartItems.length;
+            }else{
+                return 0;
+            }
+          
+        },
     },
     mutations: {
         SET_USER(state, user) {
