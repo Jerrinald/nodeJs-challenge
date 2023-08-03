@@ -1,4 +1,5 @@
-const genericRouter = require("./genericPayment");
-const genericController = require("../controllers/payment");
+const PaymentRouter = require("./genericPayment");
+const PaymentController = require("../controllers/payment");
+const PaymentService = require("../services/payments");
 
-module.exports = new genericRouter(new genericController());
+module.exports = new PaymentRouter(new PaymentController(new PaymentService()));

@@ -1,4 +1,4 @@
-module.exports = function Controller(options = {}) {
+module.exports = function Controller(Service, options = {}) {
   return {
     testPay: async (req, res, next) => {
       try {

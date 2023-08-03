@@ -19,43 +19,48 @@ module.exports = (connection) => {
                 type: DataTypes.STRING(16),
                 allowNull: false,
             },
+
             Date_Exp: {
                 type: DataTypes.STRING(7),
                 allowNull: false,
             },
+
             CVC: {
                 type: DataTypes.STRING(4),
                 allowNull: false,
             },
+
             Titulaire_Carte: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+
             Adresse_Facturation: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+
             Pays: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+
             Montant: {
                 type: DataTypes.FLOAT,
                 allowNull: false,
             },
+
             Devise: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            Adresse_Email: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
+
             Statut_Transaction: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 defaultValue: "new",
             },
+
         },
         { sequelize: connection, tableName: "payments" },
     );
