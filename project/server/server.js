@@ -28,6 +28,8 @@ app.use("/marchands", checkAuth, MarchandRouter);
 
 app.use("/transactions", TransactionRouter);
 
+app.use("/payment", PaymentRouter);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

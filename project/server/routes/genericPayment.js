@@ -3,7 +3,7 @@ const { Router } = require("express");
 module.exports = function (Controller, options = {}) {
   const router = new Router();
 
-  router.post("/", Controller.testPay);
-
+  router.get("/", Controller.testPay);
   return router;
 };
+
