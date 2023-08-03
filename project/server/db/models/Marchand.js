@@ -103,6 +103,10 @@ module.exports = (connection) => {
         }
     });
 
+    Marchand.addHook("beforeCreate", (marchand) => {
+        return updatePassword(marchand);
+    });
+
 
 
     return Marchand;
