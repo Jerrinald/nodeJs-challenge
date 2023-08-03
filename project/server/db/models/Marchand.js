@@ -2,6 +2,7 @@ module.exports = (connection) => {
 
     const { DataTypes, Model } = require("sequelize");
     const bcrypt = require("bcryptjs");
+
     class Marchand extends Model {
         istokenValid(token) {
             return bcrypt.compare(token, this.token);
@@ -17,16 +18,13 @@ module.exports = (connection) => {
             lastname: DataTypes.STRING,
             firstname: DataTypes.STRING,
             email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true,
-            },
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
             },
             active: {
                 type: DataTypes.BOOLEAN,
-                defaultValue: false, // Set a default value for the 'active' field (optional)
+                defaultValue: false,
             },
             companyName: {
                 type: DataTypes.STRING,
@@ -40,15 +38,7 @@ module.exports = (connection) => {
                     len: [1, 32],
                 },
             },
-            token: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    len: [1, 32],
-                    // Add more password validation rules if needed
-                    // is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-                },
-            },
+
             numero: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -56,7 +46,6 @@ module.exports = (connection) => {
                     len: [1, 32],
                 },
             },
-
             url_confirmation: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -73,53 +62,48 @@ module.exports = (connection) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                  len: [1, 32],
-                  //is: /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])/,
+                    len: [1, 32],
                 },
             },
             role: {
-                type: DataTypes.ENUM("marchand"), // Define the 'role' field as an ENUM type with allowed values 'client' and 'admin'
-                defaultValue: "marchand", // Set a default value for the 'role' field (optional)
+                type: DataTypes.ENUM("marchand"),
+                defaultValue: "marchand",
+            },
+            adresse: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            clientID: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            clientSecret: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            status: {
+                type: DataTypes.ENUM("en attente", "approuvé", "rejeté"),
+                defaultValue: "en attente",
             },
         },
         { sequelize: connection, tableName: "marchands" },
     );
 
-    function updatePassword(marchand) {
+    async function updatePassword(marchand) {
         return bcrypt.genSalt(10).then((salt) =>
-          bcrypt.hash(marchand.password, salt).then((hash) => {
-            marchand.password = hash;
-          })
-        );
-      }
-
-    function updateToken(Marchand) {
-        return bcrypt.genSalt(10).then((salt) =>
-            bcrypt.hash(Marchand.token, salt).then((hash) => {
-                Marchand.token = hash;
-            }),
+            bcrypt.hash(marchand.password, salt).then((hash) => {
+                marchand.password = hash;
+            })
         );
     }
 
-    Marchand.addHook("beforeCreate", (marchand) => {
-        return updatePassword(marchand);
-    });
-    
     Marchand.addHook("beforeUpdate", async (marchand, options) => {
         if (options.fields.includes("password")) {
             return updatePassword(marchand);
         }
     });
 
-    Marchand.addHook("beforeCreate", (Marchand) => {
-        return updateToken(Marchand);
-    });
 
-    Marchand.addHook("beforeUpdate", async (Marchand, options) => {
-        if (options.fields.includes("password")) {
-            return updateToken(Marchand);
-        }
-    });
 
     return Marchand;
 };
