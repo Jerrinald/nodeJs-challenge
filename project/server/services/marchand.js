@@ -35,22 +35,22 @@ module.exports = function MarchandService() {
                 const newUser = await Marchand.create(data);
 
                 // Générer un jeton d'activation unique pour l'utilisateur (vous pouvez utiliser une bibliothèque comme "uuid" pour cela)
-                const activationToken = uuidv4();
+                /*const activationToken = uuidv4();
 
-                // Sauvegarder le jeton d'activation dans la base de données associée à l'utilisateur
-                newUser.activationToken = activationToken;
-                await newUser.save();
+               // Sauvegarder le jeton d'activation dans la base de données associée à l'utilisateur
+               newUser.activationToken = activationToken;
+               await newUser.save();
 
-                // Envoi de l'e-mail de validation
-                const msg = {
-                to: newUser.email, // Adresse e-mail de l'utilisateur enregistré
-                from: 'ndiaby6@myges.fr', // Remplacez par votre adresse e-mail
-                subject: 'Confirmation d\'inscription', // Sujet de l'e-mail
-                html: `<p>Merci de vous être inscrit! Veuillez cliquer sur le lien suivant pour activer votre compte :</p>
-                    <a href="http://localhost:3000/activate-account/${activationToken}">Activer le compte</a>` // Lien d'activation (remplacez par votre propre lien)
-                };
+               // Envoi de l'e-mail de validation
+               const msg = {
+                   to: newUser.email, // Adresse e-mail de l'utilisateur enregistré
+                   from: 'ndiaby6@myges.fr', // Remplacez par votre adresse e-mail
+                   subject: 'Confirmation d\'inscription', // Sujet de l'e-mail
+                   html: `<p>Merci de vous être inscrit! Veuillez cliquer sur le lien suivant pour activer votre compte :</p>
+                   `
+               };
 
-                await sgMail.send(msg);
+               await sgMail.send(msg); */
 
                 return newUser;
 
@@ -101,24 +101,24 @@ module.exports = function MarchandService() {
             }
             return Marchand.destroy({ where: filters });
         },
-        
+
         findByToken: async function (token) {
             return Marchand.findOne({ where: { token } });
         },
         login: async (email, password) => {
             const marchand = await Marchand.findOne({ where: { email } });
             if (!marchand) {
-              throw new ValidationError({
-                email: "Invalid credentials",
-              });
+                throw new ValidationError({
+                    email: "Invalid credentials",
+                });
             }
             const isPasswordValid = await marchand.isPasswordValid(password);
             if (!isPasswordValid) {
-              throw new ValidationError({
-                email: "Invalid credentials",
-              });
+                throw new ValidationError({
+                    email: "Invalid credentials",
+                });
             }
-      
+
             return marchand;
         },
     };

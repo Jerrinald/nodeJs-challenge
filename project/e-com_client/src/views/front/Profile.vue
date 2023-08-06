@@ -59,7 +59,7 @@ async function updateProfile() {
         : { ...editedUser.value, password: undefined };
 
     // Appeler votre API backend pour mettre à jour les informations de l'utilisateur
-    const response = await fetch(`http://127.0.0.1:3100/users/${user.value.id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/users/${user.value.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

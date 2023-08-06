@@ -1,8 +1,8 @@
-const { Transaction } = require("../db");
+const { Payment } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
 
-module.exports = function TransactionService() {
+module.exports = function PaymentService() {
     return {
         findAll: async function (filters, options) {
             let dbOptions = {
@@ -15,21 +15,14 @@ module.exports = function TransactionService() {
                 dbOptions.limit = options.limit;
                 dbOptions.offset = options.offset;
             }
-            return Transaction.findAll(dbOptions);
+            return Payment.findAll(dbOptions);
         },
-
         findOne: async function (filters) {
-            return Transaction.findOne({ where: filters });
+            return Payment.findOne({ where: filters });
         },
-
-        findAllByMerchantId: async function (marchandId) {
-            return Transaction.findAll({ where: { marchandId } });
-        },
-
         create: async function (data) {
             try {
-                data.url_payment = '/link-payment'
-                return await Transaction.create(data);
+                return await Payment.create(data);
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -37,15 +30,11 @@ module.exports = function TransactionService() {
                 throw e;
             }
         },
-
         replace: async function (filters, newData) {
             try {
-                if (!filters || Object.keys(filters).length === 0) {
-                    throw new Error("Invalid filters.");
-                }
                 const nbDeleted = await this.delete(filters);
-                const transaction = await this.create(newData);
-                return [[transaction, nbDeleted === 0]];
+                const payment = await this.create(newData);
+                return [[payment, nbDeleted === 0]];
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -53,19 +42,17 @@ module.exports = function TransactionService() {
                 throw e;
             }
         },
-
-        update: async function (filters, newData) {
+        update: async (filters, newData) => {
             try {
-                if (!filters || Object.keys(filters).length === 0) {
-                    throw new Error("Invalid filters.");
-                }
-                const [nbUpdated, transactions] = await Transaction.update(newData, {
+                // Ajoutez ici des validations spécifiques pour les données de paiement si nécessaire
+
+                const [nbUpdated, payments] = await Payment.update(newData, {
                     where: filters,
                     returning: true,
                     individualHooks: true,
                 });
 
-                return transactions;
+                return payments;
             } catch (e) {
                 if (e instanceof Sequelize.ValidationError) {
                     throw ValidationError.fromSequelizeValidationError(e);
@@ -73,12 +60,8 @@ module.exports = function TransactionService() {
                 throw e;
             }
         },
-
-        delete: async function (filters) {
-            if (!filters || Object.keys(filters).length === 0) {
-                throw new Error("Invalid filters.");
-            }
-            return Transaction.destroy({ where: filters });
+        delete: async (filters) => {
+            return Payment.destroy({ where: filters });
         },
     };
 };

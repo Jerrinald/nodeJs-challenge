@@ -10,9 +10,7 @@
             </div>
             <div class="marchant-container">
                 <h2>Marchands</h2>
-                <div class="flex aic gap-20">
                     <Dashboard />
-                </div>
             </div>
             <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum
                 sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione
@@ -27,7 +25,6 @@ import Dashboard from '../front/Dashboard.vue';
 <style scoped>
 .dashboard {
     background-color: #9094A2;
-    height: 100%;
 }
 
 .block-container {

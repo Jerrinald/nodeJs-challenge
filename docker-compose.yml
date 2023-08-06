@@ -63,6 +63,42 @@ services:
       - ./${CLASS}/ecom-api:/usr/src/app
     command: npm run dev
 
+  psp:
+    container_name: psp
+    image: node
+    ports:
+      - 3200:3000
+    working_dir: /usr/src/app
+    volumes:
+      - ./${CLASS}/psp:/usr/src/app
+    command: node run server.js
+
+
+ 
+  client:
+    container_name: client
+    build:
+      context: ./project/client
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the "./project/client" directory
+    ports:
+      - 80:80
+    working_dir: /usr/src/app
+    volumes:
+      - ./project/client:/usr/src/app
+
+  e-com_client:
+    container_name: e-com_client
+    build:
+      context: ./project/e-com_client
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the "./project/client" directory
+    ports:
+      - 81:80
+    working_dir: /usr/src/app
+    volumes:
+      - ./project/e-com_client:/usr/src/app
+
+
+
 volumes:
   db-data: {}
   pg-data: {}

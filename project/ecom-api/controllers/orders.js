@@ -78,6 +78,16 @@ module.exports = function Controller(Service, options = {}) {
           next(err);
         }
       },
+      searchOrders: async (req, res, next) => {
+        const { searchQuery } = req.query;
+        try {
+          // Appeler la méthode du service pour effectuer la recherche dans la base de données
+          const results = await Service.searchOrders(searchQuery);
+          res.json(results);
+        } catch (err) {
+          next(err);
+        }
+      },
     };
   };
   

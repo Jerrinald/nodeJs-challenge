@@ -11,7 +11,10 @@ module.exports = (connection) => {
                 allowNull: true,
                 defaultValue: "1",
             },
-
+            marchandId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
             amount: {
                 type: DataTypes.FLOAT,
                 allowNull: true,

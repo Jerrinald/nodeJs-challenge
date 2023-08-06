@@ -22,12 +22,13 @@
       </tbody>
     </table>
 
-    <h2>Rechercher une commande par numéro de commande</h2>
-    <form @submit.prevent="searchByNumeroCommande">
-      <label for="numeroCommande">Numéro de Commande:</label>
-      <input type="text" id="numeroCommande" v-model="numeroCommande" required>
+    <h2>Rechercher une <commande></commande></h2>
+    <form @submit.prevent="searchOrders">
+      <label for="searchQuery">Recherche:</label>
+      <input type="text" id="searchQuery" v-model="searchQuery" @input="onSearchInput" required>
       <button type="submit">Rechercher</button>
     </form>
+
     <div v-if="searchedOrders.length > 0">
       <h3>Résultats de la recherche</h3>
       <table>
@@ -41,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="order in searchedOrders" :key="order.id">
+        <tr v-for="order in searchedOrders" :key="order._id">
           <td>{{ order.numeroCommande }}</td>
           <td>{{ order.numeroProduit }}</td>
           <td>{{ order.prixProduit }}</td>
@@ -80,7 +81,7 @@ const getAllOrders = async () => {
       return;
     }
 
-    const response = await fetch(`http://127.0.0.1:3100/orders`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -98,21 +99,44 @@ const getAllOrders = async () => {
   }
 };
 
-// Propriété réactive pour stocker le numéro de commande recherché
-const numeroCommande = ref('');
-
-// Fonction pour rechercher les commandes par numéro de commande
-const searchByNumeroCommande = async () => {
+const searchOrders = async () => {
   try {
-    const response = await fetch(`http://localhost:3100/orders?numeroCommande=${numeroCommande.value}`);
+    const token = localStorage.getItem('token'); // Récupérer le token JWT du local storage
+
+    // Vérifier si le token existe
+    if (!token) {
+      console.error('Token non trouvé dans le local storage. Veuillez vous connecter.');
+      return;
+    }
+
+    // Code pour effectuer la recherche en fonction de la saisie utilisateur
+    const response = await fetch(`http://localhost:3100/orders?searchQuery=${searchQuery.value}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Ajouter le token JWT à l'en-tête de la requête
+      },
+    });
+
     if (response.ok) {
       const data = await response.json();
       searchedOrders.value = data;
     } else {
-      console.error('Erreur lors de la recherche des commandes par numéro de commande:', response.statusText);
+      console.error('Erreur lors de la recherche des commandes:', response.statusText);
     }
   } catch (error) {
-    console.error('Erreur lors de la recherche des commandes par numéro de commande:', error);
+    console.error('Erreur lors de la recherche des commandes:', error);
+  }
+};
+
+const onSearchInput = async () => {
+  // Vérifier si la saisie de recherche a atteint un certain nombre de caractères (ici, 1 caractère)
+  if (searchQuery.value.length >= 1) {
+    // Exécuter la recherche dès que l'utilisateur tape un caractère
+    searchOrders();
+  } else {
+    // Réinitialiser les résultats de recherche si la saisie est vide
+    searchedOrders.value = [];
   }
 };
 </script>
