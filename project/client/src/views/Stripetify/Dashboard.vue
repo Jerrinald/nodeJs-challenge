@@ -13,10 +13,10 @@
                     <Dashboard />
             </div> -->
 
-            <div class="marchant-container">
+            <!-- <div class="marchant-container">
                 <h2>Marchands</h2>
                     <Profile />
-            </div>
+            </div> -->
             <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum
                 sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione
                 quasi animi?</div>

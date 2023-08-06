@@ -11,6 +11,7 @@ import logo from "../assets/logo1.png"
             <a href="#">Paiements</a>
             <a href="#">Balance</a>
             <a href="#">Marchants</a>
+            <a href="/dashboard/profile">Mon profile</a>
         </div>
     </div>
 </template>

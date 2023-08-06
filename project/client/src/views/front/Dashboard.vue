@@ -1,24 +1,40 @@
 <template>
-    <!-- <h2>Marchands</h2> -->
-    <div v-if="!merchants.length">Aucun marchand</div>
-    <div v-else class="merchant-grid">
-      <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item">
-        <div class="merchant-info">
-          <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
-          <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
-          <p><strong>Email:</strong> {{ merchant.email }}</p>
-          <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
-          <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
-          <p><strong>Devise:</strong> {{ merchant.devise }}</p>
-          <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
-          <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
-          <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
+  <div class="dashboard flex">
+        <Aside />
+        <div class="block-container flex fdc gap-20">
+            <div class="flex jcsb">
+                <input type="search" placeholder="Rechercher...">
+                <div class="flex aic gap-10">
+                    <a href="#">Déconnexion</a>
+                </div>
+            </div>
+            <div class="marchant-container">
+                <h2>Marchands</h2>
+                <div v-if="!merchants.length">Aucun marchand</div>
+                <div v-else class="merchant-grid">
+                  <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item">
+                    <div class="merchant-info">
+                      <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
+                      <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
+                      <p><strong>Email:</strong> {{ merchant.email }}</p>
+                      <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
+                      <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
+                      <p><strong>Devise:</strong> {{ merchant.devise }}</p>
+                      <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
+                      <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
+                      <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
+                    </div>
+                    <div class="merchant-actions">
+                      <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
+                      <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum
+                sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione
+                quasi animi?</div>
         </div>
-        <div class="merchant-actions">
-          <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
-          <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
-        </div>
-      </div>
     </div>
 </template>
 
@@ -146,6 +162,26 @@ button:hover {
 
 button:active {
   opacity: 0.8;
+}
+
+.dashboard {
+    background-color: #9094A2;
+}
+
+.block-container {
+    padding: 20px;
+}
+
+input {
+    width: 300px;
+}
+
+.block-container .block {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    height: 350px;
+    color: #9094A2;
+    padding: 20px;
 }
 
 </style>
