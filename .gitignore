@@ -4,7 +4,3 @@ node_modules
 project/serveur/node_modules
 project/client/node_modules
 project/ecom-api/Images/
-project/client/.env.development
-project/client/.env.production
-project/e-com_client/.env.development
-project/e-com_client/.env.production
