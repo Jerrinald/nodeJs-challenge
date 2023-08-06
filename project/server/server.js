@@ -12,6 +12,7 @@ const checkFormat = require("./middlewares/check-format");
 const errorHandler = require("./middlewares/error-handler");
 const checkAuth = require("./middlewares/check-auth");
 const checkCurrentUser = require("./middlewares/check-current-user");
+const operationRouter = require("./routes/operation");
 
 app.use(cors());
 
@@ -29,6 +30,8 @@ app.use("/marchands", checkAuth, MarchandRouter);
 app.use("/transactions", TransactionRouter);
 
 app.use("/payment", PaymentRouter);
+
+app.use("/operations", operationRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
