@@ -50,12 +50,7 @@
               </div>
               <input type="text" id="KBIS" v-model="user.KBIS" required>
             </div>
-            <div>
-              <div>
-                <label for="token">Token:</label>
-              </div>
-              <input type="text" id="token" v-model="user.token" required>
-            </div>
+            
            </div>
             
            <div class="flex gap-10 jcc">

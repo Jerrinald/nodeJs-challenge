@@ -1,6 +1,19 @@
 <template>
   <div class="page">
-    <h1 class="title">Mon profil</h1>
+    <h1>Bienvenue {{ marchand.lastname + " " + marchand.firstname }}</h1>
+    <h2 class="title">Mon profil</h2>
+
+    <div class="merchant-info">
+      <p><strong>Nom:</strong> {{ marchand.firstname }}</p>
+      <p><strong>Prénom:</strong> {{ marchand.lastname }}</p>
+      <p><strong>Company:</strong> {{ marchand.companyName }}</p>
+      <p><strong>Email:</strong> {{ marchand.email }}</p>
+      <p><strong>KBIS:</strong> {{ marchand.KBIS }}</p>
+      <p><strong>Numéro:</strong> {{ marchand.numero }}</p>
+      <p><strong>Devise:</strong> {{ marchand.devise }}</p>
+      <p><strong>URL Confirmation:</strong> {{ marchand.url_confirmation }}</p>
+      <p><strong>URL Annulation:</strong> {{ marchand.url_annulation }}</p>
+    </div>
   <section class="page-container">
     <h2>Mes transactions</h2>
     <div v-if="!transactions.length">Aucune transaction</div>

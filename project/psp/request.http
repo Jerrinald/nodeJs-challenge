@@ -1,0 +1,64 @@
+GET http://localhost:3000/
+
+###
+POST http://localhost:3000/
+
+{
+    "name": "John Doe",
+    "email": "t@t.com"
+}
+
+### Users
+GET http://localhost:3000/users
+###
+GET http://localhost:3000/users/213453456
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "t@test.com",
+    "password": "123456"
+}
+###
+GET http://localhost:3000/users/1
+###
+PUT http://localhost:3000/users/24
+Content-Type: application/json
+
+{
+    "firstname": "John Doe",
+    "email": "t2@t.com",
+    "password": "123456"
+}
+###
+PATCH http://localhost:3000/users/3
+Content-Type: application/json
+
+{
+    "lastname": "doe"
+}
+###
+DELETE http://localhost:3000/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZnVsbE5hbWUiOiJudWxsIG51bGwiLCJpYXQiOjE2ODc1MzczOTYsImV4cCI6MTY4NzU0MDk5Nn0.fai0ZvnkcvtyRywQXOKsZiarVbJ3aaBXjL7R1P6n248
+
+############
+### Auth ###
+############
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "t@test123546.com",
+    "password": "123456"
+}
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "t@test123546.com",
+    "password": "123456"
+}

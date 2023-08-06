@@ -6,10 +6,12 @@ module.exports = function SecurityController(MarchandService) {
     login: async (req, res, next) => {
       try {
         const { email, password } = req.body;
+        console.log(email, password);
         const marchand = await MarchandService.login(email, password);
         if (marchand) {
+          console.log(marchand);
           if (!marchand.active) {
-            return next(new UnauthorizedError());
+            throw new UnauthorizedError("Account not activated.");
           }
         }
         const token = jwt.sign(
