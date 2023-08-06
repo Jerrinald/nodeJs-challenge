@@ -13,10 +13,10 @@
         </div>
         <div class="register">
           <form @submit.prevent="registerUser">
-           <div class="flex gap-10 jcc">
-            <div>
+            <div class="flex gap-10 jcc">
               <div>
-                <label for="firstname">Firstname:</label>
+                <div>
+                  <label for="firstname">Firstname:</label>
                 </div>
                 <input type="text" id="firstname" v-model="user.firstname" required>
               </div>
@@ -27,71 +27,71 @@
                 </div>
                 <input type="text" id="lastname" v-model="user.lastname" required>
               </div>
-           </div>
-           <div class="flex gap-10 jcc">
-            <div>
+            </div>
+            <div class="flex gap-10 jcc">
               <div>
+                <div>
 
-                <label for="email">Email:</label>
+                  <label for="email">Email:</label>
+                </div>
+                <input type="email" id="email" v-model="user.email" required>
               </div>
-              <input type="email" id="email" v-model="user.email" required>
-            </div>
-            <div>
               <div>
-                <label for="companyName">Company Name:</label>
+                <div>
+                  <label for="companyName">Company Name:</label>
+                </div>
+                <input type="text" id="companyName" v-model="user.companyName" required>
               </div>
-              <input type="text" id="companyName" v-model="user.companyName" required>
             </div>
-           </div>
-           <div class="flex gap-10 jcc">
-            <div>
+            <div class="flex gap-10 jcc">
               <div>
-                <label for="KBIS">KBIS:</label>
+                <div>
+                  <label for="KBIS">KBIS:</label>
+                </div>
+                <input type="text" id="KBIS" v-model="user.KBIS" required>
               </div>
-              <input type="text" id="KBIS" v-model="user.KBIS" required>
+
             </div>
-            
-           </div>
-            
-           <div class="flex gap-10 jcc">
-            <div>
+
+            <div class="flex gap-10 jcc">
               <div>
-                <label for="numero">Numero:</label>
+                <div>
+                  <label for="numero">Numero1:</label>
+                </div>
+                <input type="text" id="numero" v-model="user.numero" required>
               </div>
-              <input type="text" id="numero" v-model="user.numero" required>
-            </div>
-            <div>
               <div>
-                <label for="url_confirmation">URL Confirmation:</label>
+                <div>
+                  <label for="url_confirmation">URL Confirmation:</label>
+                </div>
+                <input type="text" id="url_confirmation" v-model="user.url_confirmation" required>
               </div>
-              <input type="text" id="url_confirmation" v-model="user.url_confirmation" required>
             </div>
-           </div>
-            
-           <div class="flex gap-10 jcc">
-            <div>
+
+            <div class="flex gap-10 jcc">
               <div>
-                <label for="url_annulation">URL Annulation:</label>
+                <div>
+                  <label for="url_annulation">URL Annulation:</label>
+                </div>
+                <input type="text" id="url_annulation" v-model="user.url_annulation" required>
               </div>
-              <input type="text" id="url_annulation" v-model="user.url_annulation" required>
-            </div>
-            <div>
               <div>
-                <label for="devise">Devise:</label>
+                <div>
+                  <label for="devise">Devise:</label>
+                </div>
+                <input type="text" id="devise" v-model="user.devise" required>
               </div>
-              <input type="text" id="devise" v-model="user.devise" required>
             </div>
-           </div>
-            
-           <div class="flex gap-10 jcc">
-            <div>
+
+            <div class="flex gap-10 jcc">
               <div>
-                <label for="password">Password:</label>
+                <div>
+                  <label for="password">Password:</label>
+                </div>
+                <input type="password" id="password" v-model="user.password" required>
               </div>
-              <input type="password" id="password" v-model="user.password" required>
             </div>
-           </div>
-            
+
             <div class="flex jcc">
               <button class="btn-primary" type="submit">Valider</button>
             </div>

@@ -1,25 +1,25 @@
 <template>
-    <!-- <h2>Marchands</h2> -->
-    <div v-if="!merchants.length">Aucun marchand</div>
-    <div v-else class="merchant-grid">
-      <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item">
-        <div class="merchant-info">
-          <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
-          <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
-          <p><strong>Email:</strong> {{ merchant.email }}</p>
-          <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
-          <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
-          <p><strong>Devise:</strong> {{ merchant.devise }}</p>
-          <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
-          <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
-          <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
-        </div>
-        <div class="merchant-actions">
-          <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
-          <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
-        </div>
+  <!-- <h2>Marchands</h2> -->
+  <div v-if="!merchants.length">Aucun marchand</div>
+  <div v-else class="merchant-grid">
+    <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item">
+      <div class="merchant-info">
+        <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
+        <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
+        <p><strong>Email:</strong> {{ merchant.email }}</p>
+        <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
+        <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
+        <p><strong>Devise:</strong> {{ merchant.devise }}</p>
+        <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
+        <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
+        <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
+      </div>
+      <div class="merchant-actions">
+        <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
+        <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -148,4 +148,9 @@ button:active {
   opacity: 0.8;
 }
 
+p {
+  color: #000000;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 </style>
