@@ -8,9 +8,14 @@
                     <a href="#">Déconnexion</a>
                 </div>
             </div>
-            <div class="marchant-container">
+            <!-- <div class="marchant-container">
                 <h2>Marchands</h2>
                     <Dashboard />
+            </div> -->
+
+            <div class="marchant-container">
+                <h2>Marchands</h2>
+                    <Profile />
             </div>
             <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit fugiat placeat rerum
                 sapiente amet, quaerat beatae modi illum officia nam quis? Ea alias, iste doloribus quas temporibus ratione
@@ -21,6 +26,7 @@
 <script setup>
 import Aside from '../../components/Aside.vue'
 import Dashboard from '../front/Dashboard.vue';
+import Profile from '../front/Profile.vue';
 </script>
 <style scoped>
 .dashboard {
