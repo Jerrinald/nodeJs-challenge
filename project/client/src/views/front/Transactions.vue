@@ -10,6 +10,7 @@
                     <th>Montant</th>
                     <th>Statut</th>
                     <th>Date de Création</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +21,12 @@
                     <td>{{ transaction.amount }}</td>
                     <td>{{ transaction.status }}</td>
                     <td>{{ formatDate(transaction.createdAt) }}</td>
+                    <td>
+                        <button @click="updateStatus(transaction, 'annuler')"
+                            :disabled="transaction.status === 'annuler'">Annuler</button>
+                        <button @click="updateStatus(transaction, 'confirmer')"
+                            :disabled="transaction.status === 'confirmer'">Confirmer</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -59,6 +66,36 @@ const getAllTransactions = async () => {
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des transactions:', error);
+    }
+};
+
+// Function to update the status of a transaction
+const updateStatus = async (transaction, newStatus) => {
+    try {
+        const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
+
+        // Check if the token exists
+        /*if (!token) {
+            console.error('Token non trouvé dans le local storage. Veuillez vous connecter.');
+            return;
+        }*/
+
+        const response = await fetch(`http://localhost:3000/transactions/${transaction.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`, // Add JWT token to the request header
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.ok) {
+            transaction.status = newStatus; // Update the status in the local data
+        } else {
+            console.error('Erreur lors de la mise à jour du statut:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du statut:', error);
     }
 };
 
@@ -149,6 +186,11 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 button:hover {
