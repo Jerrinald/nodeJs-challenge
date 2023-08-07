@@ -10,6 +10,7 @@
                     <th>Montant</th>
                     <th>Statut</th>
                     <th>Date de Création</th>
+                    <th>Nom du Client</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -21,6 +22,7 @@
                     <td>{{ transaction.amount }}</td>
                     <td>{{ transaction.status }}</td>
                     <td>{{ formatDate(transaction.createdAt) }}</td>
+                    <td>{{ transaction.clientName }}</td>
                     <td>
                         <button @click="updateStatus(transaction, 'annuler')"
                             :disabled="transaction.status === 'annuler'">Annuler</button>
@@ -84,7 +86,7 @@ const updateStatus = async (transaction, newStatus) => {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                //'Authorization': `Bearer ${token}`, // Add JWT token to the request header
+                'Authorization': `Bearer ${token}`, // Add JWT token to the request header
             },
             body: JSON.stringify({ status: newStatus }),
         });
@@ -147,54 +149,6 @@ onMounted(() => {
 </script>
   
 <style scoped>
-.transactions {
-    margin: 20px;
-}
-
-h2 {
-    margin-bottom: 10px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ccc;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-form {
-    margin-top: 20px;
-}
-
-label {
-    margin-right: 5px;
-}
-
-input[type="text"] {
-    padding: 5px;
-}
-
-button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
+/* Your CSS styles here */
 </style>
   

@@ -14,7 +14,17 @@ module.exports = (connection) => {
             marchandId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
-                unique: true,
+
+            },
+
+            clientId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+
+            },
+            clientName: {
+                type: DataTypes.STRING,
+                allowNull: true,
             },
             amount: {
                 type: DataTypes.FLOAT,
