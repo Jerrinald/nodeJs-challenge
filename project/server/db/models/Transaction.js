@@ -1,7 +1,7 @@
 module.exports = (connection) => {
     const { DataTypes, Model } = require("sequelize");
-  
-    class Transaction extends Model {}
+
+    class Transaction extends Model { }
 
     Transaction.init(
         {
@@ -14,6 +14,7 @@ module.exports = (connection) => {
             marchandId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
+                unique: true,
             },
             amount: {
                 type: DataTypes.FLOAT,

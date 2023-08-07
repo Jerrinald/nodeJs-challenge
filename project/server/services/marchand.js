@@ -105,6 +105,7 @@ module.exports = function MarchandService() {
         findByToken: async function (token) {
             return Marchand.findOne({ where: { token } });
         },
+
         login: async (email, password, clientID, clientSecret) => {
 
             //IF CLIENT ID AND CLIENT SECRET ARE NOT NULL
