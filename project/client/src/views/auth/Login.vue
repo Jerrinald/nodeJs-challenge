@@ -12,8 +12,10 @@
       </div>
       <div class="modal-content">
         <div class="form-selection flex jcc">
-          <button @click="showMarchandForm" class="form-selection-btn marchand" :class="{ active: selectedForm === 'marchand' }">Marchand</button>
-          <button @click="showSimpleUserForm" class="form-selection-btn simple-user" :class="{ active: selectedForm === 'simpleUser' }">Simple User</button>
+          <button @click="showMarchandForm" class="form-selection-btn marchand"
+            :class="{ active: selectedForm === 'marchand' }">Marchand</button>
+          <button @click="showSimpleUserForm" class="form-selection-btn simple-user"
+            :class="{ active: selectedForm === 'simpleUser' }">Simple User</button>
         </div>
         <div class="login-form" v-if="selectedForm === 'marchand'">
           <form @submit.prevent="loginUser" class="flex fdc gap-15">
@@ -120,7 +122,7 @@ async function loginUser() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.marchand);
 
-      router.push('/profile'); 
+      router.push('/profile');
     } else {
       console.error('Login failed');
     }
@@ -152,7 +154,7 @@ async function loginUserSimple() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.user);
 
-      router.push('/'); 
+      router.push('/');
     } else {
       console.error('Login failed');
     }
@@ -165,7 +167,7 @@ async function loginUserSimple() {
 <style scoped>
 /* Vos styles CSS ici */
 .modal {
-  color: #FFFFFF;
+  color: #000000;
   position: fixed;
   top: 0;
   left: 0;
