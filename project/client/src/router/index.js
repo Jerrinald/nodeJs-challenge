@@ -9,6 +9,7 @@ import Dashboard from '../views/Stripetify/Dashboard.vue';
 import Profile from '../views/front/Profile.vue';
 import store from '../store';
 import Transaction from '../views/front/Transactions.vue';
+import Operation from '../views/front/Operations.vue';
 
 const routes = [
     {
@@ -46,6 +47,12 @@ const routes = [
         path: '/transactions',
         name: 'transactions',
         component: Transaction,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
+    {
+        path: '/operations',
+        name: 'operations',
+        component: Operation,
         meta: { requiresAuth: false, requiresAdmin: false },
     }
 ];
