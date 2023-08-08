@@ -5,6 +5,12 @@ import IconClose from './icons/IconClose.vue'
 import cart from '../assets/images/carte.jpg'
 
 const openModal = ref(false);
+
+const props = defineProps({
+  total: {
+    type: Number
+  }
+})
 // const cartItems = ref([]);
 
 
@@ -30,7 +36,7 @@ const openModal = ref(false);
           <slot name="title">Paiement par carte bancaire</slot>
         </div>
         <div class="modal-content text-center"><img :src="cart" alt="" srcset=""></div>
-        <div class="text-center">Total à payer: <strong>175.33 €</strong></div>
+        <div class="text-center">Total à payer: <strong>{{ props.total }} €</strong></div>
       </div>
       <div class="modal-actions">
         <slot name="actions" :closeModal="() => openModal = false">
