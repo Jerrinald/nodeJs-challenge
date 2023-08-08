@@ -6,6 +6,7 @@ import IconDelete from '../../components/icons/IconDelete.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import moulinex from '../../assets/images/moulinex.jpg'
 
+const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
 const cartItems = ref([]);
 let token = null; // Declare the token variable
@@ -44,6 +45,7 @@ function removeFromCart(item) {
     // updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
     saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque retrait du panier
   }
+  localStorage.setItem('cartItems', cartItems.value.length);
 }
 
 function addArticle(product){
@@ -162,7 +164,7 @@ async function validateCart() {
           <tr v-for="card in cartItemsLength" :key="card.id">
             <td>
               <div class="flex aic gap-20">
-                <div><img :src="moulinex" alt="" srcset=""></div>
+                <div><img :src="apiEcomUrl + '/' + card.image" :alt="card.name" srcset=""></div>
                 <div class="product-name">{{ card.name }}</div>
               </div>
             </td>
@@ -175,7 +177,7 @@ async function validateCart() {
               </div>
             </td>
             <td>
-              <div class="btn-delete"><IconDelete /></div>
+              <div class="btn-delete" @click="removeFromCart(card)"><IconDelete /></div>
             </td>
           </tr>
         </tbody>

@@ -1,6 +1,22 @@
 <template>
   <div class="page">
-    <h1 class="title">Mon profil</h1>
+    <h1>Bienvenue {{ marchand.lastname + " " + marchand.firstname }}</h1>
+    <h2 class="title">Mon profil</h2>
+
+    <div class="merchant-info">
+      <p><strong>Nom:</strong> {{ marchand.firstname }}</p>
+      <p><strong>Prénom:</strong> {{ marchand.lastname }}</p>
+      <p><strong>Company:</strong> {{ marchand.companyName }}</p>
+      <p><strong>Email:</strong> {{ marchand.email }}</p>
+      <p><strong>KBIS:</strong> {{ marchand.KBIS }}</p>
+      <p><strong>Numéro:</strong> {{ marchand.numero }}</p>
+      <p><strong>Devise:</strong> {{ marchand.devise }}</p>
+      <p><strong>URL Confirmation:</strong> {{ marchand.url_confirmation }}</p>
+      <p><strong>URL Annulation:</strong> {{ marchand.url_annulation }}</p>
+      <p><strong>jeton ID:</strong> {{ marchand.clientID }}</p>
+      <p><strong>jeton secret:</strong> {{ marchand.clientSecret }}</p>
+      <button @click="handleActivateMerchant">Regénérer Token</button>
+    </div>
   <section class="page-container">
     <h2>Mes transactions</h2>
     <div v-if="!transactions.length">Aucune transaction</div>
@@ -26,7 +42,88 @@
   const token = localStorage.getItem('token');
 
   const transactions = ref([]);
-  const marchand = store.state.user
+  const marchand = ref(null); // Initialize as null
+
+  async function activateMerchant(merchant) {
+  try {
+    const randomClient = generateRandomClient();
+
+    // Prepare the data for the PATCH request
+    const newData = {
+      clientID: randomClient.clientId,
+      clientSecret: randomClient.clientSecret,
+    };
+
+    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands/${merchant.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(newData),
+    });
+
+    if (response.ok) {
+      // Return the updated merchant data
+      return {
+        ...merchant, // Include existing merchant data
+        clientID: newData.clientID,
+        clientSecret: newData.clientSecret,
+      };
+    } else {
+      throw new Error('Failed to activate merchant');
+    }
+  } catch (error) {
+    throw new Error('An error occurred:', error);
+  }
+}
+
+const handleActivateMerchant = async () => {
+  try {
+    if (marchand.value) {
+      const updatedMerchant = await activateMerchant(marchand.value);
+
+      // Update the local marchand object with the new values
+      marchand.value.clientID = updatedMerchant.clientID;
+      marchand.value.clientSecret = updatedMerchant.clientSecret;
+    }
+  } catch (error) {
+    console.error('An error occurred during activation:', error);
+    // Handle the error or show a message to the user
+  }
+};
+
+function generateRandomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
+
+function generateRandomClient() {
+  const clientIdLength = 16; // Longueur du client ID souhaitée
+  const clientSecretLength = 32; // Longueur du client secret souhaitée
+
+  const clientId = generateRandomString(clientIdLength);
+  const clientSecret = generateRandomString(clientSecretLength);
+
+  return {
+    clientId: clientId,
+    clientSecret: clientSecret
+  };
+}
+
+// ... other code ...
+
+onMounted(() => {
+  marchand.value = store.state.user; // Initialize marchand object
+  fetchTransactionsByIdmarchand();
+});
   
   
   // Fetch merchants from the API

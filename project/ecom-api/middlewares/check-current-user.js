@@ -2,6 +2,11 @@ const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 
 module.exports = (req, res, next) => {
+  if (req.originalUrl === '/products') {
+    if (req.method === 'GET') {
+      return next();
+    }
+  }
   const [type, token] = req.headers.authorization.split(" ");
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);

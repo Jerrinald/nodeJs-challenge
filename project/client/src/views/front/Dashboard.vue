@@ -58,9 +58,16 @@ async function fetchMerchants() {
 // Function to activate a merchant's account
 async function activateMerchant(merchant) {
   try {
+
+    const randomClient = generateRandomClient();
+    console.log('Client ID:', randomClient.clientId);
+    console.log('Client Secret:', randomClient.clientSecret);
+
     // Prepare the data for the PATCH request
     const newData = {
       active: true, // Set the 'active' field to true to activate the account
+      clientID : randomClient.clientId,
+      clientSecret : randomClient.clientSecret,
     };
 
     // Call the API endpoint to activate the merchant's account
@@ -84,6 +91,31 @@ async function activateMerchant(merchant) {
     console.error('An error occurred:', error);
     // Handle the error or show a message to the user
   }
+}
+
+function generateRandomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
+
+function generateRandomClient() {
+  const clientIdLength = 16; // Longueur du client ID souhaitée
+  const clientSecretLength = 32; // Longueur du client secret souhaitée
+
+  const clientId = generateRandomString(clientIdLength);
+  const clientSecret = generateRandomString(clientSecretLength);
+
+  return {
+    clientId: clientId,
+    clientSecret: clientSecret
+  };
 }
 
 // Function to edit a merchant (implement this function according to your requirements)
