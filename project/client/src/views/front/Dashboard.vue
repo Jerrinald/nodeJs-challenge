@@ -40,6 +40,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import Aside from '../../components/Aside.vue'
 import { useRouter } from 'vue-router';
 
 const merchants = ref([]);

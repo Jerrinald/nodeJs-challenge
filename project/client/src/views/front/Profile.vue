@@ -24,7 +24,7 @@
           <p><strong>URL Confirmation:</strong> {{ marchand.url_confirmation }}</p>
           <p><strong>URL Annulation:</strong> {{ marchand.url_annulation }}</p>
         </div>
-        <section class="page-container">
+        <section class="flex fdc aic jcc">
           <h2>Mes transactions</h2>
           <div v-if="!transactions.length">Aucune transaction</div>
           <div v-else class="transaction-grid">
@@ -125,14 +125,13 @@ onMounted(() => {
 <style scoped>
 /* Your styles CSS here */
 
-.page {
+/* .page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  /* Optionally set the height to 100vh to make the container fill the entire viewport */
-}
+} */
 
 .title {
   margin-bottom: 20px;
@@ -140,14 +139,13 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.page-container {
+/* .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  /* Optionally set the height to 100vh to make the container fill the entire viewport */
-}
+} */
 
 .transaction-grid {
   display: grid;
