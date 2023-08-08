@@ -48,7 +48,8 @@ const formatCVV = () => {
 };
 
 const submitForm = () => {
-  console.log(formData.value);
+  const jsonFormData = JSON.stringify(formData.value);
+  console.log(jsonFormData);
 };
 
 </script>
