@@ -1,9 +1,9 @@
 const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
-const mongoURI = 'mongodb://root:password@mongo:27017/app'; // Remplacez par votre URI de connexion MongoDB
+/*const mongoURI = 'mongodb://root:password@mongo:27017/app'; // Remplacez par votre URI de connexion MongoDB
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema({
 });
 
 // Créer le modèle Mongoose basé sur le schéma
-const OrderModel = mongoose.model('Order', orderSchema);
+const OrderModel = mongoose.model('Order', orderSchema);*/
 
 module.exports = function OrderService() {
     return {
@@ -55,9 +55,9 @@ module.exports = function OrderService() {
                 const postgresOrder = await Order.create(data);
 
                 // Insertion dans MongoDB
-                const order = new OrderModel(data);
+                /*const order = new OrderModel(data);
                 const mongoResult = await order.save();
-                console.log('Order inserted into MongoDB:', mongoResult._id);
+                console.log('Order inserted into MongoDB:', mongoResult._id);*/
 
                 return postgresOrder;
             } catch (e) {

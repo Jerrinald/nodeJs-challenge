@@ -8,12 +8,12 @@
                     <a href="#">Déconnexion</a>
                 </div>
             </div>
-            <!-- <div class="marchant-container">
+            <div v-if="store.state.user.role === 'admin'" class="marchant-container">
                 <h2>Marchands</h2>
                     <Dashboard />
-            </div> -->
+            </div>
 
-            <div class="marchant-container">
+            <div v-else class="marchant-container">
                 <h2>Marchands</h2>
                     <Profile />
             </div>
@@ -27,6 +27,7 @@
 import Aside from '../../components/Aside.vue'
 import Dashboard from '../front/Dashboard.vue';
 import Profile from '../front/Profile.vue';
+import store from "../../store";
 </script>
 <style scoped>
 .dashboard {
