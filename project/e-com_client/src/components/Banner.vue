@@ -7,9 +7,6 @@ import BannerItem from './BannerItem.vue'
           <div class="banner-header">Top deal</div>
           <div class="flex jscb gap-10">
             <BannerItem />
-            <BannerItem />
-            <BannerItem />
-            <BannerItem />
           </div>
         </section>
 </template>

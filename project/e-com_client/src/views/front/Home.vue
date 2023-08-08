@@ -29,7 +29,7 @@
     <main class="flex fdc gap-50 container">
       <Banner />
 
-     <Products />
+     <!-- <Products /> -->
       <Testimony />
     </main>
     <Footer />
