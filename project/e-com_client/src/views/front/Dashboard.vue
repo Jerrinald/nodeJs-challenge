@@ -8,6 +8,7 @@
                     <li><a href="/products_management">Product Management </a></li>
                     <li><a href="/commandes-management">Commandes </a></li>
                     <li><a href="/products_management">historiques </a></li>
+                    <li><a href="/credentials">Credentials </a></li>
                 </ol>
             </div>
         </main>

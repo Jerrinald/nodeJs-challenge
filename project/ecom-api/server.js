@@ -4,6 +4,7 @@ const UserRouter = require("./routes/user");
 const ProductRouter = require("./routes/product");
 const OrderRouter = require("./routes/order");
 const SecurityRouter = require("./routes/security");
+const credentialRouter = require("./routes/credential")
 const ValidationError = require("./errors/ValidationError");
 const cors = require("cors");
 const checkFormat = require("./middlewares/check-format");
@@ -19,12 +20,12 @@ mongoose.connect('mongodb://root:password@mongo:27017/app', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-    .then(() => {
-      console.log('Connecté à MongoDB avec succès');
-    })
-    .catch((err) => {
-      console.error('Erreur lors de la connexion à MongoDB :', err);
-    });
+  .then(() => {
+    console.log('Connecté à MongoDB avec succès');
+  })
+  .catch((err) => {
+    console.error('Erreur lors de la connexion à MongoDB :', err);
+  });
 
 app.use(cors());
 
@@ -37,7 +38,9 @@ app.use("/users", checkAuth, UserRouter); // protect only this route
 
 app.use("/products", checkAuthProduct, checkCurrentUser, retrieveImage, ProductRouter);
 
-app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
+app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
+
+app.use("/credentials", credentialRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

@@ -14,6 +14,7 @@ import Dashboard from '../views/front/Dashboard.vue';
 import ProductsManagement from '../views/front/ProductsManagement.vue';
 import CommandesManagement from '../views/front/CommandesManagement.vue';
 import store from '../store';
+import credentials from '../views/front/credentials.vue'
 
 const routes = [
     {
@@ -44,7 +45,7 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: true, requiresAdmin: true  },
+        meta: { requiresAuth: false, requiresAdmin: false },
     },
     {
         path: '/products_management',
@@ -85,11 +86,19 @@ const routes = [
         meta: { requiresAuth: false },
     },
     {
+        path: '/credentials',
+        name: 'credentials',
+        component: credentials,
+        meta: { requiresAuth: false },
+    },
+    {
         path: '/',
         name: 'Home',
         component: Home,
         meta: { requiresAuth: false },
-    }
+    },
+
+
 ];
 
 const router = createRouter({
@@ -108,15 +117,15 @@ router.beforeEach((to, from, next) => {
             const isAdmin = store.state.user?.role === 'admin';
             if (!isAdmin) {
                 next({ name: 'Home' });
-            }else {
+            } else {
                 next();
             }
-        }else{
+        } else {
             if (!store.state.user) {
                 // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
                 next('/login');
             } else {
-                
+
                 // L'utilisateur est connecté, autoriser la navigation
                 next();
             }
