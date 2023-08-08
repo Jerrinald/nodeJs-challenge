@@ -1,7 +1,7 @@
 const { Order, Product } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 /*const mongoURI = 'mongodb://root:password@mongo:27017/app'; // Remplacez par votre URI de connexion MongoDB
 mongoose.connect(mongoURI, {

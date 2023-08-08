@@ -11,7 +11,7 @@
         <div class="modal-title">
           Inscription<slot name="close-icon" :closeModal="toggleModal"></slot>
         </div>
-        <div class="register">
+        <div v-if="!registeredSuccessfully" class="register">
           <form @submit.prevent="registerUser">
             <div class="flex gap-10 jcc">
               <div>
@@ -104,6 +104,10 @@
             </div>
           </form>
         </div>
+        <!-- Show a success message when registeredSuccessfully is true -->
+        <div v-else class="success-message">
+          Utilisateur enregistré avec succès!
+        </div>
       </div>
       <div class="modal-actions">
         <slot name="actions" :closeModal="toggleModal">
@@ -120,11 +124,19 @@
 import { ref, reactive } from 'vue';
 import BtnSuscribe from "../../components/BtnSuscribe.vue"
 import IconClose from "../../components/icons/IconClose.vue"
+import router from "../../router";
 
 const openModal = ref(false);
 
+let registeredSuccessfully = ref(false);
+
 function toggleModal() {
   openModal.value = !openModal.value;
+
+  // Reset registeredSuccessfully when the modal is closed
+  if (!openModal.value) {
+    registeredSuccessfully.value = false;
+  }
 }
 
 let user = reactive({
@@ -151,6 +163,7 @@ async function registerUser() {
     } else {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
+      registeredSuccessfully.value = true;
       console.log('Utilisateur enregistré avec succès!');
     }
   } catch (error) {

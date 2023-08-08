@@ -13,7 +13,7 @@ const checkAuth = require("./middlewares/check-auth");
 const checkAuthProduct = require("./middlewares/check-auth-product");
 const checkCurrentUser = require("./middlewares/check-current-user");
 const retrieveImage = require("./middlewares/retrieveImage.js");
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 // Connexion à MongoDB
 /*mongoose.connect('mongodb://root:password@mongo:27017/app', {
