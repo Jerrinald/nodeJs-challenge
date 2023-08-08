@@ -10,6 +10,7 @@ import Profile from '../views/front/Profile.vue';
 import store from '../store';
 import Transaction from '../views/front/Transactions.vue';
 import Operation from '../views/front/Operations.vue';
+import transactionHystory from '../views/front/TransactionHystory.vue';
 
 const routes = [
     {
@@ -53,6 +54,12 @@ const routes = [
         path: '/operations',
         name: 'operations',
         component: Operation,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
+    {
+        path: '/transactionhystory',
+        name: 'transactionHystory',
+        component: transactionHystory,
         meta: { requiresAuth: false, requiresAdmin: false },
     }
 ];

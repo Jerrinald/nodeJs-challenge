@@ -4,6 +4,7 @@ const UserRouter = require("./routes/user");
 const ProductRouter = require("./routes/product");
 const OrderRouter = require("./routes/order");
 const SecurityRouter = require("./routes/security");
+const credentialRouter = require("./routes/credential")
 const ValidationError = require("./errors/ValidationError");
 const cors = require("cors");
 const checkFormat = require("./middlewares/check-format");
@@ -19,6 +20,7 @@ const mongoose = require('mongoose');
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+
     .then(() => {
       console.log('Connecté à MongoDB avec succès');
     })
@@ -37,7 +39,9 @@ app.use("/users", checkAuth, UserRouter); // protect only this route
 
 app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
-app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
+app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
+
+app.use("/credentials", credentialRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
