@@ -2,6 +2,11 @@ const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 
 module.exports = (req, res, next) => {
+  if (req.originalUrl === '/products') {
+    if (req.method === 'GET') {
+      return next();
+    }
+  }
   if (!req.headers.authorization) {
     return next(new UnauthorizedError());
   }

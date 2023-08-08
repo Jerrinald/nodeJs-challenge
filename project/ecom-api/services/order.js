@@ -52,6 +52,9 @@ module.exports = function OrderService() {
         create: async function (data) {
             try {
 // Insertion dans PostgreSQL
+                data.idClient = data.currentUserId;
+                delete data['currentUserId'];
+
                 const postgresOrder = await Order.create(data);
 
                 // Insertion dans MongoDB

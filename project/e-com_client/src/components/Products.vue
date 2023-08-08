@@ -3,12 +3,15 @@ import ProductItem from './ProductItem.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import moulinex from '../assets/images/moulinex.jpg'
 import trotinette from '../assets/images/trotinette.jpg'
+import { useStore } from 'vuex';
+const store = useStore();
 
 
 const products = ref([]);
 const cartItems = ref([]);
 let token = null; // Declare the token variable
 
+const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
 const fallbackProducts = [
     {
@@ -29,7 +32,7 @@ const fallbackProducts = [
 // Utiliser cette méthode pour ajouter ou retirer des éléments du panier
 function updateCartAndLocalStorage(operation, item) {
   operation(item); // Ajouter ou retirer du panier
-  saveCartToLocalStorage(); // Mettre à jour le localStorage
+   // Mettre à jour le localStorage
 //   cartChannel.postMessage(cartItems.value); // Diffuser le panier
 }
 
@@ -47,6 +50,7 @@ function addToCart(product) {
     });
   updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
   saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque ajout au panier
+  saveCartToStore();
 }
 
 // Ajouter cette fonction pour sauvegarder le panier dans le localStorage
@@ -81,6 +85,12 @@ async function fetchProducts() {
     }
 }
 
+// Save cartItems to the Vuex store
+function saveCartToStore() {
+  store.state.cartItems = cartItems.value;
+}
+
+
 onMounted(() => {
     fetchProducts();
     // loadCartFromLocalStorage();
@@ -89,6 +99,8 @@ onMounted(() => {
 // Ajouter cet événement pour sauvegarder le panier avant de décharger la page (changement d'onglet)
 window.addEventListener('beforeunload', () => {
 //   saveCartToLocalStorage();
+
+
 });
 
 
@@ -100,7 +112,7 @@ window.addEventListener('beforeunload', () => {
         <h2>Tous nos articles</h2>
         <div class="product-grid flex fww gap-20 jcsb">
             <div v-for="product in products" :key="product.id" class="product-item">
-                <img :src="`http://localhost:3100/${product.image}`" :alt="product.name">
+                <img :src="apiEcomUrl + '/' + product.image" :alt="product.name">
                 <p :title="product.name" class="product-name">{{ product.name }}</p>
                 <p>{{ product.price }} €</p>
                 <button class="btn-primary" @click="() => addToCart(product)">Ajouter au panier</button>

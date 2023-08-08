@@ -8,30 +8,18 @@ import { useStore } from 'vuex';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
-
 const store = useStore();
+
 
 // Utilisez une propriété calculée pour récupérer l'état de l'utilisateur depuis le store Vuex
 const user = computed(() => store.state.user);
 
-const cartItems = ref([]);
 
-// Ajouter cette fonction pour charger le panier depuis le localStorage (appelée au démarrage)
-function loadCartFromLocalStorage() {
-  const savedCart = localStorage.getItem('cartItems');
-  if (savedCart) {
-    cartItems.value = JSON.parse(savedCart);
-  }
-}
-
-const cartItemsLength = ref(0);
-onMounted(() => {
-    loadCartFromLocalStorage();
-    cartItemsLength.value = cartItems.value.length; 
-});
+// Use the cartItemsLength getter from the Vuex store
+const cartItemsLength = computed(() => store.getters.cartItemsLength);
 
 
-console.log(cartItems.value.length)
+// Use the cartItemsLength getter from the Vuex store
 
 </script>
 
@@ -42,17 +30,12 @@ console.log(cartItems.value.length)
             <div class="flex gap-20">
                 <a v-if="user && user.role === 'admin'" href="/dashboard">Mon espace</a>
                 <a href="/panier" class="panel">
-                    <div v-if="!cartItems.length">{{ cartItems.length }}</div>
-                    <div v-else>{{ cartItemsLength }}</div>
+                    <div>{{ cartItemsLength !== undefined ? cartItemsLength : 0 }}</div>
                     <IconPanel />
                 </a>
                 <a href="/profile" v-if="user">
                     Profil
                 </a>
-              <a href="/panier" v-if="user" class="panel">
-                <div>2</div>
-                <IconPanel />
-              </a>
               <a href="/logout" v-if="user">
                     Déconnexion
                 </a>

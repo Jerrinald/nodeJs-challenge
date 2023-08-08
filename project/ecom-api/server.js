@@ -4,6 +4,7 @@ const UserRouter = require("./routes/user");
 const ProductRouter = require("./routes/product");
 const OrderRouter = require("./routes/order");
 const SecurityRouter = require("./routes/security");
+const credentialRouter = require("./routes/credential")
 const ValidationError = require("./errors/ValidationError");
 const cors = require("cors");
 const checkFormat = require("./middlewares/check-format");
@@ -19,6 +20,7 @@ const retrieveImage = require("./middlewares/retrieveImage.js");
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+
     .then(() => {
       console.log('Connecté à MongoDB avec succès');
     })
@@ -35,9 +37,11 @@ app.use("/", SecurityRouter);
 // app.use(checkAuth); -> protect every routes below
 app.use("/users", checkAuth, UserRouter); // protect only this route
 
-app.use("/products", checkAuthProduct, checkCurrentUser, retrieveImage, ProductRouter);
+app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
-app.use("/orders", checkAuth, checkCurrentUser,OrderRouter);
+app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
+
+app.use("/credentials", credentialRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -50,6 +54,9 @@ app.post("/", (req, res) => {
 app.use('/Images', express.static('./Images'))
 
 app.use(errorHandler);
+
+module.exports = app;
+
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

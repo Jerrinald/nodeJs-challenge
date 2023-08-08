@@ -22,7 +22,36 @@ module.exports = (connection) => {
             Montant: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+            },
+            status: {
+                type: DataTypes.STRING,
+                defaultValue: "pending",
+            },
+            orderId: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            creditCardNumber: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            creditCardExpdate: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            creditCardCvc: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            creditCardName: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            clientName: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
+
         },
         { sequelize: connection, tableName: "operations" },
     );

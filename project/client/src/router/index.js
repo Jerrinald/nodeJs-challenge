@@ -8,6 +8,9 @@ import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 import Dashboard from '../views/Stripetify/Dashboard.vue';
 import Profile from '../views/front/Profile.vue';
 import store from '../store';
+import Transaction from '../views/front/Transactions.vue';
+import Operation from '../views/front/Operations.vue';
+import transactionHystory from '../views/front/TransactionHystory.vue';
 
 const routes = [
     {
@@ -25,7 +28,7 @@ const routes = [
     ,
     {
         path: '/',
-        name: 'Stripetify'  ,
+        name: 'Stripetify',
         component: Stripetify,
         meta: { requiresAuth: false },
     },
@@ -40,6 +43,24 @@ const routes = [
         name: 'Profile',
         component: Profile,
         meta: { requiresAuth: true, requiresAdmin: false },
+    },
+    {
+        path: '/transactions',
+        name: 'transactions',
+        component: Transaction,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
+    {
+        path: '/operations',
+        name: 'operations',
+        component: Operation,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
+    {
+        path: '/transactionhystory',
+        name: 'transactionHystory',
+        component: transactionHystory,
+        meta: { requiresAuth: false, requiresAdmin: false },
     }
 ];
 
@@ -58,15 +79,15 @@ router.beforeEach((to, from, next) => {
             const isAdmin = store.state.user?.role === 'admin';
             if (!isAdmin) {
                 next({ name: 'Stripetify' });
-            }else {
+            } else {
                 next();
             }
-        }else{
+        } else {
             if (!store.state.user) {
                 // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
                 next('/login');
             } else {
-                
+
                 // L'utilisateur est connecté, autoriser la navigation
                 next();
             }

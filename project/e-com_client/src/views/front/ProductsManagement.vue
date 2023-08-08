@@ -21,7 +21,7 @@
     <p v-if="!products.length">Aucun produit</p>
     <div class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-item">
-        <img :src="`http://localhost:3100/${product.image}`" :alt="product.name" style="max-height: 100px;">
+        <img :src="apiEcomUrl + '/' + card.image" :alt="product.name" style="max-height: 100px;">
         <h3>{{ product.name }}</h3>
         <p>Prix : {{ product.price }} €</p>
         <button @click="removeProduct(product.id)">Supprimer</button>
@@ -42,7 +42,7 @@
       </div>
       <div>
         <label for="editProductImage">Image actuelle:</label>
-        <img :src="`http://localhost:3100/${editingProduct.image}`" :alt="editingProduct.name" style="max-height: 100px;">
+        <img :src="apiEcomUrl + '/' + card.image" :alt="editingProduct.name" style="max-height: 100px;">
       </div>
       <div>
         <label for="newImage">Nouvelle image:</label>
@@ -56,6 +56,8 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, reactive } from 'vue';
+
+const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
 const products = ref([]);
 const cartItems = ref([]);
