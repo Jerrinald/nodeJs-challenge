@@ -165,6 +165,8 @@ async function registerUser() {
       // Vous pouvez rediriger vers une autre page ici si nécessaire
       registeredSuccessfully.value = true;
       console.log('Utilisateur enregistré avec succès!');
+      // Reset the user object to null
+      user = null;
     }
   } catch (error) {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);
