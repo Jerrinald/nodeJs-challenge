@@ -5,18 +5,52 @@ import IconClose from './icons/IconClose.vue'
 import cart from '../assets/images/carte.jpg'
 
 const openModal = ref(false);
-// const cartItems = ref([]);
+
+const cardNumber = ref("");
+const formattedCardNumber = ref("");
+
+const expiryDate = ref("");
+const formattedExpiryDate = ref("");
+
+const cvv = ref("");
+
+const props = defineProps({
+  total: {
+    type: Number
+  }
+})
+
+const formData = ref({
+  totalPrice: props.total,
+  name: "",
+  cardNumber: "",
+  expiryDate: "",
+  cvv: ""
+});
 
 
-// const {data} = defineProps()
-// const dataCart = ref(data)
+const formatCardNumber = () => {
+  let numbers = formData.value.cardNumber.replace(/\D/g, "").substring(0, 16);
+  const chunks = [];
+  for (let i = 0; i < numbers.length; i += 4) {
+    chunks.push(numbers.substring(i, i + 4));
+  }
+  formData.value.cardNumber = chunks.join(" ");
+};
 
-// onMounted(
+const formatExpiryDate = () => {
+  let numbers = formData.value.expiryDate.replace(/\D/g, "").substring(0, 4);
+  formData.value.expiryDate = numbers.length > 2 ? numbers.substring(0, 2) + '/' + numbers.substring(2) : numbers;
+};
 
-//   console.log(dataCart)
-// )
-// console.log(dataCart)
+const formatCVV = () => {
+  formData.value.cvv = formData.value.cvv.replace(/\D/g, "").substring(0, 3);
+};
 
+const submitForm = () => {
+  const jsonFormData = JSON.stringify(formData.value);
+  console.log(jsonFormData);
+};
 
 </script>
 <template>
@@ -30,7 +64,7 @@ const openModal = ref(false);
           <slot name="title">Paiement par carte bancaire</slot>
         </div>
         <div class="modal-content text-center"><img :src="cart" alt="" srcset=""></div>
-        <div class="text-center">Total à payer: <strong>175.33 €</strong></div>
+        <div class="text-center">Total à payer: <strong>{{ props.total }} €</strong></div>
       </div>
       <div class="modal-actions">
         <slot name="actions" :closeModal="() => openModal = false">
@@ -42,25 +76,26 @@ const openModal = ref(false);
       <form action="" class="flex fdc aic gap-10">
         <div>
           <label for="">Nom et prénom du propriétaire de la carte</label>
-          <input type="text">
+          <input v-model="formData.name" type="text" placeholder="Nom et Prénom">
         </div>
         <div>
           <label for="">Date d'expiration</label>
-          <input type="date">
+          <input v-model="formData.expiryDate" @input="formatExpiryDate" type="text" maxlength="5" placeholder="MM/AA" />
         </div>
         <div>
           <label for="">Numéro de la carte</label>
-          <input type="text">
+          <input v-model="formData.cardNumber" @input="formatCardNumber" type="text" maxlength="19"
+            placeholder="0000 0000 0000 0000" />
         </div>
         <div>
           <div class="cryptogramme">
             <label for="">Cryptograme</label>
-            <input type="number">
+            <input v-model="formData.cvv" @input="formatCVV" type="text" maxlength="4" placeholder="CVV" />
           </div>
         </div>
       </form>
       <div class="flex jce btn-container">
-        <button class="btn btn-primary">Valider</button>
+        <button @click="submitForm" class="btn btn-primary">Valider</button>
       </div>
     </div>
   </div>
@@ -127,13 +162,14 @@ form input {
   width: 100%;
 }
 
-form .cryptogramme{
+form .cryptogramme {
   width: 100px;
 }
 
-strong{
+strong {
   font-weight: bold;
 }
+
 .modal-actions {
   padding: 1rem;
   display: flex;

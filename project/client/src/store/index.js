@@ -18,6 +18,8 @@ const store = createStore({
         CLEAR_USER(state) {
             state.user = null;
             localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('tokenExpiration');
         },
     },
     actions: {

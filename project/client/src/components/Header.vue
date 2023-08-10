@@ -1,5 +1,6 @@
 <script setup>
 import Login from "../views/auth/Login.vue"
+import Logout from "../views/auth/Logout.vue"
 import logo from "../assets/logo1.png"
 import { computed } from 'vue';
 import { useStore } from 'vuex';
@@ -23,7 +24,8 @@ const user = computed(() => store.state.user);
                 <a v-if="user && user.role === 'admin'" href="/dashboard">Dashboard</a>
                 <a v-if="user" href="/profile">Profil</a>
             </div>
-            <Login />
+            <Logout v-if="user"/>
+            <Login v-else/>
         </nav>
     </div>
 </template>

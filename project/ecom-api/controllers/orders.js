@@ -28,6 +28,23 @@ module.exports = function Controller(Service, options = {}) {
         const { body } = req;
         try {
           const result = await Service.create(body);
+
+          const postUrl = 'http://server:3000/transactions';
+        const postBody = {
+          marchandId: 6,
+        };
+
+        const resp = await fetch(postUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postBody),
+        });
+
+        console.log(resp);
+
+
           res.status(201).json(result);
         } catch (err) {
           next(err);

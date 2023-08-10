@@ -36,7 +36,7 @@ const cartItemsLength = computed(() => store.getters.cartItemsLength);
                 <a href="/profile" v-if="user">
                     Profil
                 </a>
-              <a href="/logout" v-if="user">
+                <a href="/logout" v-if="user">
                     Déconnexion
                 </a>
                 <div v-else class="flex aic gap-20">

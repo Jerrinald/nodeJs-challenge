@@ -3,20 +3,40 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import adidas from '../assets/images/adidas.avif'
 import { useStore } from 'vuex'; 
 
-const store = useStore();
+const store = useStore()
 
-const products = ref([
+const products = ref([]);
+const cartItems = ref([]);
+let token = null; // Declare the token variable
+
+const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
+
+const fallbackProducts = [
   {
     id: 1,
     name: 'Chaussure adidas Grand Court x LEGO',
     image: 'path/to/image1.jpg',
     price: 53.99,
   },
-]);
-
-const cartItems = ref([]);
-let token = null; // Declare the token variable
-
+  {
+    id: 2,
+    name: 'Chaussure adidas Grand Court x LEGO',
+    image: 'path/to/image1.jpg',
+    price: 53.99,
+  },
+  {
+    id: 3,
+    name: 'Chaussure adidas Grand Court x LEGO',
+    image: 'path/to/image1.jpg',
+    price: 53.99,
+  },
+  {
+    id: 4,
+    name: 'Chaussure adidas Grand Court x LEGO',
+    image: 'path/to/image1.jpg',
+    price: 53.99,
+  },
+]
 
 // Utiliser cette méthode pour ajouter ou retirer des éléments du panier
 function updateCartAndLocalStorage(operation, item) {
@@ -47,6 +67,33 @@ function saveCartToLocalStorage() {
   localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
 }
 
+
+async function fetchProducts() {
+    try {
+        token = localStorage.getItem('token'); // Get token from localStorage
+        const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Use the token in the headers
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            products.value = data;
+        } else {
+            console.error('Failed to fetch products');
+            // Use the fallback test products
+            products.value = fallbackProducts;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        // Use the fallback test products
+        products.value = fallbackProducts;
+    }
+}
+
 // Save cartItems to the Vuex store
 function saveCartToStore() {
   store.state.cartItems = cartItems.value;
@@ -54,12 +101,15 @@ function saveCartToStore() {
 
 
 onMounted(() => {
+    fetchProducts();
     // loadCartFromLocalStorage();
 });
 
 // Ajouter cet événement pour sauvegarder le panier avant de décharger la page (changement d'onglet)
 window.addEventListener('beforeunload', () => {
 //   saveCartToLocalStorage();
+
+
 });
 </script>
 
