@@ -1,5 +1,12 @@
 <script setup>
 import logo from "../assets/logo1.png"
+import { ref } from 'vue';
+const selectedMenu = ref('Marchands'); // Valeur par défaut
+
+// Gestionnaire de clic de menu
+function handleMenuClick(menu) {
+  selectedMenu.value = menu;
+}
 
 </script>
 
@@ -7,10 +14,11 @@ import logo from "../assets/logo1.png"
     <div class="aside-container">
         <a href="#" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
         <div class="flex aside-link-container fdc gap-20">
-            <a href="#">Accueil</a>
-            <a href="#">Paiements</a>
-            <a href="#">Balance</a>
-            <a href="#">Marchants</a>
+          <a href="#" @click="handleMenuClick('Accueil')">Accueil</a>
+          <a href="#" @click="handleMenuClick('Transactions')">Transactions</a>
+          <a href="#" @click="handleMenuClick('Opérations')">Opérations</a>
+          <a href="#" @click="handleMenuClick('Balance')">Balance</a>
+          <a href="#" @click="handleMenuClick('Marchands')">Marchands</a>
         </div>
     </div>
 </template>

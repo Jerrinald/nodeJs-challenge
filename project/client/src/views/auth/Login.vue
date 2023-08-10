@@ -154,7 +154,7 @@ async function loginUserSimple() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.user);
 
-      router.push('/');
+      router.push('/dashboard');
     } else {
       console.error('Login failed');
     }

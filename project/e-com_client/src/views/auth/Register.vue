@@ -44,6 +44,7 @@ import { ref, reactive } from 'vue';
 import Header from '../../components/Header.vue';
 import Footer from '../../components/Footer.vue';
 import minilogo from '../../assets/images/minilogo.png'
+import router from "../../router";
 
 let user = reactive({
   username: '',
@@ -70,6 +71,7 @@ async function registerUser() {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
       console.log('Utilisateur enregistré avec succès!');
+      router.push('/login'); // Remplacez '/accueil' par le chemin de votre page d'accueil
 
     }
   } catch (error) {
