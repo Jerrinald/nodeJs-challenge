@@ -45,7 +45,7 @@ export default {
     },
     async mounted() {
         try {
-            const response = await fetch(`http://localhost:3100/credentials/1`);
+            const response = await fetch(`http://localhost:3100/credential/1`);
             if (response.status === 200) {
                 this.credentialsExist = true;
                 const credentials = await response.json();
@@ -65,7 +65,7 @@ export default {
                 if (this.credentialsExist) {
                     await this.updateCredentials();
                 } else {
-                    const response = await fetch('http://localhost:3100/credentials', {
+                    const response = await fetch('http://localhost:3100/credential', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export default {
         },
         async updateCredentials() {
             try {
-                const response = await fetch(`http://localhost:3100/credentials/1`, {
+                const response = await fetch(`http://localhost:3100/credential/1`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

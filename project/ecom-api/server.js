@@ -13,6 +13,7 @@ const checkAuth = require("./middlewares/check-auth");
 const checkAuthProduct = require("./middlewares/check-auth-product");
 const checkCurrentUser = require("./middlewares/check-current-user");
 const retrieveImage = require("./middlewares/retrieveImage.js");
+const PaymentRouter = require("./routes/payment");
 //const mongoose = require('mongoose');
 
 // Connexion à MongoDB
@@ -42,6 +43,8 @@ app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
 
 app.use("/credential", credentialRouter)
+
+app.use("/payment", PaymentRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
