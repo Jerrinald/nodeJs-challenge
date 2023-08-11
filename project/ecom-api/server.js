@@ -41,7 +41,7 @@ app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
 app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
 
-app.use("/credentials", credentialRouter)
+app.use("/credential", credentialRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

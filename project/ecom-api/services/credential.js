@@ -24,7 +24,6 @@ module.exports = function CredentialService() {
         },
 
         create: async function (data) {
-            delete data['currentUserId'];
             try {
                 return await Credential.create(data);
             } catch (e) {
