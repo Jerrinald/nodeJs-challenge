@@ -2,25 +2,56 @@ module.exports = function Controller(Service, options = {}) {
     return {
         testPay: async (req, res, next) => {
             try {
-                console.log("contenue de la requette :", req.body);
-                const response = await fetch('http://server:3000/transactions', {
+
+                const credential = await fetch('http://server:3000/credential', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (!credential.ok) {
+                    throw new Error(`HTTP error! Status: ${credential.status}`);
+                }
+                //login marchant with credentialID and clientSecret 
+                const marchand = await fetch('http://server:3000/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(req.body),
+                    body: JSON.stringify({
+                        "clientSecret": credential.clientSecret,
+                        "clientID": credential.clientID
+                    }),
                 });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                if (!marchand.ok) {
+                    throw new Error(`HTTP error! Status: ${marchand.status}`);
                 }
+                const marchandData = await marchand.json();
 
-                const responseData = await response.json();
-                res.json(responseData);
             } catch (err) {
                 next(err);
             }
-        },
+
+
+            console.log("contenue de la requette :", req.body);
+            const response = await fetch('http://server:3000/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(req.body),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            res.json(responseData);
+        } catch(err) {
+            next(err);
+        }
+    },
 
         create: async (req, res, next) => {
             const { body } = req;
