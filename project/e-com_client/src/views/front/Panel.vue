@@ -106,7 +106,7 @@ async function validateCart() {
   }
 
   const transactionItems = cartItems.value.map((item) => ({
-    orderId: generateOrderId(),
+    orderId: orderNumber,
     marchandId: localStorage.getItem('userId'),
     clientId: localStorage.getItem('userId'),
     clientName: "name user",
