@@ -44,6 +44,7 @@ import { ref, reactive } from 'vue';
 import Header from '../../components/Header.vue';
 import Footer from '../../components/Footer.vue';
 import minilogo from '../../assets/images/minilogo.png'
+import router from "../../router";
 
 let user = reactive({
   username: '',
@@ -69,6 +70,10 @@ async function registerUser() {
     } else {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
+      router.push({
+        path: '/login',
+        query: { registrationSuccess: true }
+      });
       console.log('Utilisateur enregistré avec succès!');
 
     }

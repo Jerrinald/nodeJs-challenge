@@ -54,7 +54,7 @@ const searchQuery = ref('');
 // Function to fetch all transactions from the API
 const getAllTransactions = async () => {
     try {
-        const response = await fetch("http://localhost:3000/transactions", {
+        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const updateStatus = async (transaction, newStatus) => {
             return;
         }*/
 
-        const response = await fetch(`http://localhost:3000/transactions/${transaction.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/${transaction.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

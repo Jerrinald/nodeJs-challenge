@@ -2,9 +2,13 @@
   <div>
     <Header />
     <main class="login-form container flex aic jcsa">
+      <div v-if="registrationSuccess" class="success">
+        Inscription réussi, vous pouvez maintenant vous connecter
+      </div>
       <div>
         <img :src="minilogo" alt="logo rest" srcset="">
       </div>
+      
       <div>
         <form @submit.prevent="loginUser" class="flex fdc gap-25">
           <h2>Connectez vous</h2>
@@ -34,6 +38,12 @@ import { useRouter } from 'vue-router'; // Import de Vue Router
 import Header from '../../components/Header.vue';
 import Footer from '../../components/Footer.vue';
 import minilogo from '../../assets/images/minilogo.png'
+
+
+const queryParameters = router.currentRoute.value.query;
+
+// Check if the registrationSuccess query parameter exists and is 'true'
+const registrationSuccess = queryParameters.registrationSuccess === 'true';
 
 let user = reactive({
   email: '',
@@ -79,6 +89,15 @@ main{
   height: calc(100vh - 96px);
 
 }
+
+.success {
+  background-color: rgb(19, 171, 19);
+  margin-top: 10px;
+  padding: 10px;
+  font-weight: bold;
+
+}
+
 img{
   width: 150%;
 }

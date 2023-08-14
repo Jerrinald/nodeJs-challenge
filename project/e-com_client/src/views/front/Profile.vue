@@ -1,28 +1,32 @@
 <template>
-  <div class="profile">
-    <h2>Profil de {{ user.firstname }} {{ user.lastname }}</h2>
-    <p>Email: {{ user.email }}</p>
+  <div>
+    <Header />
+    <div class="profile">
+      <h2>Profil de {{ user.firstname }} {{ user.lastname }}</h2>
+      <p>Email: {{ user.email }}</p>
 
-    <!-- Formulaire de mise à jour du profil -->
-    <form @submit.prevent="updateProfile">
-      <div>
-        <label for="firstname">Prénom:</label>
-        <input type="text" id="firstname" v-model="editedUser.firstname" required>
-      </div>
-      <div>
-        <label for="lastname">Nom:</label>
-        <input type="text" id="lastname" v-model="editedUser.lastname" required>
-      </div>
-      <!-- Ajoutez d'autres champs pour les autres informations que vous souhaitez permettre à l'utilisateur de modifier -->
+      <!-- Formulaire de mise à jour du profil -->
+      <form @submit.prevent="updateProfile">
+        <div>
+          <label for="firstname">Prénom:</label>
+          <input type="text" id="firstname" v-model="editedUser.firstname" required>
+        </div>
+        <div>
+          <label for="lastname">Nom:</label>
+          <input type="text" id="lastname" v-model="editedUser.lastname" required>
+        </div>
+        <!-- Ajoutez d'autres champs pour les autres informations que vous souhaitez permettre à l'utilisateur de modifier -->
 
-      <button type="submit">Mettre à jour</button>
-    </form>
+        <button type="submit">Mettre à jour</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex'; // Assurez-vous que vous avez déjà installé vuex
+import Header from '../../components/Header.vue'
 
 // Définir des propriétés réactives pour stocker les informations de l'utilisateur
 const user = ref({});
