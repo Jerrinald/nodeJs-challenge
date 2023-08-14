@@ -2,20 +2,13 @@ module.exports = function Controller(Service, options = {}) {
     return {
         testPay: async (req, res, next) => {
             try {
+                console.log("contenue de la requette :", req.body);
                 const response = await fetch('http://server:3000/transactions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        "orderId": 1,
-                        "marchandId": null,
-                        "clientId": null,
-                        "clientName": null,
-                        "amount": null,
-                        "status": "new",
-                        "link_payment": "/payment"
-                    }),
+                    body: JSON.stringify(req.body),
                 });
 
                 if (!response.ok) {

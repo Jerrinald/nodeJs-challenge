@@ -42,6 +42,8 @@ app.use("/products", checkAuth, checkCurrentUser, retrieveImage, ProductRouter);
 
 app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
 
+app.use("/orders", OrderRouter);
+
 app.use("/credential", credentialRouter)
 
 app.use("/payment", PaymentRouter);
