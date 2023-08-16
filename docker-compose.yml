@@ -84,6 +84,7 @@ services:
     volumes:
       - ./project/client:/usr/src/app
 
+
   e-com_client:
     container_name: e-com_client
     build:
@@ -94,7 +95,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./project/e-com_client:/usr/src/app
-
+   
 
 
 volumes:

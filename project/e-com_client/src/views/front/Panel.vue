@@ -12,6 +12,7 @@ const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 const cartItems = ref([]);
 let token = localStorage.getItem('token');
 console.log("token", token);
+let user = localStorage.getItem('user');
 
 function loadCartFromLocalStorage() {
   const savedCart = localStorage.getItem('cartItems');
@@ -64,9 +65,6 @@ function generateOrderNumber() {
   return `CMD${currentDate}${randomNumber}`;
 }
 
-function generateOrderId() {
-  return Math.floor(Math.random() * 1000000);
-}
 
 async function validateCart() {
   if (cartItems.value.length === 0) {
@@ -75,10 +73,9 @@ async function validateCart() {
   }
 
   const orderNumber = generateOrderNumber();
-  const orderId = generateOrderId();
 
   const orderItems = cartItems.value.map((item) => ({
-    idClient: 1,
+    idClient: user.id,
     numeroCommande: orderNumber,
     numeroProduit: item.numeroProduit,
     prixProduit: item.prixProduit,
@@ -108,8 +105,8 @@ async function validateCart() {
   const transactionItems = cartItems.value.map((item) => ({
     orderId: orderNumber,
     marchandId: localStorage.getItem('userId'),
-    clientId: localStorage.getItem('userId'),
-    clientName: "name user",
+    clientId: user.id,
+    clientName: user.nom,
     amount: item.prixProduit * item.quantity,
     status: "En cours",
 
@@ -123,10 +120,12 @@ async function validateCart() {
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(transactionItem),
+
     });
 
     if (transactionResponse.ok) {
-      console.log('Cart validated. Transaction successful!');
+      console.log('Cart validated. Transaction successful!', transactionItem);
+      console.log('Client id', user.id);
     } else {
       console.error('Failed to validate the cart.');
     }
