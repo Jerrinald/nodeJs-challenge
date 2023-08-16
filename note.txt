@@ -1,0 +1,2 @@
+docker compose exec ecom-api node migration.js alter
+docker compose exec server node migration.js alter

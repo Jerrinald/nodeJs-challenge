@@ -36,7 +36,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./project/server:/usr/src/app
-    command: npm run dev
+    command: sh -c "npm install && node migration.js alter && npm run dev"
 
   db-ecom:
     image: postgres
@@ -61,7 +61,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./${CLASS}/ecom-api:/usr/src/app
-    command: npm run dev
+    command: sh -c "npm install && node migration.js alter && npm run dev"
 
   psp:
     container_name: psp
