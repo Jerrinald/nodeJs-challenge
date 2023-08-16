@@ -65,13 +65,11 @@ services:
 
   psp:
     container_name: psp
-    image: node
+    build:
+      context: ./project/psp
     ports:
-      - 3200:3000
-    working_dir: /usr/src/app
-    volumes:
-      - ./${CLASS}/psp:/usr/src/app
-    command: node run server.js
+    - "3200:3000"
+    
 
 
  
