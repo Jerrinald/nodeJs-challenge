@@ -4,35 +4,32 @@ import Footer from '../../components/Footer.vue'
 import ModalPay from '../../components/ModalPay.vue'
 import IconDelete from '../../components/icons/IconDelete.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import moulinex from '../../assets/images/moulinex.jpg'
+
+// Replace 'moulinex' import with actual images if needed
 
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
 const cartItems = ref([]);
-let token = null; // Declare the token variable
+let token = localStorage.getItem('token');
+console.log("token", token);
+let user = localStorage.getItem('user');
 
 function loadCartFromLocalStorage() {
   const savedCart = localStorage.getItem('cartItems');
   if (savedCart) {
     cartItems.value = JSON.parse(savedCart);
-    console.log(cartItems.value)
+    console.log(cartItems.value);
   }
 }
 
-const cartItemsLength = ref([]);
 onMounted(() => {
   loadCartFromLocalStorage();
-  cartItemsLength.value = cartItems.value;
-  console.log(cartItemsLength.value)
 });
 
-// Utiliser cette méthode pour ajouter ou retirer des éléments du panier
 function updateCartAndLocalStorage(operation, item) {
-  operation(item); // Ajouter ou retirer du panier
-  saveCartToLocalStorage(); // Mettre à jour le localStorage
-  // cartChannel.postMessage(cartItems.value); // Diffuser le panier
+  operation(item);
+  saveCartToLocalStorage();
 }
-
 
 function removeFromCart(item) {
   const index = cartItems.value.findIndex((cartItem) => cartItem.id === item.id);
@@ -42,27 +39,18 @@ function removeFromCart(item) {
     } else {
       cartItems.value.splice(index, 1);
     }
-    // updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
-    saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque retrait du panier
+    saveCartToLocalStorage();
   }
-  localStorage.setItem('cartItems', cartItems.value.length);
 }
 
-function addArticle(product){
-
+function addArticle(product) {
   const existingItem = cartItems.value.find((item) => item.id === product.id);
   if (existingItem) {
     existingItem.quantity++;
   }
-  else{
-    console.log("Pas d'article")
-  }
-
-    // updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value);
-  saveCartToLocalStorage(); // Mettre à jour le localStorage après chaque ajout au panier
+  saveCartToLocalStorage();
 }
 
-// Ajouter cette fonction pour sauvegarder le panier dans le localStorage
 function saveCartToLocalStorage() {
   localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
 }
@@ -77,77 +65,76 @@ function generateOrderNumber() {
   return `CMD${currentDate}${randomNumber}`;
 }
 
-// Ajouter cette fonction pour générer un ID de commande aléatoire
-function generateOrderId() {
-  return Math.floor(Math.random() * 1000000);
-}
-
 
 async function validateCart() {
-  try {
-    if (cartItems.value.length === 0) {
-      console.log('Cart is empty. Add items to the cart before validating.');
-      return;
-    }
+  if (cartItems.value.length === 0) {
+    console.log('Cart is empty. Add items to the cart before validating.');
+    return;
+  }
 
-    // Generate order data
-    const orderNumber = generateOrderNumber();
-    const orderId = generateOrderId();
+  const orderNumber = generateOrderNumber();
 
-    // Create an array to store order items
-    const orderItems = cartItems.value.map((item) => ({
-      idClient: 1,
-      numeroCommande: orderNumber,
-      numeroProduit: item.numeroProduit,
-      prixProduit: item.prixProduit,
-      quantiteProduit: item.quantity,
-      statut: 'En cours',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }));
+  const orderItems = cartItems.value.map((item) => ({
+    idClient: user.id,
+    numeroCommande: orderNumber,
+    numeroProduit: item.numeroProduit,
+    prixProduit: item.prixProduit,
+    quantiteProduit: item.quantity,
+    statut: 'En cours',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
 
-    // post item in orderItems one by one
-    for (let i = 0; i < orderItems.length; i++) {
-      console.log('Order send:', orderItems[i]);
-      const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Use the token in the headers
-        },
-        body: JSON.stringify(orderItems[i]),
-      });
-      if (orderResponse.ok) {
-        console.log('Order created successfully.');
-      } else {
-        console.error('Failed to create the order.');
-        return;
-      }
-    }
-
-    // Now validate the cart
-    const transactionResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions`, {
+  for (const orderItem of orderItems) {
+    console.log('Order send:', orderItem);
+    const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // Use the token in the headers
+        'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(cartItems.value),
+      body: JSON.stringify(orderItem),
+    });
+
+    if (!orderResponse.ok) {
+      console.error('Failed to create the order.');
+      return;
+    }
+  }
+
+  const transactionItems = cartItems.value.map((item) => ({
+    orderId: orderNumber,
+    marchandId: localStorage.getItem('userId'),
+    clientId: user.id,
+    clientName: user.nom,
+    amount: item.prixProduit * item.quantity,
+    status: "En cours",
+
+  }));
+
+  for (const transactionItem of transactionItems) {
+    const transactionResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(transactionItem),
+
     });
 
     if (transactionResponse.ok) {
-      console.log('Cart validated. Transaction successful!');
-      // Clear the cart after successful validation
-      cartItems.value = [];
-      updateCartAndLocalStorage((cart) => (cartItems.value = cart.map((item) => ({ ...item }))), cartItems.value); // Mettre à jour le localStorage après avoir vidé le panier
+      console.log('Cart validated. Transaction successful!', transactionItem);
+      console.log('Client id', user.id);
     } else {
       console.error('Failed to validate the cart.');
     }
-  } catch (error) {
-    console.error('An error occurred:', error);
   }
-}
 
+  // Clear the cart after successful validation
+  cartItems.value = [];
+  saveCartToLocalStorage();
+}
 </script>
 
 <template>
@@ -161,7 +148,7 @@ async function validateCart() {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="card in cartItemsLength" :key="card.id">
+          <tr v-for="card in cartItems" :key="card.id">
             <td>
               <div class="flex aic gap-20">
                 <div><img :src="apiEcomUrl + '/' + card.image" :alt="card.name" srcset=""></div>
@@ -177,7 +164,9 @@ async function validateCart() {
               </div>
             </td>
             <td>
-              <div class="btn-delete" @click="removeFromCart(card)"><IconDelete /></div>
+              <div class="btn-delete" @click="removeFromCart(card)">
+                <IconDelete />
+              </div>
             </td>
           </tr>
         </tbody>
@@ -186,8 +175,8 @@ async function validateCart() {
             <td colspan="5">
               <div class="flex jce">
                 <div class="flex gap-10">
-                <p>Total:</p>
-                <strong>{{ calculateTotalAmount() }} €</strong>
+                  <p>Total:</p>
+                  <strong>{{ calculateTotalAmount() }} €</strong>
                 </div>
               </div>
             </td>
@@ -195,24 +184,13 @@ async function validateCart() {
         </tfoot>
       </table>
       <div class="flex jce">
-        <!-- <button @click="() => validateCart()" v-if="cartItems.length" class="btn-primary">Valider mon panier</button> -->
-        <div @click="() => validateCart()" v-if="cartItems.length">
-          <ModalPay :data="cartItemsLength" :total="calculateTotalAmount()" />
+        <div @click="validateCart" v-if="cartItems.length">
+          <ModalPay :data="cartItems" :total="calculateTotalAmount()" />
         </div>
       </div>
     </main>
     <Footer />
   </div>
-  <section>
-    <!-- <div v-if="!cartItems.length">Votre panier est vide</div>
-        <ul v-else>
-          <li v-for="item in cartItems" :key="item.id">
-            {{ item.name }} - {{ item.price }} € - Quantité: {{ item.quantity }}
-            <button @click="removeFromCart(item)">Retirer du panier</button>
-          </li>
-        </ul>
-        <button @click="validateCart" v-if="cartItems.length">Valider le panier</button> -->
-  </section>
 </template>
 
 <style scoped>
@@ -240,17 +218,13 @@ s {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-
-  /* Ajouter "..." si le texte déborde */
   overflow: hidden;
   text-overflow: ellipsis;
-
-  /* Hauteur maximale pour deux lignes */
   max-height: calc(2em * 1.2);
-
   max-width: 500px;
 }
-img{
+
+img {
   width: 50px;
   height: 50px;
 }

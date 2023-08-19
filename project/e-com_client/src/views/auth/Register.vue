@@ -70,6 +70,10 @@ async function registerUser() {
     } else {
       // L'utilisateur est enregistré avec succès
       // Vous pouvez rediriger vers une autre page ici si nécessaire
+      router.push({
+        path: '/login',
+        query: { registrationSuccess: true }
+      });
       console.log('Utilisateur enregistré avec succès!');
       router.push('/login'); // Remplacez '/accueil' par le chemin de votre page d'accueil
 

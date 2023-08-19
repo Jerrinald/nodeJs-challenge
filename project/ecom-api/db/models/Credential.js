@@ -2,9 +2,9 @@
 module.exports = (connection) => {
     const { DataTypes, Model } = require("sequelize");
 
-    class Credentials extends Model { }
+    class Credential extends Model { }
 
-    Credentials.init(
+    Credential.init(
         {
             clientId: {
                 type: DataTypes.STRING,
@@ -17,8 +17,8 @@ module.exports = (connection) => {
             },
 
         },
-        { sequelize: connection, tableName: "credentials" }
+        { sequelize: connection, tableName: "credential" }
     );
-    return Credentials;
+    return Credential;
 
 }

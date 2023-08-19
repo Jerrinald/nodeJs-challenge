@@ -7,7 +7,7 @@ module.exports = (connection) => {
         {
 
             orderId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: true,
                 defaultValue: "1",
             },

@@ -28,7 +28,7 @@ const cartItemsLength = computed(() => store.getters.cartItemsLength);
         <nav class="navbar container flex aic jcsb">
             <a href="/" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"></a>
             <div class="flex gap-20">
-                <a v-if="user && user.role === 'admin'" href="/dashboard">Mon espace</a>
+                <a v-if="user && user.role === 'admin'" href="/dashboard">Dashboard</a>
                 <a href="/panier" class="panel">
                     <div>{{ cartItemsLength !== undefined ? cartItemsLength : 0 }}</div>
                     <IconPanel />
