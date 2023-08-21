@@ -1,47 +1,58 @@
 <template>
-    <div class="transactions">
-        <h2>Toutes les transactions</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID de Transaction</th>
-                    <th>ID de Commande</th>
-                    <th>ID de Marchand</th>
-                    <th>Montant</th>
-                    <th>Statut</th>
-                    <th>Date de Création</th>
-                    <th>Nom du Client</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="transaction in displayedTransactions" :key="transaction.id">
-                    <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.orderId }}</td>
-                    <td>{{ transaction.marchandId }}</td>
-                    <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.status }}</td>
-                    <td>{{ formatDate(transaction.createdAt) }}</td>
-                    <td>{{ transaction.clientName }}</td>
-                    <td>
-                        <button @click="updateStatus(transaction, 'annuler')"
-                            :disabled="transaction.status === 'annuler'">Annuler</button>
-                        <button @click="updateStatus(transaction, 'confirmer')"
-                            :disabled="transaction.status === 'confirmer'">Confirmer</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="transactions">
+    <h2>Toutes les transactions</h2>
+    <table class="transactions-table">
+      <thead>
+      <tr>
+        <th>ID de Transaction</th>
+        <th>ID de Commande</th>
+        <th>ID de Marchand</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Date de Création</th>
+        <th>Nom du Client</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="transaction in displayedTransactions" :key="transaction.id">
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.orderId }}</td>
+        <td>{{ transaction.marchandId }}</td>
+        <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.status }}</td>
+        <td>{{ formatDate(transaction.createdAt) }}</td>
+        <td>{{ transaction.clientName }}</td>
+        <td>
+          <button
+              @click="updateStatus(transaction, 'annuler')"
+              :disabled="transaction.status === 'annuler'"
+              class="action-button annuler-button"
+          >
+            Annuler
+          </button>
+          <button
+              @click="updateStatus(transaction, 'confirmer')"
+              :disabled="transaction.status === 'confirmer'"
+              class="action-button confirmer-button"
+          >
+            Confirmer
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-        <h2>Rechercher une transaction</h2>
-        <form @submit.prevent="searchTransactions">
-            <label for="searchQuery">Recherche:</label>
-            <input type="text" id="searchQuery" v-model="searchQuery">
-            <button type="submit">Rechercher</button>
-        </form>
-    </div>
+    <h2>Rechercher une transaction</h2>
+    <form @submit.prevent="searchTransactions" class="search-form">
+      <label for="searchQuery">Recherche:</label>
+      <input type="text" id="searchQuery" v-model="searchQuery" class="search-input">
+      <button type="submit" class="search-button">Rechercher</button>
+    </form>
+  </div>
 </template>
-  
+
+
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 
@@ -147,8 +158,89 @@ onMounted(() => {
 });
 
 </script>
-  
+
 <style scoped>
-/* Your CSS styles here */
+.transactions {
+  margin: 20px;
+}
+
+.transactions h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.transactions-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.transactions-table tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.transactions-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.action-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.annuler-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.confirmer-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.search-form {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.search-label {
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.search-input {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.search-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
 </style>
+
   

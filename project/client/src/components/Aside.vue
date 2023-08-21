@@ -1,11 +1,13 @@
 <script setup>
 import logo from "../assets/logo1.png"
 import { ref } from 'vue';
+
+const emit = defineEmits();
 const selectedMenu = ref('Marchands'); // Valeur par défaut
 
-// Gestionnaire de clic de menu
 function handleMenuClick(menu) {
   selectedMenu.value = menu;
+  emit('menuClick', menu); // Émettre un événement vers le parent
 }
 
 </script>

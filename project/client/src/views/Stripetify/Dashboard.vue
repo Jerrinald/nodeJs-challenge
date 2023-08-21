@@ -37,7 +37,7 @@ import router from "../../router";
 import { ref } from 'vue';
 
 
-const selectedMenu = ref('Marchands');
+const selectedMenu = ref('Transactions');
 const props = defineProps({
   selectedMenu: String // Définir le type de la prop
 });
@@ -61,7 +61,7 @@ async function logoutUser() {
 </script>
 <style scoped>
 .dashboard {
-    background-color: #9094A2;
+  background-color: #2c3e50; /* Couleur de fond principale */
 }
 
 .block-container {
@@ -73,10 +73,10 @@ input {
 }
 
 .block-container .block {
-    background-color: #FFFFFF;
-    border-radius: 5px;
-    height: 350px;
-    color: #9094A2;
-    padding: 20px;
+  background-color: #34495e; /* Couleur de fond pour les blocs */
+  border-radius: 5px;
+  height: 350px;
+  color: #ecf0f1; /* Couleur du texte */
+  padding: 20px;
 }
 </style>
