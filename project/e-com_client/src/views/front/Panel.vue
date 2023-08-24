@@ -3,28 +3,32 @@ import Header from '../../components/Header.vue'
 import Footer from '../../components/Footer.vue'
 import ModalPay from '../../components/ModalPay.vue'
 import IconDelete from '../../components/icons/IconDelete.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, provide } from 'vue';
 
 // Replace 'moulinex' import with actual images if needed
 
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
+const successfulTransactionIds = []; // Array to store successful transaction IDs
+const successfulOrdersIds = []; // Array to store successful transaction IDs
+
 const cartItems = ref([]);
 let token = localStorage.getItem('token');
 console.log("token", token);
 let user = localStorage.getItem('user');
+console.log(user);
 
-function loadCartFromLocalStorage() {
-  const savedCart = localStorage.getItem('cartItems');
-  if (savedCart) {
-    cartItems.value = JSON.parse(savedCart);
-    console.log(cartItems.value);
+  function loadCartFromLocalStorage() {
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      cartItems.value = JSON.parse(savedCart);
+      console.log(cartItems.value);
+    }
   }
-}
 
-onMounted(() => {
-  loadCartFromLocalStorage();
-});
+  onMounted(() => {
+    loadCartFromLocalStorage();
+  });
 
 function updateCartAndLocalStorage(operation, item) {
   operation(item);
@@ -81,8 +85,6 @@ async function validateCart() {
     prixProduit: item.prixProduit,
     quantiteProduit: item.quantity,
     statut: 'En cours',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   }));
 
   for (const orderItem of orderItems) {
@@ -99,6 +101,10 @@ async function validateCart() {
     if (!orderResponse.ok) {
       console.error('Failed to create the order.');
       return;
+    }else{
+        const orderData = await orderResponse.json(); // Await here
+        console.log('Order successful!', orderData);
+        successfulOrdersIds.push(orderData.id); // Store the transaction ID in the array
     }
   }
 
@@ -124,17 +130,63 @@ async function validateCart() {
     });
 
     if (transactionResponse.ok) {
-      console.log('Cart validated. Transaction successful!', transactionItem);
+      const transactionData = await transactionResponse.json(); // Await here
+      console.log('Cart validated. Transaction successful!', transactionData);
+      successfulTransactionIds.push(transactionData.id); // Store the transaction ID in the array
       console.log('Client id', user.id);
     } else {
       console.error('Failed to validate the cart.');
     }
   }
 
-  // Clear the cart after successful validation
-  cartItems.value = [];
-  saveCartToLocalStorage();
 }
+
+const handleFormSubmitted = async (formData) => {
+
+
+    console.log('Form data submitted:', formData);
+    console.log(successfulTransactionIds);
+    console.log(successfulOrdersIds)
+
+    const bodyOperations = {
+      MarchandId: 123, // Replace with the actual merchant ID
+      NatureOp: 'purchase',
+      transactionIdArr: successfulTransactionIds, // Replace with a unique transaction ID
+      Montant: calculateTotalAmount(), // Replace with the calculated total amount
+      status: 'pending',
+      orderIdArr: successfulOrdersIds, // Replace with the actual order ID
+      creditCardNumber: '**** **** **** 1234', // Replace with a masked credit card number
+      creditCardExpdate: '12/24', // Replace with a credit card expiration date
+      creditCardCvc: '123', // Replace with a credit card CVV
+      creditCardName: 'John Doe', // Replace with the cardholder's name
+      clientName: 'John' // Use the name from the form data
+    };
+
+    const operationResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(bodyOperations),
+
+    });
+
+    if (operationResponse.ok) {
+      const operationData = await operationResponse.json();
+      console.log('Operation successful!', operationData);
+    } else {
+      console.error('Failed to perform the operation.');
+    }
+
+    
+
+    // Clear the cart after successful validation
+    cartItems.value = [];
+    saveCartToLocalStorage();
+    
+
+  };
 </script>
 
 <template>
@@ -184,8 +236,8 @@ async function validateCart() {
         </tfoot>
       </table>
       <div class="flex jce">
-        <div @click="validateCart" v-if="cartItems.length">
-          <ModalPay :data="cartItems" :total="calculateTotalAmount()" />
+        <div @click="validateCart" v-if="user && cartItems.length ">
+          <ModalPay :data="cartItems" :total="calculateTotalAmount()" @formSubmitted="handleFormSubmitted" />
         </div>
       </div>
     </main>

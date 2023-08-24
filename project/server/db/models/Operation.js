@@ -14,22 +14,21 @@ module.exports = (connection) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            TransactionId: { // Updated field name to TransactionId
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: true,
+            transactionIdArr: { // Updated field name to TransactionId
+                type: DataTypes.ARRAY(DataTypes.INTEGER),
+                allowNull: true,
             },
             Montant: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             status: {
                 type: DataTypes.STRING,
                 defaultValue: "pending",
             },
-            orderId: {
-                type: DataTypes.STRING,
-                allowNull: true
+            orderIdArr: { // Updated field name to TransactionId
+                type: DataTypes.ARRAY(DataTypes.INTEGER),
+                allowNull: true,
             },
             creditCardNumber: {
                 type: DataTypes.STRING,

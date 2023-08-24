@@ -40,7 +40,7 @@ module.exports = (connection) => {
             link_payment: {
                 type: DataTypes.STRING,
                 allowNull: true,
-                defaultValue: "/payment",
+                defaultValue: "/operations",
             }
 
         },

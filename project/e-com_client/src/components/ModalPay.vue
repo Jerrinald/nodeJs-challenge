@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRefs, getCurrentInstance  } from 'vue';
 import Button from './Button.vue';
 import IconClose from './icons/IconClose.vue'
 import cart from '../assets/images/carte.jpg'
@@ -47,10 +47,16 @@ const formatCVV = () => {
   formData.value.cvv = formData.value.cvv.replace(/\D/g, "").substring(0, 3);
 };
 
+const instance = getCurrentInstance();
+const emit = instance.emit;
+
 const submitForm = () => {
   const jsonFormData = JSON.stringify(formData.value);
   console.log(jsonFormData);
+  emit('formSubmitted', jsonFormData); // Emit the event with the form data
 };
+
+
 
 </script>
 <template>
