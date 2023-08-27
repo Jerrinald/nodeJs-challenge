@@ -60,9 +60,8 @@ const submitForm = () => {
 
 </script>
 <template>
-  <slot name="activator" :openModal="() => openModal = true"><button @click="openModal = true"
-      class="btn btn-primary">Valider mon panier</button></slot>
-  <div v-show="openModal" class="modal">
+ 
+  <div class="modal">
     <div class="backdrop" @click.self="openModal = false"></div>
     <div class="modal-box">
       <div>

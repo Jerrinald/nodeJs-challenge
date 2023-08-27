@@ -7,6 +7,8 @@ import { ref, onMounted, onBeforeUnmount, provide } from 'vue';
 
 // Replace 'moulinex' import with actual images if needed
 
+const openModal = ref(false);
+
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
 const successfulTransactionIds = []; // Array to store successful transaction IDs
@@ -147,6 +149,7 @@ const handleFormSubmitted = async (formData) => {
     console.log('Form data submitted:', formData);
     console.log(successfulTransactionIds);
     console.log(successfulOrdersIds)
+    console.log(JSON.stringify(formData.value));
 
     const bodyOperations = {
       MarchandId: 123, // Replace with the actual merchant ID
@@ -155,10 +158,10 @@ const handleFormSubmitted = async (formData) => {
       Montant: calculateTotalAmount(), // Replace with the calculated total amount
       status: 'pending',
       orderIdArr: successfulOrdersIds, // Replace with the actual order ID
-      creditCardNumber: '**** **** **** 1234', // Replace with a masked credit card number
-      creditCardExpdate: '12/24', // Replace with a credit card expiration date
-      creditCardCvc: '123', // Replace with a credit card CVV
-      creditCardName: 'John Doe', // Replace with the cardholder's name
+      creditCardNumber: formData.cardNumber, // Replace with a masked credit card number
+      creditCardExpdate: formData.expiryDate, // Replace with a credit card expiration date
+      creditCardCvc: formData.cvv, // Replace with a credit card CVV
+      creditCardName: formData.name, // Replace with the cardholder's name
       clientName: 'John' // Use the name from the form data
     };
 
@@ -175,6 +178,7 @@ const handleFormSubmitted = async (formData) => {
     if (operationResponse.ok) {
       const operationData = await operationResponse.json();
       console.log('Operation successful!', operationData);
+      openModal.value = false
     } else {
       console.error('Failed to perform the operation.');
     }
@@ -237,8 +241,10 @@ const handleFormSubmitted = async (formData) => {
       </table>
       <div class="flex jce">
         <div @click="validateCart" v-if="user && cartItems.length ">
-          <ModalPay :data="cartItems" :total="calculateTotalAmount()" @formSubmitted="handleFormSubmitted" />
+          <div name="activator" :openModal="() => openModal = true"><button @click="openModal = true"
+          class="btn btn-primary">Valider mon panier</button></div>
         </div>
+        <ModalPay v-show="openModal" :data="cartItems" :total="calculateTotalAmount()" @formSubmitted="handleFormSubmitted" />
       </div>
     </main>
     <Footer />
