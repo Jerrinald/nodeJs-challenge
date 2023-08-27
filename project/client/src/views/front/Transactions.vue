@@ -1,5 +1,12 @@
 <template>
   <div class="transactions">
+    <h2>Rechercher une transaction</h2>
+    <form @submit.prevent="searchTransactions" class="search-form">
+      <label for="searchQuery">Recherche:</label>
+      <input type="text" id="searchQuery" v-model="searchQuery" class="search-input">
+      <button type="submit" class="search-button">Rechercher</button>
+    </form>
+
     <h2>Toutes les transactions</h2>
     <table class="transactions-table">
       <thead>
@@ -42,13 +49,6 @@
       </tr>
       </tbody>
     </table>
-
-    <h2>Rechercher une transaction</h2>
-    <form @submit.prevent="searchTransactions" class="search-form">
-      <label for="searchQuery">Recherche:</label>
-      <input type="text" id="searchQuery" v-model="searchQuery" class="search-input">
-      <button type="submit" class="search-button">Rechercher</button>
-    </form>
   </div>
 </template>
 

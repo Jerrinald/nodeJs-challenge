@@ -1,6 +1,15 @@
 <template>
     <div class="dashboard flex">
-        <Aside />
+      <div class="aside-container">
+        <a href="#" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
+        <div class="flex aside-link-container fdc gap-20">
+          <a href="#" @click="handleMenuClick('Accueil')">Accueil</a>
+          <a href="#" @click="handleMenuClick('Transactions')">Transactions</a>
+          <a href="#" @click="handleMenuClick('Opérations')">Opérations</a>
+          <a href="#" @click="handleMenuClick('Balance')">Balance</a>
+          <a href="#" @click="handleMenuClick('Marchands')">Marchands</a>
+        </div>
+      </div>
         <div class="block-container flex fdc gap-20">
             <div class="flex jcsb">
                 <input type="search" placeholder="Rechercher...">
@@ -34,13 +43,16 @@ import Transactions from '../front/Transactions.vue';
 import Profile from '../front/Profile.vue';
 import store from "../../store";
 import router from "../../router";
-import { ref } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
 
+const selectedMenu = ref('Marchands'); // Valeur par défaut
 
-const selectedMenu = ref('Transactions');
-const props = defineProps({
-  selectedMenu: String // Définir le type de la prop
-});
+function handleMenuClick(menu) {
+  console.log(menu)
+  selectedMenu.value = menu;
+  console.log(selectedMenu.value)
+  console.log(selectedMenu)
+}
 async function logoutUser() {
   try {
     // Ajoutez ici toute opération nécessaire pour la déconnexion côté client
@@ -60,6 +72,30 @@ async function logoutUser() {
 
 </script>
 <style scoped>
+.aside-container{
+  width: 300px;
+  padding: 20px;
+  color: #000000;
+}
+
+.aside-link-container{
+  margin-top: 20px;
+}
+
+.aside-link-container a{
+  color: #000000;
+  font-weight: bold;
+}
+
+.logo-content span{
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.logo-content img{
+  border-radius: 50px;
+  height: 35px;
+  width: 35px;
+}
 .dashboard {
   background-color: #2c3e50; /* Couleur de fond principale */
 }
