@@ -1,19 +1,17 @@
 <script setup>
 import logo from "../assets/logo1.png"
+import { ref, defineProps, defineEmits } from 'vue';
+
+const emit = defineEmits();
+const selectedMenu = ref('Marchands'); // Valeur par défaut
+
+function handleMenuClick(menu) {
+  selectedMenu.value = menu;
+  emit('menuClick', menu); // Émettre un événement vers le parent
+}
 
 </script>
 
-<template>
-    <div class="aside-container">
-        <a href="#" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
-        <div class="flex aside-link-container fdc gap-20">
-            <a href="#">Accueil</a>
-            <a href="#">Paiements</a>
-            <a href="#">Balance</a>
-            <a href="#">Marchants</a>
-        </div>
-    </div>
-</template>
 
 <style scoped>
     .aside-container{
