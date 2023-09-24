@@ -129,7 +129,6 @@ onMounted(() => {
   // Fetch merchants from the API
   async function fetchTransactionsByIdmarchand() {
 
-
     try {
       const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/marchand/${marchand.id}`, {
         method: 'GET',

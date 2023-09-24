@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard flex">
       <div class="aside-container">
-        <a href="#" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
+        <a href="/" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
         <div class="flex aside-link-container fdc gap-20">
           <a href="#" @click="handleMenuClick('Accueil')">Accueil</a>
           <a href="#" @click="handleMenuClick('Transactions')">Transactions</a>

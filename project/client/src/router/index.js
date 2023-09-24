@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import jwtDecode from 'jwt-decode';
 import Home from '../views/front/Home.vue';
 import Login from '../views/auth/Login.vue';
+import Admin from '../views/auth/Admin.vue';
 import Register from '../views/auth/Register.vue';
 import Stripetify from '../views/Stripetify/StripetifyHome.vue';
 import Dashboard from '../views/Stripetify/Dashboard.vue';
@@ -61,7 +62,13 @@ const routes = [
         name: 'transactionHystory',
         component: transactionHystory,
         meta: { requiresAuth: false, requiresAdmin: false },
-    }
+    },
+    {
+        path: '/admin',
+        name: 'Admin',
+        component: Admin,
+        meta: { requiresAuth: false, requiresAdmin: false },
+    },
 ];
 
 const router = createRouter({
@@ -94,7 +101,7 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         // Vérifier si l'utilisateur est déjà connecté et accède aux pages de login ou d'inscription
-        if (store.state.user && (to.name === 'Login' || to.name === 'Register')) {
+        if (store.state.user && (to.name === 'Login' || to.name === 'Register' || to.name === 'Admin')) {
             // Rediriger vers la page d'accueil ou toute autre page appropriée pour les utilisateurs connectés
             next('/');
         } else {

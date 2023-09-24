@@ -143,6 +143,7 @@ async function validateCart() {
 
 }
 
+//operation apres submit la modal
 const handleFormSubmitted = async (formData) => {
 
 
@@ -150,6 +151,7 @@ const handleFormSubmitted = async (formData) => {
     console.log(successfulTransactionIds);
     console.log(successfulOrdersIds)
     console.log(JSON.stringify(formData.value));
+    console.log(formData.cvv);
 
     const bodyOperations = {
       MarchandId: 123, // Replace with the actual merchant ID
