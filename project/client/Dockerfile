@@ -1,5 +1,5 @@
 # Stage 1: Build Vue app
-FROM node:14 AS build
+FROM node:20 AS build
 
 WORKDIR /usr/src/app
 

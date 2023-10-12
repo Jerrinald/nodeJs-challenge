@@ -1,28 +1,29 @@
 <template>
-    <!-- <h2>Marchands</h2> -->
-    <div v-if="!merchants.length">Aucun marchand</div>
-    <div v-else class="merchant-grid">
-      <!-- Merchant List Section -->
-      <div v-if="showMerchantList">
-        <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item" @click="showMerchantTransactions(merchant)">
-          <div class="merchant-info">
-            <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
-            <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
-            <p><strong>Email:</strong> {{ merchant.email }}</p>
-            <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
-            <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
-            <p><strong>Devise:</strong> {{ merchant.devise }}</p>
-            <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
-            <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
-            <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
-          </div>
-          <div class="merchant-actions">
-            <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
-            <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
-          </div>
+  <!-- <h2>Marchands</h2> -->
+  <div v-if="!merchants.length">Aucun marchand</div>
+  <div v-else class="merchant-grid">
+    <!-- Merchant List Section -->
+    <div v-if="showMerchantList">
+      <div v-for="merchant in merchants" :key="merchant.id" class="merchant-item"
+        @click="showMerchantTransactions(merchant)">
+        <div class="merchant-info">
+          <p><strong>Nom:</strong> {{ merchant.firstname }}</p>
+          <p><strong>Prénom:</strong> {{ merchant.lastname }}</p>
+          <p><strong>Email:</strong> {{ merchant.email }}</p>
+          <p><strong>KBIS:</strong> {{ merchant.KBIS }}</p>
+          <p><strong>Numéro:</strong> {{ merchant.numero }}</p>
+          <p><strong>Devise:</strong> {{ merchant.devise }}</p>
+          <p><strong>URL Confirmation:</strong> {{ merchant.url_confirmation }}</p>
+          <p><strong>URL Annulation:</strong> {{ merchant.url_annulation }}</p>
+          <p><strong>Actif:</strong> {{ merchant.active ? 'Oui' : 'Non' }}</p>
+        </div>
+        <div class="merchant-actions">
+          <button class="btn btn-primary" @click="editMerchant(merchant)">Modifier</button>
+          <button class="btn" v-if="!merchant.active" @click="activateMerchant(merchant)">Activer</button>
         </div>
       </div>
-      <!-- Transaction List Section -->
+    </div>
+    <!-- Transaction List Section -->
     <div v-if="showTransactionList">
       <h2>Transactions de {{ selectedMerchant.firstname }} {{ selectedMerchant.lastname }}</h2>
       <div v-if="!transactions.length">Aucune transaction</div>
@@ -37,7 +38,7 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script setup>
@@ -50,7 +51,6 @@ const showMerchantList = ref(true); // Initially show the merchant list
 const showTransactionList = ref(false); // Initially hide the transaction list
 
 const selectedMerchant = ref(null);
-const showTransactions = ref(false);
 
 const merchants = ref([]);
 const token = localStorage.getItem('token');
@@ -92,8 +92,8 @@ async function activateMerchant(merchant) {
     // Prepare the data for the PATCH request
     const newData = {
       active: true, // Set the 'active' field to true to activate the account
-      clientID : randomClient.clientId,
-      clientSecret : randomClient.clientSecret,
+      clientID: randomClient.clientId,
+      clientSecret: randomClient.clientSecret,
     };
 
     // Call the API endpoint to activate the merchant's account
@@ -180,27 +180,27 @@ async function showMerchantTransactions(merchant) {
 
 async function fetchOrderInfo(transacArray) {
 
-try {
-  const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders/${transacArray.orderId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`, // Use the token in the headers
-    },
-  });
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders/${transacArray.orderId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Use the token in the headers
+      },
+    });
 
-  if (response.ok) {
-    const data = await response.json();
-    console.log(data)
-    transacArray.value = data;
-  } else {
-    console.error('Failed to fetch merchants');
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data)
+      transacArray.value = data;
+    } else {
+      console.error('Failed to fetch merchants');
+      // Handle the error or show a message to the user
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
     // Handle the error or show a message to the user
   }
-} catch (error) {
-  console.error('An error occurred:', error);
-  // Handle the error or show a message to the user
-}
 }
 
 // Function to edit a merchant (implement this function according to your requirements)
@@ -217,7 +217,7 @@ onMounted(() => {
 
 <style scoped>
 /* Your styles CSS here */
-.merchant-grid div{
+.merchant-grid div {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;

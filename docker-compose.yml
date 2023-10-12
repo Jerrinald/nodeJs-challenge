@@ -81,7 +81,7 @@ services:
       context: ./project/client
       dockerfile: Dockerfile  # Assuming Dockerfile is in the "./project/client" directory
     ports:
-      - 80:80
+      - 82:80
     working_dir: /usr/src/app
     volumes:
       - ./project/client:/usr/src/app
