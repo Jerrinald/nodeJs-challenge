@@ -12,6 +12,9 @@
       </div>
       <div class="modal-content">
         <div class="login-form">
+          <div class="unauthorized-march" v-show="marchandUnauthorized">
+            <p>Votre compte est en attente d'activation</p>
+          </div>
           <form @submit.prevent="loginUser" class="flex fdc gap-15">
             <h2>Connectez vous en tant que marchand</h2>
             <div>
@@ -62,6 +65,8 @@ let userSimple = reactive({
 
 const openModal = ref(false);
 
+const marchandUnauthorized = ref(false);
+
 function toggleModal() {
   openModal.value = !openModal.value;
 }
@@ -91,7 +96,14 @@ async function loginUser() {
 
       router.push('/profile');
     } else {
+      
+      // Gérer la réponse de l'API en fonction de vos besoins
+      console.log(response.status);
       console.error('Login failed');
+
+      if (response.status == 401) {
+        marchandUnauthorized.value = true;
+      }
     }
   } catch (error) {
     console.error('An error occurred:', error);
@@ -185,4 +197,11 @@ async function loginUser() {
 .form-selection-btn.simple-user {
   border-radius: 0 5px 5px 0;
 }
+
+.unauthorized-march{
+  position: absolute;
+  top: -30px;
+  background-color: red;
+}
+
 </style>

@@ -9,6 +9,7 @@ const SecurityController = require("../controllers/security")(
 const MarchandController = require("../controllers/generic")(new MarchandService());
 
 router.post("/login", SecurityController.login);
+router.post("/logout", SecurityController.logout);
 router.post("/register", MarchandController.create);
 
 module.exports = router;
