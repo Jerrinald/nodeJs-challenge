@@ -75,7 +75,7 @@ async function registerUser() {
         query: { registrationSuccess: true }
       });
       console.log('Utilisateur enregistré avec succès!');
-      router.push('/login'); // Remplacez '/accueil' par le chemin de votre page d'accueil
+      //router.push('/login'); // Remplacez '/accueil' par le chemin de votre page d'accueil
 
     }
   } catch (error) {
