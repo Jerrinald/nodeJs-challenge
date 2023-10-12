@@ -44,9 +44,9 @@ app.use("/orders", checkAuth, checkCurrentUser, OrderRouter);
 
 app.use("/orders", OrderRouter);
 
-app.use("/credential", credentialRouter)
+app.use("/credentials", credentialRouter)
 
-app.use("/payment", PaymentRouter);
+app.use("/payments", PaymentRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

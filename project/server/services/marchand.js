@@ -39,18 +39,18 @@ module.exports = function MarchandService() {
 
                // Sauvegarder le jeton d'activation dans la base de données associée à l'utilisateur
                newUser.activationToken = activationToken;
-               await newUser.save();
+               await newUser.save();*/
 
                // Envoi de l'e-mail de validation
                const msg = {
                    to: newUser.email, // Adresse e-mail de l'utilisateur enregistré
                    from: 'ndiaby6@myges.fr', // Remplacez par votre adresse e-mail
                    subject: 'Confirmation d\'inscription', // Sujet de l'e-mail
-                   html: `<p>Merci de vous être inscrit! Veuillez cliquer sur le lien suivant pour activer votre compte :</p>
+                   html: `<p>Merci de vous être inscrit !</p>
                    `
                };
 
-               await sgMail.send(msg); */
+               await sgMail.send(msg); 
 
                 return newUser;
 
