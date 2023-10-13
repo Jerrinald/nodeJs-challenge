@@ -20,6 +20,9 @@ module.exports = function OperationService() {
         findOne: async function (filters) {
             return Operation.findOne({ where: filters });
         },
+        findByMerchantId: async function (marchandId) {
+            return Operation.findAll({ where: { marchandId } });
+        },
         create: async function (data) {
             try {
                 return await Operation.create(data);

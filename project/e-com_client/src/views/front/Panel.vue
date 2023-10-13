@@ -17,8 +17,9 @@ const successfulOrdersIds = []; // Array to store successful transaction IDs
 const cartItems = ref([]);
 let token = localStorage.getItem('token');
 console.log("token", token);
-let user = localStorage.getItem('user');
+let user = JSON.parse(localStorage.getItem('user'))
 console.log(user);
+
 
   function loadCartFromLocalStorage() {
     const savedCart = localStorage.getItem('cartItems');
@@ -121,7 +122,7 @@ async function validateCart() {
   }));
 
   for (const transactionItem of transactionItems) {
-    const transactionResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/payment`, {
+    const transactionResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/payments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,11 +148,11 @@ async function validateCart() {
 const handleFormSubmitted = async (formData) => {
 
 
-    console.log('Form data submitted:', formData);
+    console.log('Form data submitted:', formData.value);
     console.log(successfulTransactionIds);
     console.log(successfulOrdersIds)
     console.log(JSON.stringify(formData.value));
-    console.log(formData.cvv);
+    console.log(formData.value.cvv);
 
     const bodyOperations = {
       MarchandId: 123, // Replace with the actual merchant ID
@@ -160,10 +161,10 @@ const handleFormSubmitted = async (formData) => {
       Montant: calculateTotalAmount(), // Replace with the calculated total amount
       status: 'pending',
       orderIdArr: successfulOrdersIds, // Replace with the actual order ID
-      creditCardNumber: formData.cardNumber, // Replace with a masked credit card number
-      creditCardExpdate: formData.expiryDate, // Replace with a credit card expiration date
-      creditCardCvc: formData.cvv, // Replace with a credit card CVV
-      creditCardName: formData.name, // Replace with the cardholder's name
+      creditCardNumber: formData.value.cardNumber, // Replace with a masked credit card number
+      creditCardExpdate: formData.value.expiryDate, // Replace with a credit card expiration date
+      creditCardCvc: formData.value.cvv, // Replace with a credit card CVV
+      creditCardName: formData.value.name, // Replace with the cardholder's name
       clientName: 'John' // Use the name from the form data
     };
 

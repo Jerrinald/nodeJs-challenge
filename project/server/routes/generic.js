@@ -16,5 +16,9 @@ module.exports = function (Controller, options = {}) {
     router.get("/marchand/:marchandId", Controller.getAllByMerchantId);
   }
 
+  if (typeof Controller.getOpeByMerchantId === 'function') {
+    router.get("/marchand/:marchandId", Controller.getOpeByMerchantId);
+  }
+
   return router;
 };

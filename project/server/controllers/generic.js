@@ -40,6 +40,22 @@ module.exports = function Controller(Service, options = {}) {
           next(err);
         }
     },
+    getOpeByMerchantId: async (req, res, next) => {
+      const { page, itemsPerPage, order, ...filters } = req.query;
+      const { marchandId } = req.params;
+
+      try {
+        const results = await Service.findOpeByMerchantId(marchandId, filters, {
+          order,
+          limit: itemsPerPage,
+          offset: (page - 1) * itemsPerPage,
+        });
+
+        res.json(results);
+      } catch (err) {
+        next(err);
+      }
+  },
     create: async (req, res, next) => {
       const { body } = req;
       try {

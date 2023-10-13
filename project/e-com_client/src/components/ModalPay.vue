@@ -51,9 +51,8 @@ const instance = getCurrentInstance();
 const emit = instance.emit;
 
 const submitForm = () => {
-  const jsonFormData = JSON.stringify(formData.value);
-  console.log(jsonFormData);
-  emit('formSubmitted', jsonFormData); // Emit the event with the form data
+
+  emit('formSubmitted', formData); // Emit the event with the form data
 };
 
 

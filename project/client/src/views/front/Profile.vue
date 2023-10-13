@@ -1,9 +1,10 @@
 <template>
   <div class="page">
+    
     <h1>Bienvenue {{ marchand.lastname + " " + marchand.firstname }}</h1>
     <h2 class="title">Mon profil</h2>
 
-    <div class="merchant-info">
+    <div v-if="!marchand.length" class="merchant-info">
       <p><strong>Nom:</strong> {{ marchand.firstname }}</p>
       <p><strong>Prénom:</strong> {{ marchand.lastname }}</p>
       <p><strong>Company:</strong> {{ marchand.companyName }}</p>
@@ -17,6 +18,23 @@
       <p><strong>jeton secret:</strong> {{ marchand.clientSecret }}</p>
       <button @click="handleActivateMerchant">Regénérer Token</button>
     </div>
+    <button @click="openEditForm">Edit Profile</button>
+    <div v-if="showEditForm">
+      <!-- Your edit form here -->
+      <form @submit="submitEditForm">
+        <!-- Input fields to edit the merchant's data -->
+        <p><strong>Nom:</strong></p><input v-model="editedMerchant.firstname" />
+        <p><strong>Prénom:</strong></p><input v-model="editedMerchant.lastname" />
+        <p><strong>Numéro:</strong></p><input v-model="editedMerchant.numero" />
+        <p><strong>Devise:</strong></p><input v-model="editedMerchant.devise" />
+        <p><strong>URL Confirmation:</strong></p><input v-model="editedMerchant.url_confirmation" />
+        <p><strong>URL Annulation:</strong></p><input v-model="editedMerchant.url_annulation" />
+
+        <!-- Add other fields for editing other data as needed -->
+        <button type="submit">Sauvegarder</button>
+      </form>
+    </div>
+
   <section class="page-container">
     <h2>Mes transactions</h2>
     <div v-if="!transactions.length">Aucune transaction</div>
@@ -41,8 +59,17 @@
   
   const token = localStorage.getItem('token');
 
+  // Data properties for the edit form
+  const showEditForm = ref(false); // Initially hidden
+  const editedMerchant = ref({}); // Initialize as an empty object
+
   const transactions = ref([]);
-  const marchand = ref(null); // Initialize as null
+  const marchand = ref(store.state.user); // Initialize as null
+
+  const openEditForm = () => {
+    editedMerchant.value = { ...marchand.value }; // Copy the current merchant data
+    showEditForm.value = !showEditForm.value; // Show the edit form
+  };
 
   async function activateMerchant(merchant) {
   try {
@@ -77,6 +104,35 @@
     throw new Error('An error occurred:', error);
   }
 }
+
+const submitEditForm = async () => {
+    try {
+      // Send a request to update the merchant's data
+      const response = await fetch(
+        `${import.meta.env.VITE_API_PAIEMENT}/marchands/${marchand.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(editedMerchant.value),
+        }
+      );
+
+      if (response.ok) {
+        // Update the local marchand object with the new values
+        marchand.value = { ...editedMerchant.value };
+        showEditForm.value = false; // Hide the edit form
+      } else {
+        console.error('Failed to update merchant data');
+        // Handle the error or show a message to the user
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      // Handle the error or show a message to the user
+    }
+  };
 
 const handleActivateMerchant = async () => {
   try {
@@ -118,10 +174,7 @@ function generateRandomClient() {
   };
 }
 
-// ... other code ...
-
-onMounted(() => {
-  marchand.value = store.state.user; // Initialize marchand object
+onMounted(() => {  
   fetchTransactionsByIdmarchand();
 });
   
@@ -130,7 +183,7 @@ onMounted(() => {
   async function fetchTransactionsByIdmarchand() {
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/marchand/${marchand.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/marchand/${marchand.value.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -182,21 +235,18 @@ onMounted(() => {
     }
   }
   
-  // Call the fetchMerchants function on component mount
-  onMounted(() => {
-    fetchTransactionsByIdmarchand();
-  });
   </script>
   
   <style scoped>
   /* Your styles CSS here */
 
   .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh; /* Optionally set the height to 100vh to make the container fill the entire viewport */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Optionally set the height to 100vh to make the container fill the entire viewport */
 }
 
 .title {
