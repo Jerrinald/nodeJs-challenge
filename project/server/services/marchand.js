@@ -27,6 +27,21 @@ module.exports = function MarchandService() {
             return Marchand.findOne({ where: filters });
         },
 
+
+        findCredential: async (clientID, clientSecret) => {
+
+            //IF CLIENT ID AND CLIENT SECRET ARE NOT NULL
+            const marchand = await Marchand.findOne({ where: { clientID, clientSecret } });
+            if (!marchand) {
+                throw new ValidationError({
+                    clientID: "Invalid credentials",
+                });
+            }
+            return marchand;
+
+
+        },
+
         create: async function (data) {
             try {
                 console.log(process.env.SENDGRID_API)

@@ -2,6 +2,11 @@ const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 
 module.exports = (req, res, next) => {
+  if (req.originalUrl === '/marchands/credential') {
+    if (req.method === 'POST') {
+      return next();
+    }
+  }
   if (!req.headers.authorization) {
     return next(new UnauthorizedError());
   }

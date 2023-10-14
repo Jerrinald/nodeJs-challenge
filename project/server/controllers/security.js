@@ -6,7 +6,6 @@ module.exports = function SecurityController(MarchandService) {
     login: async (req, res, next) => {
       try {
         const { email, password } = req.body;
-        console.log(email, password);
         const marchand = await MarchandService.login(email, password);
         if (marchand) {
           console.log(marchand);

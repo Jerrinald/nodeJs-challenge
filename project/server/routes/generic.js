@@ -20,5 +20,9 @@ module.exports = function (Controller, options = {}) {
     router.get("/marchand/:marchandId", Controller.getOpeByMerchantId);
   }
 
+  if (typeof Controller.getCredential === 'function') {
+    router.post("/credential", Controller.getCredential);
+  }
+
   return router;
 };

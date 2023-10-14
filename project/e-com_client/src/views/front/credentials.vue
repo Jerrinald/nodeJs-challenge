@@ -45,12 +45,19 @@ export default {
     },
     async mounted() {
         try {
-            const response = await fetch(`http://localhost:3100/credential/1`);
+            const response = await fetch(`${import.meta.env.VITE_API_ECOM}/credentials`, {
+                method: 'GET',
+            });
             if (response.status === 200) {
-                this.credentialsExist = true;
+                
                 const credentials = await response.json();
-                this.clientId = credentials.clientId;
-                this.clientSecret = credentials.clientSecret;
+                if (credentials.length > 0) {
+                    this.credentialsExist = true;
+                    this.credentialsId = credentials[0].id
+                    this.clientId = credentials[0].clientId;
+                    this.clientSecret = credentials[0].clientSecret;
+                }
+                
             }
         } catch (error) {
             console.error(error);
@@ -65,21 +72,38 @@ export default {
                 if (this.credentialsExist) {
                     await this.updateCredentials();
                 } else {
-                    const response = await fetch('http://localhost:3100/credential', {
+                    const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands/credential`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            id: this.credentialsId,
-                            clientId: this.clientId,
+                            clientID: this.clientId,
                             clientSecret: this.clientSecret
                         }),
                     });
 
                     if (response.status === 200) {
-                        this.credentialsExist = true;
-                        alert("Connecté avec succès !");
+                        const data = await response.json();
+                        if (!this.credentialsExist) {
+                            const responseCred = await fetch(`${import.meta.env.VITE_API_ECOM}/credentials`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    clientId: this.clientId,
+                                    clientSecret: this.clientSecret
+                                }),
+                            });
+
+                            if (responseCred.status === 201) {
+                                const dataCred = await responseCred.json();
+                                this.credentialsExist = true;
+                            } else {
+                                this.errorMessage = "Erreur lors de l'enregistrement";
+                            }
+                        }
                     } else {
                         this.errorMessage = "Erreur lors de la connexion. Veuillez vérifier vos informations d'identification.";
                     }

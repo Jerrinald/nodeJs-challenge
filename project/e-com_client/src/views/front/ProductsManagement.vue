@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <Header />
+  <section class="product-management">
     <h2>Ajouter un produit</h2>
     <form @submit.prevent="addProduct">
       <div>
@@ -57,6 +58,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, reactive } from 'vue';
 import adidas from '../../assets/images/adidas.avif'
+import Header from '../../components/Header.vue'
 
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 

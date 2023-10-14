@@ -16,22 +16,25 @@ const successfulOrdersIds = []; // Array to store successful transaction IDs
 
 const cartItems = ref([]);
 let token = localStorage.getItem('token');
-console.log("token", token);
 let user = JSON.parse(localStorage.getItem('user'))
-console.log(user);
 
+const clientCredential = {
+  clientID : "", 
+  clientSecret : "",
+  marchandId : null
+}
 
-  function loadCartFromLocalStorage() {
-    const savedCart = localStorage.getItem('cartItems');
-    if (savedCart) {
-      cartItems.value = JSON.parse(savedCart);
-      console.log(cartItems.value);
-    }
+function loadCartFromLocalStorage() {
+  const savedCart = localStorage.getItem('cartItems');
+  if (savedCart) {
+    cartItems.value = JSON.parse(savedCart);
+    console.log(cartItems.value);
   }
+}
 
-  onMounted(() => {
-    loadCartFromLocalStorage();
-  });
+onMounted(() => {
+  loadCartFromLocalStorage();
+});
 
 function updateCartAndLocalStorage(operation, item) {
   operation(item);
@@ -91,7 +94,7 @@ async function validateCart() {
   }));
 
   for (const orderItem of orderItems) {
-    console.log('Order send:', orderItem);
+    
     const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
       method: 'POST',
       headers: {
@@ -105,93 +108,137 @@ async function validateCart() {
       console.error('Failed to create the order.');
       return;
     }else{
+        console.log('Order send:', orderItem);
         const orderData = await orderResponse.json(); // Await here
         console.log('Order successful!', orderData);
         successfulOrdersIds.push(orderData.id); // Store the transaction ID in the array
     }
   }
 
-  const transactionItems = cartItems.value.map((item) => ({
-    orderId: orderNumber,
-    marchandId: localStorage.getItem('userId'),
-    clientId: user.id,
-    clientName: user.nom,
-    amount: item.prixProduit * item.quantity,
-    status: "En cours",
+  try {
+      const response = await fetch(`${import.meta.env.VITE_API_ECOM}/credentials`, {
+          method: 'GET',
+      });
+      if (response.status === 200) {
+          
+          const credentials = await response.json();
+          if (credentials.length > 0) {
+              clientCredential.clientID = credentials[0].clientId;
+              clientCredential.clientSecret = credentials[0].clientSecret;
 
-  }));
+              try {
 
-  for (const transactionItem of transactionItems) {
-    const transactionResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/payments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(transactionItem),
+                const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/marchands/credential`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        clientID: clientCredential.clientID,
+                        clientSecret: clientCredential.clientSecret
+                    }),
+                });
 
-    });
+                if (response.status === 200) {
+                  clientCredential.marchandId = await response.json();
 
-    if (transactionResponse.ok) {
-      const transactionData = await transactionResponse.json(); // Await here
-      console.log('Cart validated. Transaction successful!', transactionData);
-      successfulTransactionIds.push(transactionData.id); // Store the transaction ID in the array
-      console.log('Client id', user.id);
-    } else {
-      console.error('Failed to validate the cart.');
+                        
+                } else {
+                    errorMessage = "Erreur lors de la connexion. Veuillez vérifier vos informations d'identification.";
+                }
+              } catch (error) {
+                  errorMessage = "Erreur lors de la connexion. Veuillez vérifier vos informations d'identification.";
+                  console.error(error);
+              }
+          } 
+      }
+  } catch (error) {
+      console.error(error);
+  }
+
+  if (clientCredential.marchandId != null) {
+    const transactionItems = cartItems.value.map((item) => ({
+        orderId: orderNumber,
+        clientName : user.firstname,
+        marchandId: clientCredential.marchandId,
+        amount: item.prixProduit * item.quantity,
+        status: "En cours",
+
+      }));
+
+      for (const transactionItem of transactionItems) {
+        console.log(transactionItem)
+        const transactionResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/payments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(transactionItem),
+
+        });
+
+        if (transactionResponse.ok) {
+          const transactionData = await transactionResponse.json(); // Await here
+          console.log('Cart validated. Transaction successful!', transactionData);
+          successfulTransactionIds.push(transactionData.id); // Store the transaction ID in the array
+        } else {
+          console.error('Failed to validate the cart.');
+        }
+      }
+
     }
   }
 
-}
+  
 
 //operation apres submit la modal
 const handleFormSubmitted = async (formData) => {
 
+    if (clientCredential.marchandId != null) {
 
-    console.log('Form data submitted:', formData.value);
-    console.log(successfulTransactionIds);
-    console.log(successfulOrdersIds)
-    console.log(JSON.stringify(formData.value));
-    console.log(formData.value.cvv);
+      console.log('Form data submitted:', formData.value);
+      console.log(successfulTransactionIds);
 
-    const bodyOperations = {
-      MarchandId: 123, // Replace with the actual merchant ID
-      NatureOp: 'purchase',
-      transactionIdArr: successfulTransactionIds, // Replace with a unique transaction ID
-      Montant: calculateTotalAmount(), // Replace with the calculated total amount
-      status: 'pending',
-      orderIdArr: successfulOrdersIds, // Replace with the actual order ID
-      creditCardNumber: formData.value.cardNumber, // Replace with a masked credit card number
-      creditCardExpdate: formData.value.expiryDate, // Replace with a credit card expiration date
-      creditCardCvc: formData.value.cvv, // Replace with a credit card CVV
-      creditCardName: formData.value.name, // Replace with the cardholder's name
-      clientName: 'John' // Use the name from the form data
-    };
 
-    const operationResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(bodyOperations),
+      const bodyOperations = {
+        MarchandId: clientCredential.marchandId, // Replace with the actual merchant ID
+        NatureOp: 'purchase',
+        transactionIdArr: successfulTransactionIds, // Replace with a unique transaction ID
+        Montant: calculateTotalAmount(), // Replace with the calculated total amount
+        status: 'pending',
+        orderIdArr: successfulOrdersIds, // Replace with the actual order ID
+        creditCardNumber: formData.value.cardNumber, // Replace with a masked credit card number
+        creditCardExpdate: formData.value.expiryDate, // Replace with a credit card expiration date
+        creditCardCvc: formData.value.cvv, // Replace with a credit card CVV
+        creditCardName: formData.value.name, // Replace with the cardholder's name
+      };
 
-    });
+      const operationResponse = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(bodyOperations),
 
-    if (operationResponse.ok) {
-      const operationData = await operationResponse.json();
-      console.log('Operation successful!', operationData);
-      openModal.value = false
-    } else {
-      console.error('Failed to perform the operation.');
+      });
+
+      if (operationResponse.ok) {
+        const operationData = await operationResponse.json();
+        console.log('Operation successful!', operationData);
+        openModal.value = false
+      } else {
+        console.error('Failed to perform the operation.');
+      }
+
+      
+
+      // Clear the cart after successful validation
+      cartItems.value = [];
+      saveCartToLocalStorage();
     }
-
-    
-
-    // Clear the cart after successful validation
-    cartItems.value = [];
-    saveCartToLocalStorage();
-    
+      
 
   };
 </script>
