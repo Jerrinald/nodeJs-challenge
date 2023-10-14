@@ -116,11 +116,10 @@ window.addEventListener('beforeunload', () => {
 <template>
     <div v-for="product in products" :key="product.id" class="product-item">
         <a href="#" class="banner-item">
-            <img :src="adidas" alt="" srcset="">
+            <img :src="product.image ? apiEcomUrl + '/' + product.image : adidas" style="min-height: 350px; min-width: 350px;">
             <p :title="product.name" class="product-name">{{ product.name }}</p>
             <strong>{{ product.price }} €</strong>
             <p><s>83.99€</s></p>
-            <div class="last-article">9 articles restants</div>
             <button class="btn-primary"  @click="() => addToCart(product)">Ajouter au panier</button>
         </a>
     </div>

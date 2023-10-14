@@ -55,6 +55,9 @@ const submitForm = () => {
   emit('formSubmitted', formData); // Emit the event with the form data
 };
 
+const closeModal = () => {
+  openModal.value = false;
+}
 
 
 </script>

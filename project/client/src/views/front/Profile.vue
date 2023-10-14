@@ -158,11 +158,11 @@ function generateRandomString(length) {
     randomString += characters.charAt(randomIndex);
   }
 
-  return randomString;
+  return randomString
 }
 
 function generateRandomClient() {
-  const clientIdLength = 16; // Longueur du client ID souhaitée
+  const clientIdLength = 16; // Longueur du client ID souhaitéej
   const clientSecretLength = 32; // Longueur du client secret souhaitée
 
   const clientId = generateRandomString(clientIdLength);

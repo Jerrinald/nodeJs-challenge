@@ -92,7 +92,7 @@ main{
 
 .success {
   background-color: rgb(19, 171, 19);
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 10px;
   font-weight: bold;
 

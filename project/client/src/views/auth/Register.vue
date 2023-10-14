@@ -166,7 +166,7 @@ async function registerUser() {
       registeredSuccessfully.value = true;
       console.log('Utilisateur enregistré avec succès!');
       // Reset the user object to null
-      user = null;
+      user = [];
     }
   } catch (error) {
     console.error('Erreur lors de l\'enregistrement de l\'utilisateur:', error.message);

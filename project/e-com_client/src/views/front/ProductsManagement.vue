@@ -21,7 +21,7 @@
     <p v-if="!products.length">Aucun produit</p>
     <div class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-item">
-        <img :src="apiEcomUrl + '/' + card.image" :alt="product.name" style="max-height: 100px;">
+        <img :src="product.image ? apiEcomUrl + '/' + product.image : adidas" :alt="product.name" style="max-height: 100px; max-width: 100px;">
         <h3>{{ product.name }}</h3>
         <p>Prix : {{ product.price }} €</p>
         <button @click="removeProduct(product.id)">Supprimer</button>
@@ -42,7 +42,7 @@
       </div>
       <div>
         <label for="editProductImage">Image actuelle:</label>
-        <img :src="apiEcomUrl + '/' + card.image" :alt="editingProduct.name" style="max-height: 100px;">
+        <img :src="apiEcomUrl + '/' + editingProduct.image" :alt="editingProduct.name" style="max-height: 100px;">
       </div>
       <div>
         <label for="newImage">Nouvelle image:</label>
@@ -56,6 +56,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, reactive } from 'vue';
+import adidas from '../../assets/images/adidas.avif'
 
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
@@ -96,8 +97,8 @@ cartChannel.onmessage = (event) => {
       });
   
       if (response.ok) {
-        const data = await response.json();
-        products.value = data;
+        products.value = await response.json(); // Update products as an array
+        
       } else {
         console.error('Failed to fetch transactions');
       }
