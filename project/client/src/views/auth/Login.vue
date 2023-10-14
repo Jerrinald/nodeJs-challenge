@@ -94,7 +94,7 @@ async function loginUser() {
       // on redirige vers la page d'accueil
       store.dispatch('login', data.marchand);
 
-      router.push('/profile');
+      router.push('/dashboard');
     } else {
       
       // Gérer la réponse de l'API en fonction de vos besoins
