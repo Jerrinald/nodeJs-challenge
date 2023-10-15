@@ -28,7 +28,6 @@ const formData = ref({
   cvv: ""
 });
 
-
 const formatCardNumber = () => {
   let numbers = formData.value.cardNumber.replace(/\D/g, "").substring(0, 16);
   const chunks = [];
