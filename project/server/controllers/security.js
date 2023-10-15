@@ -8,7 +8,7 @@ module.exports = function SecurityController(MarchandService) {
         const { email, password } = req.body;
         const marchand = await MarchandService.login(email, password);
         if (marchand) {
-          console.log(marchand);
+          
           if (!marchand.active) {
             throw new UnauthorizedError("Account not activated.");
           }

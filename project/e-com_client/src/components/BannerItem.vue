@@ -119,8 +119,8 @@ window.addEventListener('beforeunload', () => {
             <img :src="product.image ? apiEcomUrl + '/' + product.image : adidas" style="min-height: 350px; min-width: 350px;">
             <p :title="product.name" class="product-name">{{ product.name }}</p>
             <strong>{{ product.price }} €</strong>
-            <p><s>83.99€</s></p>
-            <button class="btn-primary"  @click="() => addToCart(product)">Ajouter au panier</button>
+            
+            <button class="btn-primary add-prod-to-cart"  @click="() => addToCart(product)">Ajouter au panier</button>
         </a>
     </div>
 </template>
@@ -136,6 +136,10 @@ window.addEventListener('beforeunload', () => {
 }
 s {
     color: rgb(156, 164, 172);
+}
+
+.add-prod-to-cart{
+  display: flex;
 }
 
 .last-article{

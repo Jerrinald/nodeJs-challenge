@@ -45,7 +45,7 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: false, requiresAdmin: false },
+        meta: { requiresAuth: false, requiresAdmin: true },
     },
     {
         path: '/products_management',
@@ -89,7 +89,7 @@ const routes = [
         path: '/credentials',
         name: 'credentials',
         component: credentials,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: false, requiresAdmin: true },
     },
     {
         path: '/',
