@@ -94,28 +94,6 @@ async function validateCart() {
     statut: 'En cours',
   }));
 
-  for (const orderItem of orderItems) {
-    
-    const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(orderItem),
-    });
-
-    if (!orderResponse.ok) {
-      console.error('Failed to create the order.');
-      return;
-    }else{
-        console.log('Order send:', orderItem);
-        const orderData = await orderResponse.json(); // Await here
-        console.log('Order successful!', orderData);
-        successfulOrdersIds.push(orderData.id); // Store the transaction ID in the array
-    }
-  }
-
   try {
       const response = await fetch(`${import.meta.env.VITE_API_ECOM}/credentials`, {
           method: 'GET',
@@ -158,6 +136,29 @@ async function validateCart() {
   }
 
   if (clientCredential.marchandId != null) {
+
+    for (const orderItem of orderItems) {
+      
+      const orderResponse = await fetch(`${import.meta.env.VITE_API_ECOM}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderItem),
+      });
+
+      if (!orderResponse.ok) {
+        console.error('Failed to create the order.');
+        return;
+      }else{
+          console.log('Order send:', orderItem);
+          const orderData = await orderResponse.json(); // Await here
+          console.log('Order successful!', orderData);
+          successfulOrdersIds.push(orderData.id); // Store the transaction ID in the array
+      }
+    }
+
     const transactionItems = cartItems.value.map((item) => ({
         orderId: orderNumber,
         clientName : user.firstname,
