@@ -88,6 +88,7 @@ async function validateCart() {
     idClient: user.id,
     numeroCommande: orderNumber,
     numeroProduit: item.numeroProduit,
+    idProduct : item.id,
     prixProduit: item.prixProduit,
     quantiteProduit: item.quantity,
     statut: 'En cours',
