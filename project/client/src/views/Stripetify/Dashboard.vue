@@ -7,14 +7,13 @@
           <a href="#" @click="handleMenuClick($event, 'Profil')">Profil</a>
           <a href="#" @click="handleMenuClick($event, 'Transactions')">Transactions</a>
           <a href="#" @click="handleMenuClick($event, 'Opérations')">Opérations</a>
-          <a href="#" @click="handleMenuClick($event, 'Balance')">Balance</a>
           <a href="#" @click="handleMenuClick($event, 'Marchands')">Marchands</a>
         </div>
       </div>
         <div class="block-container flex fdc gap-20">
             <div class="top-bar flex jcsb aic gap-20"> 
               <input type="search" placeholder="Rechercher..." class="search-input"> 
-              <button @click="logoutUser" class="logout-button">Déconnexion</button> 
+              <Logout />
             </div>
             <div v-if="selectedMenu === 'Marchands'" class="marchant-container">
               <h2>Marchands</h2>
@@ -43,6 +42,7 @@ import Transactions from '../front/Transactions.vue';
 import Profile from '../front/Profile.vue';
 import store from "../../store";
 import router from "../../router";
+import Logout from "../auth/Logout.vue"
 import { ref, defineProps, defineEmits } from 'vue';
 
 const selectedMenu = ref('Marchands'); // Valeur par défaut
@@ -73,12 +73,23 @@ async function logoutUser() {
 
 </script>
 <style scoped>
+
+  html, body {
+    height: 100% !important;
+    margin: 0 !important; /* Il est important de réinitialiser la marge */
+  }
   .dashboard {
+    display: flex;
+    flex-direction: row; /* orientation horizontale des éléments */
+    height: 100%; /* la hauteur totale du viewport */
     background-color: #f5f5f5; /* fond clair */
     color: #333; /* texte foncé pour le contraste */
   }
 
   .aside-container{
+    display: flex;
+    flex-direction: column; /* oriente les éléments verticalement */
+    height: 100% !important; /* hauteur totale du parent */
     width: 300px;
     padding: 20px;
     background-color: #ffffff; /* Panneau latéral blanc */
@@ -87,7 +98,9 @@ async function logoutUser() {
   }
 
   .aside-link-container{
+    flex-grow: 1 !important; /* permet à l'élément de remplir tout l'espace disponible */
     margin-top: 20px;
+    height: 100%;
   }
 
   .aside-link-container a{

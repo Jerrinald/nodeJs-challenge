@@ -11,6 +11,9 @@
           <div class="login-form">
             <form @submit.prevent="loginUserSimple" class="flex fdc gap-25">
               <h2>Connectez vous en tant qu'utilisateur</h2>
+              <div v-if="loginError" class="error-message">
+                {{ loginError }}
+              </div>
               <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" v-model="userSimple.email" required>
@@ -41,6 +44,9 @@
     email: '',
     password: ''
   });
+
+  const loginError = ref(''); // Reactive reference for login error message
+
   
   const openModal = ref(false);
   
@@ -72,11 +78,16 @@
         store.dispatch('login', data.user);
   
         router.push('/dashboard');
+      } 
+      else if (response.status === 401) {
+        loginError.value = 'Email ou mot de passe incorrect.'; // Set error message for incorrect credentials
       } else {
-        console.error('Login failed');
+        loginError.value = 'Une erreur s’est produite. Veuillez réessayer.'; // Set error message for other errors
       }
     } catch (error) {
       console.error('An error occurred:', error);
+      loginError.value = 'Problème de connexion au serveur. Veuillez vérifier votre connexion.';
+
     }
   }
   </script>
