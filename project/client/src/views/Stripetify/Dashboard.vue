@@ -13,7 +13,7 @@
         <div class="block-container flex fdc gap-20">
             <div class="top-bar flex jcsb aic gap-20"> 
               <input type="search" placeholder="Rechercher..." class="search-input"> 
-              <button @click="logoutUser" class="logout-button">Déconnexion</button> 
+              <Logout />
             </div>
             <div v-if="selectedMenu === 'Marchands'" class="marchant-container">
               <h2>Marchands</h2>
@@ -42,6 +42,7 @@ import Transactions from '../front/Transactions.vue';
 import Profile from '../front/Profile.vue';
 import store from "../../store";
 import router from "../../router";
+import Logout from "../auth/Logout.vue"
 import { ref, defineProps, defineEmits } from 'vue';
 
 const selectedMenu = ref('Marchands'); // Valeur par défaut
@@ -74,8 +75,8 @@ async function logoutUser() {
 <style scoped>
 
   html, body {
-    height: 100%;
-    margin: 0; /* Il est important de réinitialiser la marge */
+    height: 100% !important;
+    margin: 0 !important; /* Il est important de réinitialiser la marge */
   }
   .dashboard {
     display: flex;
@@ -88,7 +89,7 @@ async function logoutUser() {
   .aside-container{
     display: flex;
     flex-direction: column; /* oriente les éléments verticalement */
-    height: 100%; /* hauteur totale du parent */
+    height: 100% !important; /* hauteur totale du parent */
     width: 300px;
     padding: 20px;
     background-color: #ffffff; /* Panneau latéral blanc */
@@ -97,7 +98,7 @@ async function logoutUser() {
   }
 
   .aside-link-container{
-    flex-grow: 1; /* permet à l'élément de remplir tout l'espace disponible */
+    flex-grow: 1 !important; /* permet à l'élément de remplir tout l'espace disponible */
     margin-top: 20px;
     height: 100%;
   }

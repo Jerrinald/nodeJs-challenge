@@ -12,6 +12,9 @@
       </div>
       <div class="modal-content">
         <div class="login-form">
+          <div v-if="loginError" class="login-error-message">
+            Login failed, please try again.
+          </div>
           <div class="unauthorized-march" v-show="marchandUnauthorized">
             <p>Votre compte est en attente d'activation</p>
           </div>
@@ -52,6 +55,9 @@ import store from "../../store";
 import router from "../../router";
 import BtnConnect from "../../components/BtnConnect.vue"
 import IconClose from "../../components/icons/IconClose.vue"
+
+const loginError = ref(false); // or ref('') for a message string
+
 
 let user = reactive({
   email: '',
@@ -100,6 +106,7 @@ async function loginUser() {
       // Gérer la réponse de l'API en fonction de vos besoins
       console.log(response.status);
       console.error('Login failed');
+      loginError.value = true; // or set to a custom error message string
 
       if (response.status == 401) {
         marchandUnauthorized.value = true;
@@ -107,6 +114,8 @@ async function loginUser() {
     }
   } catch (error) {
     console.error('An error occurred:', error);
+    loginError.value = true; // or set to a custom error message string
+
   }
 }
 </script>

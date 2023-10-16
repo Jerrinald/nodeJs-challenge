@@ -8,7 +8,10 @@
     </form>
 
     <h2>Toutes les transactions</h2>
-    <table class="transactions-table">
+    <div v-if="displayedTransactions.length === 0" class="no-transactions">
+      Aucune transaction trouvée.
+    </div>
+    <table v-else class="transactions-table">
       <thead>
       <tr>
         <th>ID de Transaction</th>
@@ -68,7 +71,7 @@ const getAllTransactions = async () => {
     try {
         const endpoint = userRole.value === 'admin' ?
             `${import.meta.env.VITE_API_PAIEMENT}/transactions` :
-            `${import.meta.env.VITE_API_PAIEMENT}/transactions?userId=${userId}`; // ou tout autre paramètre identifiant les transactions de l'utilisateur
+            `${import.meta.env.VITE_API_PAIEMENT}/transactions?userId=${userId.value}`; // ou tout autre paramètre identifiant les transactions de l'utilisateur
 
         const response = await fetch(endpoint, {
             method: 'GET',
@@ -157,6 +160,7 @@ const formatDate = (dateString) => {
     });
 };
 const userRole = ref('');
+const userId = ref('');
 
 // Fetch all transactions when the component mounts
 onMounted(async () => {
@@ -164,6 +168,7 @@ onMounted(async () => {
     if (token) {
         const decoded = jwt_decode(token);
         userRole.value = decoded.role; // ou tout autre chemin menant au rôle dans votre JWT
+        userId.value = decoded.user_id; // or whatever the path to the user ID is in your JWT
     }
 
     await getAllTransactions();
@@ -253,6 +258,13 @@ onMounted(async () => {
   color: white;
   cursor: pointer;
 }
+
+.no-transactions {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    color: #555;
+  }
 </style>
 
   
