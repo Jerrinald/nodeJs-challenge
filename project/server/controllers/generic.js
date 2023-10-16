@@ -24,6 +24,18 @@ module.exports = function Controller(Service, options = {}) {
         next(err);
       }
     },
+    getCredential: async (req, res, next) => {
+      const { clientID, clientSecret } = req.body;
+      console.log(clientID, clientSecret);
+      try {
+        const result = await Service.findCredential(clientID, clientSecret);
+        const marchandId = result.dataValues.id;
+        if (result) res.json(marchandId);
+        else res.sendStatus(404);
+      } catch (err) {
+        next(err);
+      }
+    },
     getAllByMerchantId: async (req, res, next) => {
         const { page, itemsPerPage, order, ...filters } = req.query;
         const { marchandId } = req.params;

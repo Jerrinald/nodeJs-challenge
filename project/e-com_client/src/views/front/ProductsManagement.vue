@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <Header />
+  <section class="product-management">
     <h2>Ajouter un produit</h2>
     <form @submit.prevent="addProduct">
       <div>
@@ -14,6 +15,10 @@
         <label for="productImage">Ajout de l'image:</label>
         <input type="file" id="productImage" name="uploaded_file" @change="onImageChange" accept="image/*" required>
       </div>
+      <div>
+        <label for="productDescription">Description du produit:</label>
+        <input type="text" id="productDescription" v-model="newProduct.description" required>
+      </div>
       <button type="submit">Ajouter</button>
     </form>
 
@@ -24,6 +29,8 @@
         <img :src="product.image ? apiEcomUrl + '/' + product.image : adidas" :alt="product.name" style="max-height: 100px; max-width: 100px;">
         <h3>{{ product.name }}</h3>
         <p>Prix : {{ product.price }} €</p>
+        <p>Description : {{ product.description }} </p>
+        <p>Numéro produit : {{ product.numeroProduit }}</p>
         <button @click="removeProduct(product.id)">Supprimer</button>
         <button @click="editProduct(product)">Modifier</button>
       </div>
@@ -41,8 +48,16 @@
         <input type="float" id="editProductPrice" v-model="editingProduct.price" required>
       </div>
       <div>
+        <label for="editProductDescription">Description du produit:</label>
+        <input type="text" id="editProductDescription" v-model="editingProduct.description" required>
+      </div>
+      <div>
+        <label for="editProductNum">Numéro du produit:</label>
+        <input type="text" id="editProductNum" v-model="editingProduct.numProd" required>
+      </div>
+      <div>
         <label for="editProductImage">Image actuelle:</label>
-        <img :src="apiEcomUrl + '/' + editingProduct.image" :alt="editingProduct.name" style="max-height: 100px;">
+        <img :src="apiEcomUrl + '/' + editingProduct.image" :alt="editingProduct.name" style="max-height: 100px; max-width: 100px;">
       </div>
       <div>
         <label for="newImage">Nouvelle image:</label>
@@ -57,6 +72,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, reactive } from 'vue';
 import adidas from '../../assets/images/adidas.avif'
+import Header from '../../components/Header.vue'
 
 const apiEcomUrl = ref(import.meta.env.VITE_API_ECOM);
 
@@ -66,7 +82,9 @@ let newImageFile = ref(null);
 let newProduct = reactive({
   name: '',
   price: 0.0,
+  description: '', // Initialize the description field
   image: null,
+  numeroProduit: '', // Add the numeroProduit field
 });
 const fallbackProducts = [
   // Vos produits de test
@@ -113,6 +131,8 @@ cartChannel.onmessage = (event) => {
     let newProd = {
       name: newProduct.name,
       price: newProduct.price,
+      description: newProduct.description, // Include the description field
+      numeroProduit: generateRandomNumber(),
     };
 
     try {
@@ -218,8 +238,10 @@ async function updateProduct() {
         id: editingProduct.value.id,
         name: editingProduct.value.name,
         price: parseFloat(editingProduct.value.price),
+        description: editingProduct.value.description,
+        numeroProduit: editingProduct.value.numProd,
       };
-    }
+    };
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_ECOM}/products/${editingProduct.value.id}`, {
@@ -259,6 +281,11 @@ function onNewImageChange(event) {
   if (file) {
     newImageFile.value = file;
   }
+}
+
+function generateRandomNumber() {
+  // Generate a random 6-digit number
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 // ... Le reste du code existant ...

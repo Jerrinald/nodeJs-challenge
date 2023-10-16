@@ -27,6 +27,21 @@ module.exports = function MarchandService() {
             return Marchand.findOne({ where: filters });
         },
 
+
+        findCredential: async (clientID, clientSecret) => {
+
+            //IF CLIENT ID AND CLIENT SECRET ARE NOT NULL
+            const marchand = await Marchand.findOne({ where: { clientID, clientSecret } });
+            if (!marchand) {
+                throw new ValidationError({
+                    clientID: "Invalid credentials",
+                });
+            }
+            return marchand;
+
+
+        },
+
         create: async function (data) {
             try {
                 console.log(process.env.SENDGRID_API)
@@ -46,7 +61,7 @@ module.exports = function MarchandService() {
                    to: newUser.email, // Adresse e-mail de l'utilisateur enregistré
                    from: 'ndiaby6@myges.fr', // Remplacez par votre adresse e-mail
                    subject: 'Confirmation d\'inscription', // Sujet de l'e-mail
-                   html: `<p>Merci de vous être inscrit !</p>
+                   html: `<p>Merci de vous être inscrit ! Votre compte sera activé après vérification</p>
                    `
                };
 

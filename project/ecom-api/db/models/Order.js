@@ -14,6 +14,10 @@ module.exports = (connection) => {
         type: DataTypes.STRING,
         allowNull: true, // Set to false if this field should not be nullable
       },
+      idProduct: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+      },
       numeroProduit: {
         type: DataTypes.STRING,
         allowNull: true, // Set to false if this field should not be nullable

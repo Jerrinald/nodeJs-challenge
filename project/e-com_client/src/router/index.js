@@ -45,19 +45,19 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: false, requiresAdmin: false },
+        meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
         path: '/products_management',
         name: 'ProductsManagement',
         component: ProductsManagement,
-        meta: { requiresAuth: false, requiresAdmin: true },
+        meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
         path: '/commandes-management',
         name: 'CommandesManagement',
         component: CommandesManagement,
-        meta: { requiresAuth: false, requiresAdmin: true },
+        meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
         path: '/products',
@@ -83,13 +83,13 @@ const routes = [
         path: '/paiement',
         name: 'Payment',
         component: Payment,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: true },
     },
     {
         path: '/credentials',
         name: 'credentials',
         component: credentials,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
         path: '/',

@@ -1,6 +1,7 @@
 const { User } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
+const UnauthorizedError = require("../errors/UnauthorizedError");
 
 module.exports = function UserService() {
   return {
@@ -24,6 +25,9 @@ module.exports = function UserService() {
     },
     create: async function (data) {
       try {
+        if (data.role === "admin") {
+          throw new UnauthorizedError("Not accesssible");
+        }
         return await User.create(data);
       } catch (e) {
         if (e instanceof Sequelize.ValidationError) {
