@@ -17,6 +17,17 @@ module.exports = (req, res, next) => {
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
     req.user = user;
+    if (req.originalUrl.startsWith('/users') || req.originalUrl.startsWith('/marchands')) {
+      if (req.method === 'PATCH' || req.method === 'PUT') {
+        if (req.body.hasOwnProperty('role')) {
+          if (req.body.role === "admin") {
+            if (req.user.role !== 'admin') {
+              return next(new UnauthorizedError());
+            }
+          }
+        }
+      }
+    }
   } catch (err) {
     return next(new UnauthorizedError());
   }

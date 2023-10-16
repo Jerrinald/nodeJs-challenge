@@ -59,6 +59,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import jwt_decode from "jwt-decode"; 
+import store from "../../store";
 
 // Define a reactive property to store all transactions
 const transactions = ref([]);
@@ -66,17 +67,22 @@ const transactions = ref([]);
 // Define a reactive property for search query
 const searchQuery = ref('');
 
+const user = ref(store.state.user);
+
 // Function to fetch all transactions from the API
 const getAllTransactions = async () => {
+  const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
     try {
-        const endpoint = userRole.value === 'admin' ?
+      console.log(user)
+        const endpoint = user.value.role === 'admin' ?
             `${import.meta.env.VITE_API_PAIEMENT}/transactions` :
-            `${import.meta.env.VITE_API_PAIEMENT}/transactions?userId=${userId.value}`; // ou tout autre paramètre identifiant les transactions de l'utilisateur
+            `${import.meta.env.VITE_API_PAIEMENT}/transactions?marchandId=${user.value.id}`; // ou tout autre paramètre identifiant les transactions de l'utilisateur
 
         const response = await fetch(endpoint, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, 
             },
         });
         if (response.ok) {

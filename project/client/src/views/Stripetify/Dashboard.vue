@@ -23,6 +23,10 @@
               <h2>Transactions</h2>
               <Transactions :selectedMenu="selectedMenu" />
             </div>
+            <div v-else-if="selectedMenu === 'Opérations'" class="marchant-container">
+              <h2>Transactions</h2>
+              <Operations :selectedMenu="selectedMenu" />
+            </div>
             <div v-else-if="selectedMenu === 'Profil'" class="marchant-container">
               <h2>Profil</h2>
               <Profile :selectedMenu="selectedMenu" />
@@ -39,6 +43,7 @@ import Aside from '../../components/Aside.vue'
 // import Dashboard from '../front/Dashboard.vue';
 import Marchands from '../front/Marchands.vue';
 import Transactions from '../front/Transactions.vue';
+import Operations from '../front/Operations.vue';
 import Profile from '../front/Profile.vue';
 import store from "../../store";
 import router from "../../router";

@@ -55,6 +55,11 @@ const submitForm = () => {
   emit('formSubmitted', formData); // Emit the event with the form data
 };
 
+const cancelForm = () => {
+
+  emit('cancelSubmitted', formData); // Emit the event with the form data
+};
+
 const closeModal = () => {
   openModal.value = false;
 }
@@ -102,7 +107,9 @@ const closeModal = () => {
         </div>
       </form>
       <div class="flex jce btn-container">
-        <button @click="submitForm" class="btn btn-primary">Valider</button>
+        <button @click="cancelForm" class="btn btn-primary cancel-pay">Annuler le paiement</button>
+        <button @click="submitForm" class="btn btn-primary validate-pay">Valider le paiement</button>
+        
       </div>
     </div>
   </div>
@@ -120,6 +127,14 @@ const closeModal = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cancel-pay{
+  background-color: red;
+}
+
+.validate-pay{
+  margin-left: 30px;
 }
 
 .backdrop {

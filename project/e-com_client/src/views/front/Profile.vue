@@ -100,8 +100,12 @@ async function fetchOrders() {
     if (response.ok) {
       const ordersData = await response.json();
 
-      // Fetch product details for each order
-      const productPromises = ordersData.map(async (order) => {
+      // Remove orders with status "Annulé"
+      const filteredOrders = ordersData.filter((order) => order.statut !== "Annulé");
+
+      // Fetch product details for each remaining order
+      const productPromises = filteredOrders.map(async (order) => {
+        
         const productResponse = await fetch(
           `${import.meta.env.VITE_API_ECOM}/products/${order.idProduct}`, {
               method: 'GET',
@@ -120,7 +124,7 @@ async function fetchOrders() {
       // Wait for all product requests to complete
       await Promise.all(productPromises);
 
-      orders.value = ordersData;
+      orders.value = filteredOrders;
     } else {
       console.error('Erreur lors la recuperation des commandes');
     }

@@ -7,10 +7,9 @@
                     <th>ID d'Opération</th>
                     <th>ID de Marchand</th>
                     <th>Nature de l'Opération</th>
-                    <th>ID de Transaction</th>
                     <th>Montant</th>
                     <th>Statut</th>
-                    <th>ID de Commande</th>
+                    <th>Numéro Commande</th>
                     <th>Nom de la Carte</th>
                     <th>Nom du Client</th>
                     <th>Date de Création</th>
@@ -27,10 +26,9 @@
                             <option value="refund">Refund</option>
                         </select>
                     </td>
-                    <td>{{ operation.TransactionId }}</td>
                     <td>{{ operation.Montant }}</td>
                     <td>{{ operation.status }}</td>
-                    <td>{{ operation.orderId }}</td>
+                    <td>{{ operation.orderIdArr }}</td>
                     <td>{{ operation.creditCardName }}</td>
                     <td>{{ operation.clientName }}</td>
                     <td>{{ formatDate(operation.createdAt) }}</td>
@@ -61,7 +59,7 @@ const searchQuery = ref('');
 
 const getAllOperations = async () => {
     try {
-        const response = await fetch("http://localhost:3000/operations", {
+        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +86,7 @@ const updateStatus = async (operation, newStatus) => {
             return;
         }*/
 
-        const response = await fetch(`http://localhost:3000/operations/${operation.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations/${operation.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +115,7 @@ const updateNature = async (operation) => {
             return;
         }*/
 
-        const response = await fetch(`http://localhost:3000/operations/${operation.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/operations/${operation.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

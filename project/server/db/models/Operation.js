@@ -27,7 +27,7 @@ module.exports = (connection) => {
                 defaultValue: "pending",
             },
             orderIdArr: { // Updated field name to TransactionId
-                type: DataTypes.ARRAY(DataTypes.INTEGER),
+                type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: true,
             },
             creditCardNumber: {

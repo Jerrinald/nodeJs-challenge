@@ -49,6 +49,7 @@
 
     const transactions = ref([]);
     const marchand = ref(store.state.user); // Initialize as null
+    
 
     const openEditForm = () => {
       editedMerchant.value = { ...marchand.value }; // Copy the current merchant data
@@ -180,35 +181,8 @@
           transactions.value = data;
           for (const transaction of transactions.value) {
             console.log(transaction)
-            fetchOrderInfo(transaction) 
-            console.log(transaction)
           }
           //fetchOrderInfo(data.orderId)
-        } else {
-          console.error('Failed to fetch merchants');
-          // Handle the error or show a message to the user
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-        // Handle the error or show a message to the user
-      }
-    }
-
-    async function fetchOrderInfo(transacArray) {
-
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_ECOM}/orders/${transacArray.orderId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Use the token in the headers
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data)
-          transacArray.value = data;
         } else {
           console.error('Failed to fetch merchants');
           // Handle the error or show a message to the user
@@ -275,9 +249,6 @@
   color: black;
 }
 
-.showEditForm button {
-  /* Styles pour votre bouton, si vous souhaitez également les modifier */
-}
 
     
     .page-container {

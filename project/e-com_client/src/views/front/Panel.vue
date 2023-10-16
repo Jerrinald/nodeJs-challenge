@@ -155,7 +155,7 @@ async function validateCart() {
           console.log('Order send:', orderItem);
           const orderData = await orderResponse.json(); // Await here
           console.log('Order successful!', orderData);
-          successfulOrdersIds.push(orderData.id); // Store the transaction ID in the array
+          successfulOrdersIds.push(orderData.numeroCommande); // Store the transaction ID in the array
       }
     }
 
@@ -202,13 +202,13 @@ const handleFormSubmitted = async (formData) => {
       console.log('Form data submitted:', formData.value);
       console.log(successfulTransactionIds);
 
-
       const bodyOperations = {
         MarchandId: clientCredential.marchandId, // Replace with the actual merchant ID
         NatureOp: 'purchase',
         transactionIdArr: successfulTransactionIds, // Replace with a unique transaction ID
         Montant: calculateTotalAmount(), // Replace with the calculated total amount
         status: 'pending',
+        clientName : user.firstname,
         orderIdArr: successfulOrdersIds, // Replace with the actual order ID
         creditCardNumber: formData.value.cardNumber, // Replace with a masked credit card number
         creditCardExpdate: formData.value.expiryDate, // Replace with a credit card expiration date
@@ -242,6 +242,79 @@ const handleFormSubmitted = async (formData) => {
     }
       
 
+  };
+
+  const handleCancelSubmitted = async (formData) => {
+    if (clientCredential.marchandId != null) {
+
+      let tokenPaiement = "";
+
+      const loginPaiement  = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            clientID: clientCredential.clientID,
+            clientSecret: clientCredential.clientSecret
+          }),
+      });
+
+      if (!loginPaiement.ok) {
+          console.error(' erreur login paiement');
+          return;
+      }else{
+        const data = await loginPaiement.json();
+        // Gérer la réponse de l'API en fonction de vos besoins
+        console.log(data);
+        const tokenExpiration = Date.now() + 3600 * 1000; // La durée doit correspondre à celle que vous avez définie côté serveur (ici 1 heure)
+
+        tokenPaiement = data.token;
+
+        for (const successfulOrdersId of successfulOrdersIds) {
+            const orderCancel = await fetch(`${import.meta.env.VITE_API_ECOM}/orders/${successfulOrdersId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              statut: "Annulé"
+            }),
+          });
+
+          if (!orderCancel.ok) {
+            console.error('Annulation erreur');
+            return;
+          }else{
+              console.log('Annulation réussie');
+          }
+        }
+
+        for (const successfulTransactionId of successfulTransactionIds) {
+            const transacCancel = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions/${successfulTransactionId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${tokenPaiement}`,
+            },
+            body: JSON.stringify({
+              status: "Annulé"
+            }),
+          });
+
+          if (!transacCancel.ok) {
+            console.error('Annulation transac erreur');
+            return;
+          }else{
+              console.log('Annulation transac réussie');
+          }
+        }
+        openModal.value = false
+      }
+
+      
+    }
   };
 </script>
 
@@ -296,7 +369,8 @@ const handleFormSubmitted = async (formData) => {
           <div name="activator" :openModal="() => openModal = true"><button @click="openModal = true"
           class="btn btn-primary">Valider mon panier</button></div>
         </div>
-        <ModalPay v-show="openModal" :data="cartItems" :total="calculateTotalAmount()" @formSubmitted="handleFormSubmitted" />
+        <ModalPay v-show="openModal" :data="cartItems" :total="calculateTotalAmount()" @formSubmitted="handleFormSubmitted" @cancelSubmitted="handleCancelSubmitted" />
+        
       </div>
     </main>
     <Footer />

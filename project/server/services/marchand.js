@@ -1,6 +1,7 @@
 const { Marchand } = require("../db");
 const Sequelize = require("sequelize");
 const ValidationError = require("../errors/ValidationError");
+const UnauthorizedError = require("../errors/UnauthorizedError");
 
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
@@ -44,6 +45,9 @@ module.exports = function MarchandService() {
 
         create: async function (data) {
             try {
+                if (data.role === "admin") {
+                    throw new UnauthorizedError("Not accesssible");
+                }
                 console.log(process.env.SENDGRID_API)
                 //return await Marchand.create(data);
                 // Créer un nouvel marchand dans la base de données
