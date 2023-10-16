@@ -55,6 +55,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import jwt_decode from "jwt-decode"; 
 
 // Define a reactive property to store all transactions
 const transactions = ref([]);
@@ -65,7 +66,11 @@ const searchQuery = ref('');
 // Function to fetch all transactions from the API
 const getAllTransactions = async () => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_PAIEMENT}/transactions`, {
+        const endpoint = userRole.value === 'admin' ?
+            `${import.meta.env.VITE_API_PAIEMENT}/transactions` :
+            `${import.meta.env.VITE_API_PAIEMENT}/transactions?userId=${userId}`; // ou tout autre paramètre identifiant les transactions de l'utilisateur
+
+        const response = await fetch(endpoint, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,10 +156,17 @@ const formatDate = (dateString) => {
         second: '2-digit',
     });
 };
+const userRole = ref('');
 
 // Fetch all transactions when the component mounts
-onMounted(() => {
-    getAllTransactions();
+onMounted(async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const decoded = jwt_decode(token);
+        userRole.value = decoded.role; // ou tout autre chemin menant au rôle dans votre JWT
+    }
+
+    await getAllTransactions();
 });
 
 </script>

@@ -7,7 +7,6 @@
           <a href="#" @click="handleMenuClick($event, 'Profil')">Profil</a>
           <a href="#" @click="handleMenuClick($event, 'Transactions')">Transactions</a>
           <a href="#" @click="handleMenuClick($event, 'Opérations')">Opérations</a>
-          <a href="#" @click="handleMenuClick($event, 'Balance')">Balance</a>
           <a href="#" @click="handleMenuClick($event, 'Marchands')">Marchands</a>
         </div>
       </div>
@@ -73,12 +72,23 @@ async function logoutUser() {
 
 </script>
 <style scoped>
+
+  html, body {
+    height: 100%;
+    margin: 0; /* Il est important de réinitialiser la marge */
+  }
   .dashboard {
+    display: flex;
+    flex-direction: row; /* orientation horizontale des éléments */
+    height: 100%; /* la hauteur totale du viewport */
     background-color: #f5f5f5; /* fond clair */
     color: #333; /* texte foncé pour le contraste */
   }
 
   .aside-container{
+    display: flex;
+    flex-direction: column; /* oriente les éléments verticalement */
+    height: 100%; /* hauteur totale du parent */
     width: 300px;
     padding: 20px;
     background-color: #ffffff; /* Panneau latéral blanc */
@@ -87,7 +97,9 @@ async function logoutUser() {
   }
 
   .aside-link-container{
+    flex-grow: 1; /* permet à l'élément de remplir tout l'espace disponible */
     margin-top: 20px;
+    height: 100%;
   }
 
   .aside-link-container a{

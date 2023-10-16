@@ -18,11 +18,7 @@ const user = computed(() => store.state.user);
             <a href="#" class="logo-content flex aic gap-10"><img :src="logo" alt="Description de l'image"><span>Stripetify</span></a>
             <!-- <a href="#">Stripetify</a> -->
             <div class="flex gap-50">
-                <a href="#">Produits</a>
-                <a href="#">Solutions</a>
-                <a href="#">Tarifs</a>
-                <a v-if="user && user.role === 'admin'" href="/dashboard">Dashboard</a>
-                <a v-if="user" href="/profile">Profil</a>
+                <a v-if="user" href="/dashboard">Dashboard</a>
             </div>
             <Logout v-if="user"/>
             <Login v-else/>
